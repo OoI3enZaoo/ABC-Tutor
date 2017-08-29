@@ -1,0 +1,22 @@
+{
+  "name": "tutor",
+  "version": "1.0.0",
+  "description": "for SP402",
+  "author": "OoI3enZaoO <Teerapath-Ben@hotmail.com>",
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "nuxt": "0.10.7",
+    "vue-server-renderer": "latest",
+    "vuetify": "^0.13.0"
+  },
+  "devDependencies": {
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
+  }
+}
