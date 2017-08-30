@@ -1,16 +1,8 @@
 <template>
   <div>
-    <!-- <div class="hidden-xs-only">
-        <img style="position:absolute;"src="https://orig01.deviantart.net/5808/f/2012/189/d/b/gif_wide_awake_by_byandresytius-d56i4lr.gif" height="400" width="100%">
-        <div class= "text-xs-center" style="z-index:22; position: absolute;">
-
-          <h5 class="text-xs-center white--text" >ไม่เข้าใจที่อาจารย์สอน ?</h5>
-          <h6 class="white--text" >มาเริ่มต้นด้วยกันกับเรา Live & Lean </h6>
-          <v-btn primary to="/">ลงทะเบียน</v-btn>
-        </div>
-    </div> -->
+    <template v-if="$store.state.isLogin==false">
     <div class="hidden-xs-only">
-        <div class="gif"  >
+        <div class="gif">
           <br><br><br>
           <div class= "text-xs-center">
             <h4 class="white--text" ><b>ไม่เข้าใจที่อาจารย์สอน ?</b></h4>
@@ -20,7 +12,6 @@
           <br><br><br>
         </div>
     </div>
-
 <div>
   <br><br>
   <v-container
@@ -54,9 +45,10 @@
   <hr>
 <div class="text-xs-center white">
   <v-container grid-list-lg>
+    <br>
     <h5 class="black--text">สำรวจ</h5>
     <v-layout row wrap>
-      <template v-for="data in branchs">
+      <template v-for="data in $store.state.branchs">
         <v-flex xs4>
           <v-card>
             <v-card-media :src = "data.img" height="200"></v-card-media>
@@ -113,16 +105,35 @@
 
 
 
-<v-footer light>
+    <v-footer light>
 
 
-          <p class="text--white">สร้างคอร์ส</p>
+              <p class="text--white">สร้างคอร์ส</p>
 
-            <v-spacer></v-spacer>
-          <p class="text--white">เข้าสู่ระบบ</p>
+                <v-spacer></v-spacer>
+              <p class="text--white">เข้าสู่ระบบ</p>
 
 
-</v-footer>
+ </v-footer>
+</template>
+<template v-else>
+      <div class="hidden-xs-only">
+          <div class="gif">
+            <br><br><br>
+            <div class= "text-xs-center">
+              <v-container>
+                <h4 class="white--text" ><b>ค้นหาคอร์ส</b></h4>
+                <h6 class="white--text" ><b>กว่า 635 คอร์สที่ให้ใช้งานอยู่ในขณะนี้ </b></h6>
+              </v-container>
+            </div>
+            <br><br><br>
+          </div>
+      </div>
+      <v-container >
+        <h6>คอร์สที่ได้รับความนิยมใน "วิทยาการคอมพิวเตอร์"</h6>
+      </v-container>
+
+</template>
   </div>
 </template>
 <style >
@@ -131,12 +142,3 @@
     background-size: 100% 500px;
   }
 </style>
-<script>
-import axios from 'axios'
-export default {
-  async asyncData () {
-    const { data } = await  axios.get('https://tutor-dafcf.firebaseio.com/branchs.json')
-    return { branchs: data}
-  }
-}
-</script>
