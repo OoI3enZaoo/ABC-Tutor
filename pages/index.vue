@@ -132,13 +132,24 @@
       <v-container >
         <h6>คอร์สที่ได้รับความนิยมใน "วิทยาการคอมพิวเตอร์"</h6>
       </v-container>
-
+    status >  {{status}}
 </template>
   </div>
 </template>
-<style >
+<style>
   .gif {
     background-image: url("http://www.gengotutors.com/img/slides/skype-language-tutor-homepage-background.jpg");
     background-size: 100% 500px;
   }
 </style>
+<script>
+import axios from 'axios'
+export default {
+  async asyncData ({ store, isServer }) {
+    if (store.state.isLogin === false) {
+      const { data } = await axios.get('https://tutor-dafcf.firebaseio.com/branchs.json')
+      store.commit('setBranchs', data)
+    }
+  }
+}
+</script>

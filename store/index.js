@@ -1,4 +1,4 @@
-import axios from 'axios'
+// import axios from 'axios'
 export const state = () => ({
   sidebar: true,
   branchs: [],
@@ -16,8 +16,8 @@ export const mutations = {
   }
 }
 export const actions = {
-  async nuxtServerInit ({commit}) {
-    const { data } = await axios.get('https://tutor-dafcf.firebaseio.com/branchs.json')
-    commit('setBranchs', data)
-  }
+  // async nuxtServerInit ({commit}) {
+  //   const { data } = await axios.get('https://tutor-dafcf.firebaseio.com/branchs.json')
+  //   commit('setBranchs', data)
+  // }
 }
