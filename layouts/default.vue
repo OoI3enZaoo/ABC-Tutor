@@ -15,19 +15,21 @@
             </v-list>
           </v-navigation-drawer>
           <v-toolbar>
-            <v-toolbar-side-icon @click.native.stop='slideNav=true' class='hidden-sm-and-up'></v-toolbar-side-icon>
+            <div class="hidden-sm-and-up">
+            <v-toolbar-side-icon  @click.stop='slideNav=!slideNav'></v-toolbar-side-icon>
+            </div>
              <v-toolbar-title >
-               Tutor
+               <nuxt-link to="/" style="text-decoration: none;">{{projectName}}</nuxt-link>
              </v-toolbar-title>
              <v-spacer></v-spacer>
              <v-toolbar-items class='hidden-xs-only'>
-                <v-btn flat primary small>
+                <v-btn flat primary small nuxt to="/login">
                   <v-icon class='red--text'>home</v-icon>
                   &nbsp;เข้าสู่ระบบ
                 </v-btn>
                 <v-btn primary small>
-                  <v-icon dark>home</v-icon>
-                  &nbsp;<span  class='white--text'>สมัครสมาชิก</span>
+                  <v-icon class="white--text">home</v-icon>
+                  &nbsp;<span class='white--text'>สมัครสมาชิก</span>
                 </v-btn>
              </v-toolbar-items>
              <br>
@@ -49,11 +51,12 @@
             </v-list>
           </v-navigation-drawer>
           <v-toolbar>
-            <v-toolbar-side-icon @click.native.stop='slideNav=true' class='hidden-sm-and-up'></v-toolbar-side-icon>
+            <v-toolbar-side-icon @click.stop='slideNav=true' class='hidden-sm-and-up'></v-toolbar-side-icon>
              <v-toolbar-title  class='hidden-xs-only'>
-               ABC-Tutor ระบบติวหนังสือออนไลน์รูปแบบใหม่
+               <nuxt-link to="/" style="text-decoration: none;">{{projectName}}</nuxt-link>
              </v-toolbar-title>
                 <v-text-field
+
                   class='mt-4 ml-5'
                   label='ชื่อวิชาหรือรหัสวิชา..'
                   single-line
@@ -62,11 +65,25 @@
                 <v-spacer></v-spacer>
              <v-toolbar-items class='hidden-xs-only'>
                  <template v-for='data in menuLoginItem'>
-                    <v-btn flat primary small>
-                      <v-icon class='red--text'>{{data.icon}}</v-icon>
-                      &nbsp;{{data.name}}
-                    </v-btn>
+                   <template v-if="data.name">
+                     <v-btn flat primary small>
+                       <v-icon class='red--text'>{{data.icon}}</v-icon>
+                       &nbsp;
+                       {{data.name}}
+                     </v-btn>
+                   </template>
+                    <template v-else>
+                      <v-btn icon flat primary>
+                        <v-icon class='red--text'>{{data.icon}}</v-icon>
+                        &nbsp;
+                      </v-btn>
+                    </template>
                 </template>
+                &nbsp;&nbsp;&nbsp;
+                <v-avatar>
+                  <img src="https://scontent.fbkk2-4.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?_nc_eui2=v1%3AAeHK1rd2oRtb-z5eaABMDoa_ZZO1Vt9C_dyvbyH7me7jRPK1VH4BkQ-B3l3E4-UCfv8f48-uzvc1E3JbfAeFAZeSaSFSWLWoaRU2NzmLv9hqIg&oh=fe0776c03fef863ba5ec6b9dcb16bff9&oe=5A267C89" alt="John">
+                </v-avatar>
+                &nbsp;&nbsp;
              </v-toolbar-items>
              <br>
           </v-toolbar>
@@ -101,16 +118,15 @@
             link: '/'
           },
           {
-            name: 'สำรวจ',
-            icon: 'home',
-            link: '/'
-          },
-          {
-            name: 'การแจ้งเตือน',
-            icon: 'home',
+            icon: 'notifications',
             link: '/'
           }
         ]
+      }
+    },
+    computed: {
+      projectName () {
+        return this.$store.state.projectName
       }
     }
   }

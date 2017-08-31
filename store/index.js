@@ -1,13 +1,10 @@
 // import axios from 'axios'
 export const state = () => ({
-  sidebar: true,
-  branchs: [],
-  isLogin: false
+  branchs: '',
+  isLogin: false,
+  projectName: 'ABC-Tutor'
 })
 export const mutations = {
-  toggleSidebar (state) {
-    state.sidebar = !state.sidebar
-  },
   setBranchs (state, data) {
     state.branchs = data
   },

@@ -1,18 +1,11 @@
 <template>
   <div>
     <template v-if="$store.state.isLogin==false">
-    <div class="hidden-xs-only">
-        <div class="gif">
-          <br><br><br>
-          <div class= "text-xs-center">
-            <h4 class="white--text" ><b>ไม่เข้าใจที่อาจารย์สอน ?</b></h4>
-            <h6 class="white--text" ><b>มาเริ่มต้นด้วยกันกับเรา Live & Lean </b></h6>
-            <v-btn round primary to="/" large>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ลงทะเบียน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</v-btn>
-          </div>
-          <br><br><br>
-        </div>
-    </div>
-<div>
+    <parallax height = "500" type="link" src="http://www.gengotutors.com/img/slides/skype-language-tutor-homepage-background.jpg" position="center">
+      <h1 class="white--text">เรียนกับอาจารย์ไม่รู้เรื่อง ?</h1>
+      <h4 class="white--text">มาเริ่มต้นกับเราที่ ABC-Tutor</h4>
+    </parallax>
+ <div>
   <br><br>
   <v-container
         grid-list-lg>
@@ -58,6 +51,7 @@
         </template>
     </v-layout>
   </v-container>
+</div>
 <br>
   <div class="grey darken-4">
       <v-container>
@@ -101,7 +95,7 @@
         </v-layout>
       </v-container>
   </div>
-</div>
+
 
 
 
@@ -117,38 +111,77 @@
  </v-footer>
 </template>
 <template v-else>
-      <div class="hidden-xs-only">
-          <div class="gif">
-            <br><br><br>
-            <div class= "text-xs-center">
-              <v-container>
-                <h4 class="white--text" ><b>ค้นหาคอร์ส</b></h4>
-                <h6 class="white--text" ><b>กว่า 635 คอร์สที่ให้ใช้งานอยู่ในขณะนี้ </b></h6>
-              </v-container>
-            </div>
-            <br><br><br>
-          </div>
-      </div>
-      <v-container >
+      <parallax height = "200" type="color" src="red" position="center">
+        <h4 class="white--text" ><b>ค้นหาคอร์ส</b></h4>
+        <h6 class="white--text" ><b>กว่า 635 คอร์สที่ให้ใช้งานอยู่ในขณะนี้ </b></h6>
+      </parallax>
+
+      <v-container grid-list-lg>
+        <br>
         <h6>คอร์สที่ได้รับความนิยมใน "วิทยาการคอมพิวเตอร์"</h6>
+          <div v-swiper:mySwiper="swiperOption">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide" v-for="a in 10">
+                <v-card>
+                  <v-card-media src="https://us.123rf.com/450wm/juliatim/juliatim1603/juliatim160300025/54282789-young-man-sitting-in-the-park-under-a-tree-and-working-with-laptop-flat-modern-illustration-of-socia.jpg?ver=6" height="150"></v-card-media>
+                  <v-card-text>
+                    <p>คอมพิวเตอร์เบื้องต้น (SP521)</p>
+                    <span class="grey--text">Theerapat Vijitpoo</span><br>
+                    <template v-for="a in 5">
+                      <v-icon>star</v-icon>
+                    </template>
+                    <span>5.0 </span> <span class="grey--text">(33,888)</span>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <h6 class="primary--text">350.-</h6>
+                  </v-card-actions>
+                </v-card>
+                <br>
+              </div>
+            </div>
+            <div class="swiper-button-prev" slot="button-prev"></div>
+            <div class="swiper-button-next" slot="button-next"></div>
+          </div>
+
       </v-container>
-    status >  {{status}}
+
 </template>
   </div>
 </template>
-<style>
-  .gif {
-    background-image: url("http://www.gengotutors.com/img/slides/skype-language-tutor-homepage-background.jpg");
-    background-size: 100% 500px;
-  }
-</style>
 <script>
 import axios from 'axios'
+import parallax from '../components/parallax.vue'
+import course from '../components/course.vue'
 export default {
   async asyncData ({ store, isServer }) {
-    if (store.state.isLogin === false) {
+    console.log('branchs: ' + store.state.branchs)
+    if (store.state.isLogin === false && store.state.branchs === '') {
       const { data } = await axios.get('https://tutor-dafcf.firebaseio.com/branchs.json')
       store.commit('setBranchs', data)
+      console.log('get data from firebase')
+    } else {
+      console.log('get data from store')
+    }
+  },
+  components: {
+    parallax,
+    course
+  },
+  data () {
+    return {
+      swiperOption: {
+        pagination: '.swiper-pagination',
+         paginationElement: 'li',
+        slidesPerView: 5,
+        nextButton: '.swiper-button-next',
+           prevButton: '.swiper-button-prev',
+        paginationClickable: true,
+        spaceBetween: 30,
+        onTap: swiper => {
+          console.log('onTap', swiper.realIndex)
+        }
+      }
     }
   }
 }
