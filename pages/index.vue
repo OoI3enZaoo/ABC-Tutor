@@ -111,7 +111,7 @@
  </v-footer>
 </template>
 <template v-else>
-      <parallax height = "200" type="color" src="red" position="center">
+      <parallax height = "200" src="http://www.primestone-brasil.com/images/prime/materiais/materiais-industrializados/quartz-stone/absolute-red-small.jpg" position="center">
         <h4 class="white--text" ><b>ค้นหาคอร์ส</b></h4>
         <h6 class="white--text" ><b>กว่า 635 คอร์สที่ให้ใช้งานอยู่ในขณะนี้ </b></h6>
       </parallax>
@@ -172,10 +172,10 @@ export default {
     return {
       swiperOption: {
         pagination: '.swiper-pagination',
-         paginationElement: 'li',
+        paginationElement: 'li',
         slidesPerView: 5,
         nextButton: '.swiper-button-next',
-           prevButton: '.swiper-button-prev',
+        prevButton: '.swiper-button-prev',
         paginationClickable: true,
         spaceBetween: 30,
         onTap: swiper => {
