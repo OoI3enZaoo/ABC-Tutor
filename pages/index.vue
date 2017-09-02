@@ -4,6 +4,7 @@
     <parallax height = "500" type="link" src="http://www.gengotutors.com/img/slides/skype-language-tutor-homepage-background.jpg" position="center">
       <h1 class="white--text">เรียนกับอาจารย์ไม่รู้เรื่อง ?</h1>
       <h4 class="white--text">มาเริ่มต้นกับเราที่ ABC-Tutor</h4>
+      <v-btn round primary large>สม้ครสมาชิก</v-btn>
     </parallax>
  <div>
   <br><br>
@@ -42,7 +43,7 @@
     <h5 class="black--text">สำรวจ</h5>
     <v-layout row wrap>
       <template v-for="data in $store.state.branchs">
-        <v-flex xs4>
+        <v-flex xs12 sm6 md4>
           <v-card>
             <v-card-media :src = "data.img" height="200"></v-card-media>
             <v-card-title>{{data.name}}</v-card-title>
@@ -63,8 +64,8 @@
               <span class ="white--text">สำรวจวิชาที่สนใจจะติวด้วยรหัสวิชา</span>
             </v-flex>
             <v-flex xs6>
-                      <span class ="white--text">สร้างคอร์ส</span><br>
-                  <span class ="white--text">สร้างคอร์สของคุณเพื่อความก้าวหน้าของคุณ</span>
+                <span class ="white--text">สร้างคอร์ส</span><br>
+                <span class ="white--text">สร้างคอร์สของคุณเพื่อความก้าวหน้าของคุณ</span>
 
             </v-flex>
           </v-layout>
@@ -76,21 +77,15 @@
       <v-container>
         <h6 style="display:inline;"><b>ประสบการณ์การใหม่บนมือถือ</b></h6>
         <p>ไม่ต้องติดตั้งแอปพลิเคชันบนมือถือ สำหรับ Android</p>
-        <v-layout row>
-            <v-flex xs6>
-              <img src="https://beebom-redkapmedia.netdna-ssl.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg" alt="" height="200">
+        <v-layout row wrap>
+            <v-flex xs12 md6>
+                <img src="https://beebom-redkapmedia.netdna-ssl.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg" alt="" height="200">
             </v-flex>
-            <v-flex xs6>
-              <div >
-                <v-layout row >
-                  <v-flex xs6>
-                    <img src="http://tunecomp.net/wp-content/uploads/2016/01/03-website-to-home-screen-android.png" alt="" height="200">
-                  </v-flex>
-                  <v-flex xs6>
-                    <img src="http://pngimg.com/uploads/smartphone/smartphone_PNG8541.png" alt="" height="200">
-                  </v-flex>
-                </v-layout>
-              </div>
+            <v-flex xs6 md3>
+                <img src="http://tunecomp.net/wp-content/uploads/2016/01/03-website-to-home-screen-android.png" alt="" height="150">
+            </v-flex>
+            <v-flex xs6 md3>
+                <img src="http://pngimg.com/uploads/smartphone/smartphone_PNG8541.png" alt="" height="150">
             </v-flex>
         </v-layout>
       </v-container>
