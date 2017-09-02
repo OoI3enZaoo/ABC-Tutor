@@ -39,7 +39,10 @@
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-action>
-              <v-list-tile-title>ลงชื่อออก</v-list-tile-title>
+              <v-list-tile-title>
+                <nuxt-link tag="span" to="/login">ลงชื่อออก</nuxt-link>
+              </v-list-tile-title>
+
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
@@ -54,6 +57,11 @@
       menu: false,
       message: false,
       hints: true
-    })
+    }),
+    methods: {
+      logout () {
+        console.log('test')
+      }
+    }
   }
 </script>

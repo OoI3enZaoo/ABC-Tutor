@@ -1,89 +1,84 @@
 <template>
   <div>
-    <parallax height = "200"  src="https://www.guttersupply.com/file_area/public/categories/ImageUrl_1241190124_7226.jpg">
-        <h6 class="white--text">วิชาคอมพิวเตอร์เบื้องต้น (SP521)</h6>
-        <h6 class="white--text">ผู้ที่ต้องการสอบกลางภาควิชาคอมพิวเตอร์เบื้องต้น (SP521)</h6>
-        <h6 class="white--text">สร้างโดย <span class="blue--text">Theerapat Vijitpoo</span> อัพเดทข้อมูลล่าสุดเมื่อ 18/92560 16:18</h6>
+    <parallax src="http://abcworldwidestone.com/material-portfolio/wp-content/uploads/2014/10/Belgium-Black-Polished-2cm-Lot-3071-Close-up.jpg" height="200">
+      <v-layout>
+        <v-flex xs3>
+            <img src="http://en.advancedfleetmanagementconsulting.com/wp-content/uploads/2016/06/6700226_m.jpg" height="150">
+        </v-flex>
+        <v-flex xs7>
+          <h4 class="white--text" ><b>วิชาคอมพิวเตอร์เบื้องต้น (SP521)</b></h4>
+        </v-flex>
+      </v-layout>
     </parallax>
-    <br>
-    <v-container>
-      <h6 class="headline">สิ่งที่ผู้เรียนจะได้รับ</h6>
-      <span>1. ติวเข็มบทที่ 1 เรื่องคอมพิวเตอร์เบื้องต้น</span><br>
-      <span>2. ติวเข็มบทที่ 2 ส่วนประกอบของคอมพิวเตอร์</span>
-      <br><br><br>
-      <h6 class="headline">เนื้อหาสำหรับ</h6>
-      <span>ผู้ที่่ต้องการสอบกลางภาควิชาคอมพิวเตอร์เบื้องต้น (SP521)</span>
-      <br><br><br>
-      <h6 class="headline">เกี่ยวกับผู้สอน</h6>
-      <v-layout>
-        <v-flex xs1>
-          <v-avatar tile size="504">
-            <img src="https://scontent.fbkk2-4.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?_nc_eui2=v1%3AAeHK1rd2oRtb-z5eaABMDoa_ZZO1Vt9C_dyvbyH7me7jRPK1VH4BkQ-B3l3E4-UCfv8f48-uzvc1E3JbfAeFAZeSaSFSWLWoaRU2NzmLv9hqIg&oh=fe0776c03fef863ba5ec6b9dcb16bff9&oe=5A267C89" alt="John">
-          </v-avatar>
-        </v-flex>
-        <v-flex xs3>
-          <p class="blue--text">Theerapat Vijitpoo</p>
-          <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore a qui officia deserunt mollit anim id est laborum.</span>
-        </v-flex>
-      </v-layout>
-      <br><br><br>
-      <h6 class="headline">การตอบรับของผู้เรียน</h6>
-      <v-layout>
-        <v-flex xs2 text-xs-center>
-          <div class="mt-2">
-            <h3><b>5.0</b></h3>
-            <template v-for="a in 5">
-              <v-icon>star</v-icon>
-            </template><br>
-            <span class="grey--text">ผลโหวตโดยเฉลี่ย</span>
-          </div>
-        </v-flex>
-        <v-flex xs2>
-            <v-progress-linear value="100" height="10" success> </v-progress-linear>
-            <v-progress-linear value="80" height="10" success> </v-progress-linear>
-            <v-progress-linear value="70" height="10" success> </v-progress-linear>
-            <v-progress-linear value="40" height="10" success> </v-progress-linear>
-            <v-progress-linear value="10" height="10" success> </v-progress-linear>
-        </v-flex>
-        <v-flex xs3>
-          <div class="mt-2">
-              <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon> <br>
-              <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><br>
-              <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><br>
-              <v-icon>star</v-icon><v-icon>star</v-icon><br>
-              <v-icon>star</v-icon><br>
-            </div>
-        </v-flex>
-      </v-layout>
-      <br><br><br>
-      <h6 class="headline">การรีวิว</h6>
-        <v-layout>
-          <v-flex xs1>
-            <v-avatar>
-              <img src="http://s3.amazonaws.com/s3.timetoast.com/public/uploads/photos/2065220/billgates.png" alt="avatar">
-            </v-avatar>
-          </v-flex>
-          <v-flex xs1>
-              <span class="grey--text">5 นาทีที่แล้ว</span><br>
-              <span>Bill Gates</span>
-          </v-flex>
-          <v-flex xs4>
-            <template v-for="a in 5">
-              <v-icon>star</v-icon>
-            </template><br>
-            <span>ชอบมากครับ ที่ผมมีทุกวันนี้ได้เพราะคุณคนเดียวเลย เยี่ยมจริงๆ</span>
-          </v-flex>
-        </v-layout>
 
-    </v-container>
+    <v-tabs light>
+     <v-tabs-bar class="white">
+       <v-tabs-slider class="primary"></v-tabs-slider>
+       <v-tabs-item
+         v-for="(data,i) in menuItems"
+         :key="i"
+         :href="'#tab-' + i"
+       >
+         {{data.title}}
+       </v-tabs-item>
+     </v-tabs-bar>
+
+       <!-- ภาพรวม -->
+       <v-tabs-content id='tab-0'>
+         <overall></overall>
+       </v-tabs-content>
+
+       <!-- วีดีโอ -->
+       <v-tabs-content id='tab-1'>
+         <h6>ยังไม่เสร็จ</h6>
+       </v-tabs-content>
+
+       <!-- วีดีโอสด -->
+       <v-tabs-content id='tab-2'>
+         <live></live>
+       </v-tabs-content>
+
+       <!-- ถามตอบ -->
+       <v-tabs-content id='tab-3'>
+         <qa></qa>
+       </v-tabs-content>
+
+       <!-- ประกาศ -->
+       <v-tabs-content id='tab-4'>
+         <announcement></announcement>
+       </v-tabs-content>
+
+       <!-- แชท -->
+       <v-tabs-content id='tab-5'>
+         <h6>ยังไม่เสร็จ</h6>
+       </v-tabs-content>
+
+   </v-tabs>
+
+
   </div>
 </template>
-
 <script>
 import parallax from '../../components/parallax.vue'
+import overall from '../../components/courseTabs/overall.vue'
+import announcement from '../../components/courseTabs/announcement.vue'
+import live from '../../components/courseTabs/live.vue'
+import qa from '../../components/courseTabs/qa.vue'
 export default {
   components: {
-    parallax
+    parallax, overall, announcement, live, qa
+  },
+  data () {
+    return {
+      menuItems: [
+        { title: 'ภาพรวม' },
+        { title: 'วีดีโอ' },
+        { title: 'วีดีโอสด' },
+        { title: 'ถามตอบ' },
+        { title: 'ประกาศ' },
+        { title: 'แชท' }
+      ]
+    }
   }
 }
 </script>

@@ -57,7 +57,8 @@
                <nuxt-link to="/" style="text-decoration: none;">{{projectName}}</nuxt-link>
              </v-toolbar-title>
                 <v-text-field
-                  class='mt-4 ml-5'
+                  solo
+                  class='ml-5'
                   label='ชื่อวิชาหรือรหัสวิชา..'
                   single-line
                   append-icon='search'
@@ -66,7 +67,7 @@
              <v-toolbar-items class='hidden-xs-only'>
                  <template v-for='data in menuAfterLoginItem'>
                    <template v-if="data.name">
-                     <v-btn flat primary small>                      
+                     <v-btn flat primary small>
                        &nbsp;
                        {{data.name}}
                      </v-btn>

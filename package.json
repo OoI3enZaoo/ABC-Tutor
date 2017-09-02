@@ -21,7 +21,7 @@
     "axios": "^0.16.2",
     "nuxt": "^1.0.0-rc6",
     "vue-awesome-swiper": "^2.6.2",
-    "vuetify": "^0.14.11"
+    "vuetify": "^0.15"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
