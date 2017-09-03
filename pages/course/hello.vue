@@ -18,6 +18,7 @@
          v-for="(data,i) in menuItems"
          :key="i"
          :href="'#tab-' + i"
+
        >
          {{data.title}}
        </v-tabs-item>
@@ -30,7 +31,7 @@
 
        <!-- วีดีโอ -->
        <v-tabs-content id='tab-1'>
-         <h6>ยังไม่เสร็จ</h6>
+         <videoCourse></videoCourse>
        </v-tabs-content>
 
        <!-- วีดีโอสด -->
@@ -64,9 +65,10 @@ import overall from '../../components/courseTabs/overall.vue'
 import announcement from '../../components/courseTabs/announcement.vue'
 import live from '../../components/courseTabs/live.vue'
 import qa from '../../components/courseTabs/qa.vue'
+import videoCourse from '../../components/courseTabs/videoCourse.vue'
 export default {
   components: {
-    parallax, overall, announcement, live, qa
+    parallax, overall, announcement, live, qa, videoCourse
   },
   data () {
     return {

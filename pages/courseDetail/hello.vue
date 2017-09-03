@@ -1,15 +1,17 @@
 <template>
   <div>
     <parallax height = "200"  src="https://www.guttersupply.com/file_area/public/categories/ImageUrl_1241190124_7226.jpg">
-        <h6 class="white--text">วิชาคอมพิวเตอร์เบื้องต้น (SP521)</h6>
+        <h5 class="white--text mt-4">วิชาคอมพิวเตอร์เบื้องต้น (SP521)</h5>
         <h6 class="white--text">ผู้ที่ต้องการสอบกลางภาควิชาคอมพิวเตอร์เบื้องต้น (SP521)</h6>
         <h6 class="white--text">สร้างโดย <span class="blue--text">Theerapat Vijitpoo</span> อัพเดทข้อมูลล่าสุดเมื่อ 18/92560 16:18</h6>
     </parallax>
     <br>
     <v-container>
       <h6 class="headline">สิ่งที่ผู้เรียนจะได้รับ</h6>
-      <span>1. ติวเข็มบทที่ 1 เรื่องคอมพิวเตอร์เบื้องต้น</span><br>
-      <span>2. ติวเข็มบทที่ 2 ส่วนประกอบของคอมพิวเตอร์</span>
+      <ul>
+        <li>ติวเข็มบทที่ 1 เรื่องคอมพิวเตอร์เบื้องต้น</li>
+        <li>ติวเข็มบทที่ 2 ส่วนประกอบของคอมพิวเตอร์</li>
+      </ul>      
       <br><br><br>
       <h6 class="headline">เนื้อหาสำหรับ</h6>
       <span>ผู้ที่่ต้องการสอบกลางภาควิชาคอมพิวเตอร์เบื้องต้น (SP521)</span>
@@ -17,7 +19,7 @@
       <h6 class="headline">เกี่ยวกับผู้สอน</h6>
       <v-layout>
         <v-flex xs1>
-          <v-avatar tile size="504">
+          <v-avatar tile size="80px">
             <img src="https://scontent.fbkk2-4.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?_nc_eui2=v1%3AAeHK1rd2oRtb-z5eaABMDoa_ZZO1Vt9C_dyvbyH7me7jRPK1VH4BkQ-B3l3E4-UCfv8f48-uzvc1E3JbfAeFAZeSaSFSWLWoaRU2NzmLv9hqIg&oh=fe0776c03fef863ba5ec6b9dcb16bff9&oe=5A267C89" alt="John">
           </v-avatar>
         </v-flex>

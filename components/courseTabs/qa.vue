@@ -2,8 +2,8 @@
   <div>
 <br><br>
 <v-container grid-list-lg>
-    <v-layout>
-      <v-flex xs11>
+    <v-layout row wrap>
+      <v-flex xs12 sm11>
         <v-text-field
         solo
         label="ค้นหา"
@@ -11,8 +11,8 @@
         >
         </v-text-field>
       </v-flex>
-      <v-flex xs1>
-        <v-btn primary block>ตั้งคำถาม</v-btn>
+      <v-flex xs12 sm1>
+          <v-btn primary block>ตั้งคำถาม</v-btn>
       </v-flex>
     </v-layout>
 
