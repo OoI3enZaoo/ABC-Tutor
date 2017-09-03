@@ -32,6 +32,15 @@ module.exports = {
   ** Customize the progress-bar color
   */
   loading: { color: '#F44336' },
+  manifest: {
+      name: 'ABC-Tutor',
+      description: 'ABC-Tutor System',
+      theme_color: '#F44336'
+    },
+    modules: [
+      '@nuxtjs/pwa',
+      '@nuxtjs/component-cache'
+    ],
   /*
   ** Build configuration
   */
