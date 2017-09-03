@@ -18,7 +18,6 @@
          v-for="(data,i) in menuItems"
          :key="i"
          :href="'#tab-' + i"
-
        >
          {{data.title}}
        </v-tabs-item>

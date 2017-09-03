@@ -14,7 +14,7 @@
     <v-spacer></v-spacer>
     <v-layout row wrap>
       <template v-for="a in 4">
-          <v-flex xs12 md3>
+          <v-flex xs6 md3>
             <v-card>
               <v-card-media src="https://us.123rf.com/450wm/juliatim/juliatim1603/juliatim160300025/54282789-young-man-sitting-in-the-park-under-a-tree-and-working-with-laptop-flat-modern-illustration-of-socia.jpg?ver=6" height="150"></v-card-media>
               <v-card-text>
@@ -92,18 +92,6 @@
   </div>
 
 
-
-
-    <v-footer light>
-
-
-              <p class="text--white">สร้างคอร์ส</p>
-
-                <v-spacer></v-spacer>
-              <p class="text--white">เข้าสู่ระบบ</p>
-
-
- </v-footer>
 </template>
 <template v-else>
       <parallax height = "200" src="http://www.primestone-brasil.com/images/prime/materiais/materiais-industrializados/quartz-stone/absolute-red-small.jpg" position="center">

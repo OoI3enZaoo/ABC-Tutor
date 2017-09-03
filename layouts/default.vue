@@ -67,7 +67,7 @@
              <v-toolbar-items class='hidden-xs-only'>
                  <template v-for='data in menuAfterLoginItem'>
                    <template v-if="data.name">
-                     <v-btn flat primary small>
+                     <v-btn flat primary small  nuxt :to="data.link">
                        &nbsp;
                        {{data.name}}
                      </v-btn>
@@ -111,12 +111,12 @@
           {
             name: 'คอร์สของฉัน',
             icon: 'home',
-            link: '/'
+            link: '/mycourse'
           },
           {
             name: 'สำหรับติวเตอร์',
             icon: 'home',
-            link: '/'
+            link: '/tutor'
           }
         ],
         menuBeforeLoginItem: [
