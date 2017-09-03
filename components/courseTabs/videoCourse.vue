@@ -7,11 +7,11 @@
                     <div slot="header">
                       <v-container>
                           <v-layout>
-                            <v-flex xs11>
+                            <v-flex xs10>
                               <span class="grey--text">เนื้อหาคอร์สที่ {{a}}</span><br>
-                              <h6 style="display:inline;"><b>แนะนำคอร์สโดยรวม</b></h6>
+                              <h6 style="display:inline;">แนะนำคอร์สโดยรวม</h6>
                             </v-flex>
-                            <v-flex xs1 text-xs-right>
+                            <v-flex xs2 text-xs-right>
                               <span class="grey--text">18/8/14 18:15</span>
                             </v-flex>
                           </v-layout>

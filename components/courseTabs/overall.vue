@@ -2,6 +2,8 @@
   <div>
     <v-container grid-list-lg><br>
       <p class="headline">กิจกรรมล่าสุด</p>
+    
+
       <v-layout row wrap>
         <v-flex xs12 sm6>
           <v-card>

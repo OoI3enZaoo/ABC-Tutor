@@ -23,7 +23,10 @@ module.exports = {
   ],
   css: [
     '~/assets/style/app.styl',
-    'swiper/dist/css/swiper.css'
+    'swiper/dist/css/swiper.css',
+    'quill/dist/quill.snow.css',
+  	'quill/dist/quill.bubble.css',
+  	'quill/dist/quill.core.css'
   ],
   /*
   ** Customize the progress-bar color
@@ -33,7 +36,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: ['vuetify','axios'],
+    vendor: ['vuetify', 'axios', 'vue-quill-editor/ssr'],
     extractCSS: true,
     /*
     ** Run ESLINT on save

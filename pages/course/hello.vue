@@ -2,16 +2,17 @@
   <div>
     <parallax src="http://abcworldwidestone.com/material-portfolio/wp-content/uploads/2014/10/Belgium-Black-Polished-2cm-Lot-3071-Close-up.jpg" height="200">
       <v-layout>
-        <v-flex xs3>
+        <v-flex sm3 xs6>
             <img src="http://en.advancedfleetmanagementconsulting.com/wp-content/uploads/2016/06/6700226_m.jpg" height="150">
         </v-flex>
-        <v-flex xs7>
+        <v-flex sm9 xs6>
           <h4 class="white--text" ><b>วิชาคอมพิวเตอร์เบื้องต้น (SP521)</b></h4>
         </v-flex>
       </v-layout>
     </parallax>
 
     <v-tabs light>
+      <hr>
      <v-tabs-bar class="white">
        <v-tabs-slider class="primary"></v-tabs-slider>
        <v-tabs-item
@@ -22,6 +23,7 @@
          {{data.title}}
        </v-tabs-item>
      </v-tabs-bar>
+     <hr>
 
        <!-- ภาพรวม -->
        <v-tabs-content id='tab-0'>
@@ -50,7 +52,7 @@
 
        <!-- แชท -->
        <v-tabs-content id='tab-5'>
-         <h6>ยังไม่เสร็จ</h6>
+         <chat></chat>
        </v-tabs-content>
 
    </v-tabs>
@@ -63,11 +65,12 @@ import parallax from '../../components/parallax.vue'
 import overall from '../../components/courseTabs/overall.vue'
 import announcement from '../../components/courseTabs/announcement.vue'
 import live from '../../components/courseTabs/live.vue'
-import qa from '../../components/courseTabs/qa.vue'
+import qa from '../../components/courseTabs/qa/index.vue'
 import videoCourse from '../../components/courseTabs/videoCourse.vue'
+import chat from '../../components/courseTabs/chat.vue'
 export default {
   components: {
-    parallax, overall, announcement, live, qa, videoCourse
+    parallax, overall, announcement, live, qa, videoCourse, chat
   },
   data () {
     return {

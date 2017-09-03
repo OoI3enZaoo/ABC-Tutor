@@ -94,7 +94,7 @@
 
 </template>
 <template v-else>
-      <parallax height = "200" src="http://www.primestone-brasil.com/images/prime/materiais/materiais-industrializados/quartz-stone/absolute-red-small.jpg" position="center">
+      <parallax height = "200" src="https://archive.org/download/abstract-colored-circle-red-material-designlines-background/abstract-colored-circle-red-material-designlines-background.jpg" position="center">
         <h4 class="white--text" ><b>ค้นหาคอร์ส</b></h4>
         <h6 class="white--text" ><b>กว่า 635 คอร์สที่ให้ใช้งานอยู่ในขณะนี้ </b></h6>
       </parallax>
@@ -163,6 +163,7 @@ export default {
         spaceBetween: 30,
         onTap: swiper => {
           console.log('onTap', swiper.realIndex)
+          this.$router.push('/courseDetail/hello')
         }
       }
     }

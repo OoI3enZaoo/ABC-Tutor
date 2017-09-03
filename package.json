@@ -19,8 +19,9 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "nuxt": "^1.0.0-rc6",
+    "nuxt": "1.0.0-rc8",
     "vue-awesome-swiper": "^2.6.2",
+    "vue-quill-editor": "2.3.2",
     "vuetify": "^0.15"
   },
   "devDependencies": {

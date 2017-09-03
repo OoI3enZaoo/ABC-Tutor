@@ -12,7 +12,7 @@
       </v-btn>
       <v-card>
         <v-list>
-          <v-list-tile avatar>
+          <v-list-tile avatar  @click="" >
             <v-list-tile-avatar>
               <img src="https://scontent.fbkk2-4.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?_nc_eui2=v1%3AAeHK1rd2oRtb-z5eaABMDoa_ZZO1Vt9C_dyvbyH7me7jRPK1VH4BkQ-B3l3E4-UCfv8f48-uzvc1E3JbfAeFAZeSaSFSWLWoaRU2NzmLv9hqIg&oh=fe0776c03fef863ba5ec6b9dcb16bff9&oe=5A267C89" alt="ben">
             </v-list-tile-avatar>

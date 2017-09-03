@@ -4,6 +4,7 @@
       <h4 class="mt-5">คอร์สของฉัน</h4>
       </parallax>
       <v-tabs light>
+        <hr>
        <v-tabs-bar class="white">
          <v-tabs-slider class="primary"></v-tabs-slider>
          <v-tabs-item
@@ -14,7 +15,7 @@
            {{data.title}}
          </v-tabs-item>
        </v-tabs-bar>
-
+       <hr>
          <!-- คอร์สทั้งหมด -->
          <v-tabs-content id='tab-0'>
 

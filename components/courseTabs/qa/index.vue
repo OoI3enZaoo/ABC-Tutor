@@ -12,7 +12,7 @@
         </v-text-field>
       </v-flex>
       <v-flex xs12 sm1>
-          <v-btn primary block>ตั้งคำถาม</v-btn>
+          <create></create>
       </v-flex>
     </v-layout>
 
@@ -47,7 +47,10 @@
   </div>
 </template>
 <script>
+import create from './create.vue'
 export default {
-
+  components: {
+    create
+  }
 }
 </script>

@@ -4,7 +4,7 @@
     <template v-if='$store.state.isLogin==false'>
           <v-navigation-drawer v-model='slideNav' temporary>
             <v-list>
-              <v-list-tile v-for="(data,index) in menuBeforeLoginItem" :key="index">
+              <v-list-tile v-for="(data,index) in menuBeforeLoginItem" :key="index" @click="" nuxt :to="data.link">
                   <v-list-tile-action>
                     <v-icon>{{data.icon}}</v-icon>
                   </v-list-tile-action>
@@ -23,15 +23,14 @@
              </v-toolbar-title>
              <v-spacer></v-spacer>
              <v-toolbar-items class='hidden-xs-only'>
-               <v-btn flat primary small>
-                 สร้างคอร์สติว
-               </v-btn>
-                  <v-btn flat primary small nuxt to="/login">
-                  &nbsp;เข้าสู่ระบบ
-                </v-btn>
-                <v-btn primary small>
-                  &nbsp;<span class='white--text'>สมัครสมาชิก</span>
-                </v-btn>
+               <template v-for="(data,index) in menuBeforeLoginItem" >
+                 <v-btn  v-if="!data.primary" flat primary small nuxt :to="data.link">
+                  {{ data.name}}
+                 </v-btn>
+                 <v-btn v-else primary small nuxt :to="data.link" class="white--text">
+                    {{ data.name}}
+                 </v-btn>
+              </template>
              </v-toolbar-items>
              <br>
           </v-toolbar>
@@ -39,7 +38,7 @@
         <template v-else>
           <v-navigation-drawer v-model='slideNav' temporary>
             <v-list>
-              <v-list-tile v-for="(data, index) in menuAfterLoginItem" :key="index">
+              <v-list-tile v-for="(data, index) in menuAfterLoginItem" :key="index" @click="" nuxt :to="data.link">
                   <v-list-tile-action>
                     <v-icon>{{data.icon}}</v-icon>
                   </v-list-tile-action>
@@ -123,7 +122,7 @@
           {
             name: 'สร้างคอร์ส',
             icon: 'home',
-            link: '/course/hello'
+            link: '/tutor/manage/create'
           },
           {
             name: 'เข้าสู่ระบบ',
@@ -133,7 +132,8 @@
           {
             name: 'สม้ครสมาชิก',
             icon: 'home',
-            link: '/login'
+            link: '/login',
+            primary: true
           }
         ]
       }
