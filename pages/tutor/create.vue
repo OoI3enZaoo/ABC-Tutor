@@ -70,7 +70,7 @@
                 <input type="file">
               </v-card-text>
             </v-card>
-          <v-btn primary @click.native="e1 = 1">สร้างคอร์ส</v-btn>
+          <v-btn primary nuxt to="/tutor/manage/dd">สร้างคอร์ส</v-btn>
           <v-btn flat primary @click.native="e1 = 2">ย้อนกลับ</v-btn>
         </v-stepper-content>
       </v-stepper>
