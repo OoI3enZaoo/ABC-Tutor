@@ -1,7 +1,10 @@
 <template>
   <div>
     <br>
-    <h6>คอร์สที่ได้รับความนิยมใน "{{branchs}}"</h6>
+    <v-layout>
+      <v-flex xs11><h6>คอร์สที่ได้รับความนิยมใน "{{branchs}}"</h6></v-flex>
+      <v-flex xs1 text-xs-right><nuxt-link to="/allcourse/xxx">ดูทั้งหมด</nuxt-link></v-flex>
+    </v-layout>
       <div v-swiper:mySwiper="swiperOption">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="a in 10">
@@ -43,7 +46,7 @@ export default {
         spaceBetween: 30,
         onTap: swiper => {
           console.log('onTap', swiper.realIndex)
-          this.$router.push('/courseDetail/hello')
+          this.$router.push('/course/xxxx')
         }
       }
     }

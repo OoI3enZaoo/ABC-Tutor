@@ -122,7 +122,7 @@
           {
             name: 'สร้างคอร์ส',
             icon: 'home',
-            link: '/tutor/manage/create'
+            link: '/tutor/create'
           },
           {
             name: 'เข้าสู่ระบบ',

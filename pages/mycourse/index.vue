@@ -20,7 +20,7 @@
          <v-tabs-content id='tab-0'>
 
            <v-container>
-             <nuxt-link to="/course/hello" tag="span" style="cursor:pointer;">
+             <nuxt-link to="/mycourse/myid" tag="span" style="cursor:pointer;">
                <v-layout row>
                  <v-flex xs6 md3>
                    <v-card>
@@ -68,7 +68,7 @@
   </div>
 </template>
 <script>
-import parallax from '../components/parallax.vue'
+import parallax from '../../components/parallax.vue'
 export default {
   components: {
     parallax

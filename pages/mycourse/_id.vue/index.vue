@@ -61,13 +61,13 @@
   </div>
 </template>
 <script>
-import parallax from '../../components/parallax.vue'
-import overall from '../../components/courseTabs/overall.vue'
-import announcement from '../../components/courseTabs/announcement.vue'
-import live from '../../components/courseTabs/live.vue'
-import qa from '../../components/courseTabs/qa/index.vue'
-import videoCourse from '../../components/courseTabs/videoCourse.vue'
-import chat from '../../components/courseTabs/chat.vue'
+import parallax from '../../../components/parallax.vue'
+import overall from '../../../components/courseTabs/overall.vue'
+import announcement from '../../../components/courseTabs/announcement.vue'
+import live from '../../../components/courseTabs/live.vue'
+import qa from '../../../components/courseTabs/qa/index.vue'
+import videoCourse from '../../../components/courseTabs/videoCourse.vue'
+import chat from '../../../components/courseTabs/chat.vue'
 export default {
   components: {
     parallax, overall, announcement, live, qa, videoCourse, chat
