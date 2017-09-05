@@ -3,38 +3,56 @@
     <v-container>
       <p class="headline">แชท</p>
       <br>
-      <v-card>
-        <v-card-text>
-          <v-list two-line>
-            <!-- <template v-for="a in 5">
-                <v-list-tile avatar >
-                  <v-list-tile-avatar>
-                    <img src="http://s3.amazonaws.com/s3.timetoast.com/public/uploads/photos/2065220/billgates.png?1473908657" alt="avatar">
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                      <v-list-tile-title>Bill Gates &nbsp;&nbsp; <span class="grey--text">10 นาทีที่แล้ว</span> </v-list-tile-title>
-                      <v-list-tile-sub-title>มันดีมากๆเลยครับ</v-list-tile-sub-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-            </template> -->
+      <v-layout>
+        <v-flex lg10 md9 sm8 xs12>
+          <v-card>
+              <v-list two-line>
+                <v-subheader>สนทนา</v-subheader>
+                <div id="container" style="overflow:scroll; overflow-x:hidden; height:500px;" class="grey lighten-4">
+                    <template v-for="data in message" >
+                        <v-list-tile avatar >
+                          <v-list-tile-avatar>
+                            <img :src="data.userdata.img" alt="avatar">
+                          </v-list-tile-avatar>
+                          <v-list-tile-content>
+                              <v-list-tile-title>{{data.userdata.name}} &nbsp;&nbsp; <span class="grey--text">{{data.date}}</span> </v-list-tile-title>
+                              <v-list-tile-sub-title>{{data.message}}</v-list-tile-sub-title>
+                          </v-list-tile-content>
+                        </v-list-tile>
+                      </template>
+                </div>
 
-            <template v-for="data in message">
-                <v-list-tile avatar >
-                  <v-list-tile-avatar>
-                    <img :src="data.userdata.img" alt="avatar">
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                      <v-list-tile-title>{{data.userdata.name}} &nbsp;&nbsp; <span class="grey--text">10 นาทีที่แล้ว</span> </v-list-tile-title>
-                      <v-list-tile-sub-title>{{data.message}}</v-list-tile-sub-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-            </template>
+              </v-list>
+            <v-text-field solo label="พิมช้อความ"  @keyup.enter="sendMessage($event.target.value)"></v-text-field>
+          </v-card>
+        </v-flex>
+        <v-flex lg2 md3 sm4>
+            <v-card class="hidden-xs-only">
+                  <div style="height:610px; overflow:scroll; overflow-x:hidden;">
+                      <v-list>
+                        <v-subheader>ออนไลน์</v-subheader>
+                        <template v-for="a in 5">
+                            <v-list-tile avatar @click="" >
+                              <v-list-tile-avatar>
+                                  <img src="http://mostfamousperson.net/BillGates.png" alt="avatar">
+                              </v-list-tile-avatar>
+                              <v-list-tile-content>
+                                <v-list-tile-sub-title>
+                                  <span>Bill Gates</span>
+                                </v-list-tile-sub-title>
+
+                              </v-list-tile-content>
+                            </v-list-tile>
+                            <v-divider inset></v-divider>
+                          </template>
+                      </v-list>
+                  </div>
+            </v-card>
 
 
-          </v-list>
-        </v-card-text>
-        <v-text-field solo label="พิมช้อความ"  @keyup.enter="sendMessage($event.target.value)"></v-text-field>
-      </v-card>
+        </v-flex>
+      </v-layout>
+
     </v-container>
     <br><br><br>
   </div>
@@ -45,6 +63,9 @@ export default {
     this.$socket.emit('subscribe', this.roomId)
   },
   mounted () {
+    setInterval(() => {
+      this.scrollToEnd()
+    }, 1)
     this.$options.sockets.conversation_private = (data) => {
       console.log(JSON.stringify(data))
       this.message.push(data)
@@ -66,9 +87,14 @@ export default {
       const data = {
         room: this.roomId,
         message: message,
-        userdata: this.userData
+        userdata: this.userData,
+        date: new Date()
       }
       this.$socket.emit('private_message', data)
+    },
+    scrollToEnd () {
+      var container = this.$el.querySelector('#container')
+      container.scrollTop = container.scrollHeight
     }
   }
 
