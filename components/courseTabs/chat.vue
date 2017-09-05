@@ -66,7 +66,7 @@ export default {
     setInterval(() => {
       this.scrollToEnd()
     }, 1)
-    this.$options.sockets.conversation_private = (data) => {
+    this.$options.sockets.private_message = (data) => {
       console.log(JSON.stringify(data))
       this.message.push(data)
     }

@@ -25,6 +25,7 @@
     "vue-awesome-swiper": "^2.6.2",
     "vue-quill-editor": "2.3.2",
     "vue-socket.io": "^2.1.1-a",
+    "vue-web-cam": "^1.0.4",
     "vuetify": "^0.15"
   },
   "devDependencies": {
