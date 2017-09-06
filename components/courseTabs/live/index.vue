@@ -180,7 +180,7 @@ export default {
           }
           console.log('loop: ' + typeof camera + ' camera: ' + camera)
           this.$socket.emit('live_cam_' + camera, payload)
-        }, 2000)
+        }, 2)
       }
     }
     this.$options.sockets.refuseCamera = (data) => {
@@ -239,7 +239,7 @@ export default {
         }
         console.log(data)
         this.$socket.emit('live_tutor', data)
-      }, 2000)
+      }, 2)
     },
     stopStream (val) {
       this.liveStatus = false
