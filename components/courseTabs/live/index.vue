@@ -1,7 +1,13 @@
 <template>
 <div>
   <v-container grid-list-lg>
+
+
+
+
     <v-switch v-model="isTutor" color="primary" label="เป็นติวเตอร์"></v-switch>
+
+
     <template v-if="isTutor">
           <template v-if="!liveStatus">
              <v-card>
@@ -38,10 +44,10 @@
                 <template v-for="(data, index) in userLive">
                     <v-flex xs3  :key="index">
                       <v-card class="white" height="200px">
-                        <template v-if="data.cam == 2">
-                           <v-card-media :src="data.cam" height="200"></v-card-media>
+                        <template v-if="data.cam === 2">
+                           <v-card-media :src="data.source" height="200"></v-card-media>
                         </template>
-                        <template v-else-if="data.cam == 1">
+                        <template v-else-if="data.cam === 1">
                             <div class="text-xs-center" style="padding-top:45px;">
                               <p class="grey--text">{{data.userName}} ขอร่วมกล้องกับคุณ</p>
                               <v-btn primary outline @click.native="refuseCamera(index)">ปฏิเสธ</v-btn>
@@ -60,6 +66,8 @@
               </v-layout>
             </template>
     </template>
+
+
     <template v-else>
          <template v-if="!liveStatus">
             <v-card>
@@ -70,7 +78,7 @@
                   </v-flex>
                   <v-flex xs6>
                     <p class="headline mt-4">ยังไม่มีการไลฟ์ในขณะนี้</p>
-                    <nuxt-link><span class="blue--text">เรียนรู้เพิ่มเติม</span></nuxt-link>
+                    <nuxt-link  to="/"><span class="blue--text">เรียนรู้เพิ่มเติม</span></nuxt-link>
                   </v-flex>
                 </v-layout>
               </v-card-text>
@@ -95,8 +103,8 @@
                <template v-for="(data, index) in userLive">
                    <v-flex xs3  :key="index">
                      <v-card class="white" height="200px">
-                       <template v-if="data.cam == 2">
-                          <v-card-media :src="data.cam" height="200"></v-card-media>
+                       <template v-if="data.cam === 2">
+                          <video :ref="data.ref" :src="data.source" autoplay width ="100%" style="max-height:200px;"></video>
                        </template>
                        <template v-else>
                            <div class="text-xs-center" style="padding-top:80px;">
@@ -109,6 +117,7 @@
              </v-layout>
            </template>
     </template>
+    <v-btn @click.native="checkRef">checkref</v-btn>
   </v-container>
 </div>
 </template>
@@ -143,15 +152,71 @@ export default {
       this.userLive[data.camera].userName = data.name
     }
     this.$options.sockets.allowCamera = (data) => {
+      console.log('allow ' + data.camera)
       this.userLive[data.camera].cam = 2
       this.userLive[data.camera].userName = data.name
+      if (this.isTutor === false) {
+        console.log('not tutor')
+        this.requestMedia()
+        if (navigator.getUserMedia) {
+          navigator.getUserMedia({
+            video: true
+          }, stream => {
+            this.userLive[data.camera].source = window.URL.createObjectURL(stream)
+            this.stream = stream
+            this.$emit('started', stream)
+          }, error => {
+            this.$emit('error', error)
+          })
+        }
+        console.log('beforeInterval')
+        this.userLive[data.camera].interval = setInterval(() => {
+          let str = Number.parseInt(data.camera)
+          let camera = str + 1
+          // let message = this.getCanvas(camera).toDataURL('image/jpeg')
+          let payload = {
+            room: 1212335,
+            message: this.capture(camera)
+          }
+          console.log('loop: ' + typeof camera + ' camera: ' + camera)
+          this.$socket.emit('live_cam_' + camera, payload)
+        }, 2000)
+      }
     }
     this.$options.sockets.refuseCamera = (data) => {
+      console.log('refuse')
       this.userLive[data.camera].cam = 0
       this.userLive[data.camera].userName = data.name
     }
+    this.$options.sockets.live_cam_1 = (data) => {
+      console.log('cam 1')
+      if (this.isTutor) {
+        this.userLive[0].source = data.message
+      }
+    }
+    this.$options.sockets.live_cam_2 = (data) => {
+      console.log('cam 2')
+      if (this.isTutor) {
+        this.userLive[1].source = data.message
+      }
+    }
+    this.$options.sockets.live_cam_3 = (data) => {
+      console.log('cam 3')
+      if (this.isTutor) {
+        this.userLive[2].source = data.message
+      }
+    }
+    this.$options.sockets.live_cam_4 = (data) => {
+      console.log('cam 4')
+      if (this.isTutor) {
+        this.userLive[3].source = data.message
+      }
+    }
   },
   methods: {
+    checkRef () {
+      console.log(this.$refs)
+    },
     startStream (val) {
       this.liveStatus = true
       this.requestMedia()
@@ -172,8 +237,9 @@ export default {
           room: 1212335,
           message: this.capture()
         }
+        console.log(data)
         this.$socket.emit('live_tutor', data)
-      }, 5)
+      }, 2000)
     },
     stopStream (val) {
       this.liveStatus = false
@@ -218,27 +284,39 @@ export default {
     requestMedia () {
       navigator.getUserMedia = this.getMedia()
     },
-    capture () {
+    capture (cam) {
+      console.log('capture')
       if (!this.hasMedia()) {
         this.$emit('notsupported')
         return null
       }
-      return this.getCanvas().toDataURL('image/jpeg')
+      return this.getCanvas(cam).toDataURL('image/jpeg')
     },
-    getCanvas () {
-      let video = this.$refs.video
-      if (!this.ctx) {
-        let canvas = document.createElement('canvas')
-        canvas.height = video.clientHeight
-        canvas.width = video.clientWidth
-        this.canvas = canvas
-        this.ctx = canvas.getContext('2d')
+    getCanvas (cam = null) {
+      console.log('getCanvas')
+      let video
+      if (cam === 1) {
+        video = this.$refs.cam1[0]
+        console.log('ref cam1')
+      } else if (cam === 2) {
+        video = this.$refs.cam2[0]
+        console.log('ref cam2')
+      } else if (cam === 3) {
+        video = this.$refs.cam3[0]
+        console.log('ref cam3')
+      } else if (cam === 4) {
+        video = this.$refs.cam4[0]
+        console.log('ref cam4')
+      } else {
+        video = this.$refs.video
       }
-      const {
-        ctx,
-        canvas
-      } = this
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+      let canvas = document.createElement('canvas')
+      canvas.height = video.clientHeight
+      canvas.width = video.clientWidth
+      this.ctx = canvas.getContext('2d')
+      this.canvas = canvas
+      this.ctx.drawImage(video, 0, 0, this.canvas.width, this.canvas.height)
+      console.log(canvas)
       return canvas
     }
   },
@@ -254,10 +332,10 @@ export default {
       canvas: null,
       liveMessage: [],
       userLive: [
-        { cam: 0, userName: 'ben1' },
-        { cam: 0, userName: 'ben2' },
-        { cam: 0, userName: 'ben3' },
-        { cam: 0, userName: 'ben4' }
+        { cam: 0, userName: 'ben1', source: '', interval: null, ref: 'cam1', canvas: null },
+        { cam: 0, userName: 'ben2', source: '', interval: null, ref: 'cam2', canvas: null },
+        { cam: 0, userName: 'ben3', source: '', interval: null, ref: 'cam3', canvas: null },
+        { cam: 0, userName: 'ben4', source: '', interval: null, ref: 'cam4', canvas: null }
       ]
     }
   }
