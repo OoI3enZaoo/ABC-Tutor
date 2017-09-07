@@ -1,10 +1,6 @@
 <template>
 <div>
   <v-container grid-list-lg>
-
-
-
-
     <v-switch v-model="isTutor" color="primary" label="เป็นติวเตอร์"></v-switch>
 
 
@@ -123,6 +119,18 @@
              </v-layout>
            </template>
     </template>
+    <v-snackbar
+      :timeout="snackbar.time"
+      :success="snackbar.context === 'success'"
+      :info="snackbar.context === 'info'"
+      :warning="snackbar.context === 'warning'"
+      :error="snackbar.context === 'error'"
+      :primary="snackbar.context === 'primary'"
+      :secondary="snackbar.context === 'secondary'"
+      v-model="snackbar.model">
+        {{ snackbar.text }}
+        <v-btn dark flat @click.native="snackbar.model = false">ปิด</v-btn>
+      </v-snackbar>
   </v-container>
 </div>
 </template>
@@ -224,6 +232,7 @@ export default {
         this.userLive[data.camera].cam = 0
         this.userLive[data.camera].userName = null
         clearInterval(this.userLive[data.camera].interval)
+        this.showSnackbar('info', 'คุณได้ปิดกล้องของคุณ')
       }
     }
     this.$options.sockets.forceStopCamera = (data) => {
@@ -233,10 +242,16 @@ export default {
       clearInterval(this.userLive[data.camera].interval)
       if (this.userLive[data.camera].isMe === true && this.isTutor === false) {
         this.stream.getVideoTracks()[0].stop()
+        this.showSnackbar('info', 'คุณถูกบังคับปิดกล้องโดยติวเตอร์')
       }
     }
   },
   methods: {
+    showSnackbar (context = 'info', text) {
+      this.snackbar.context = context
+      this.snackbar.text = text
+      this.snackbar.model = true
+    },
     startStream (val) {
       this.liveStatus = true
       this.requestMedia()
@@ -313,6 +328,7 @@ export default {
         camera: index
       }
       this.$socket.emit('forceStopCamera', data)
+      this.model = true
     },
     hasMedia () {
       return !!this.getMedia()
@@ -375,7 +391,13 @@ export default {
         { cam: 0, userName: 'ben2', source: '', interval: null, ref: 'cam2', isMe: false },
         { cam: 0, userName: 'ben3', source: '', interval: null, ref: 'cam3', isMe: false },
         { cam: 0, userName: 'ben4', source: '', interval: null, ref: 'cam4', isMe: false }
-      ]
+      ],
+      snackbar: {
+        context: 'primary',
+        model: false,
+        text: '555',
+        time: 5000
+      }
     }
   }
 }
