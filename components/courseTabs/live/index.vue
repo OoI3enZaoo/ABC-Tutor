@@ -60,6 +60,9 @@
                           </div>
                         </template>
                       </v-card>
+                      <template v-if="data.cam === 2">
+                        <v-btn primary @click.native="forceStopCamera(index)">บังคับปิดกล้อง</v-btn>
+                      </template>
                     </v-flex>
                   </template>
                 <v-btn block primary @click.native="stopStream">ปิดการไลฟ์</v-btn>
@@ -104,7 +107,7 @@
                    <v-flex xs3  :key="index">
                      <v-card class="white" height="200px">
                        <template v-if="data.cam === 2">
-                          <video :ref="data.ref" :src="data.source" autoplay width ="100%" style="max-height:200px;"></video>
+                          <video :ref="data.ref" :src="data.source" autoplay width ="100%"></video>
                        </template>
                        <template v-else>
                            <div class="text-xs-center" style="padding-top:80px;">
@@ -112,12 +115,14 @@
                            </div>
                        </template>
                      </v-card>
+                     <template v-if="data.cam === 2">
+                       <v-btn primary @click.native="stopCamera(index)">ปิดกล้องตนเอง</v-btn>
+                     </template>
                    </v-flex>
                  </template>
              </v-layout>
            </template>
     </template>
-    <v-btn @click.native="checkRef">checkref</v-btn>
   </v-container>
 </div>
 </template>
@@ -153,6 +158,7 @@ export default {
     }
     this.$options.sockets.allowCamera = (data) => {
       console.log('allow ' + data.camera)
+      this.userLive[data.camera].isMe = true
       this.userLive[data.camera].cam = 2
       this.userLive[data.camera].userName = data.name
       if (this.isTutor === false) {
@@ -212,11 +218,25 @@ export default {
         this.userLive[3].source = data.message
       }
     }
+    this.$options.sockets.stopCamera = (data) => {
+      if (this.userLive[data.camera].cam !== 0) {
+        console.log('stopCamera')
+        this.userLive[data.camera].cam = 0
+        this.userLive[data.camera].userName = null
+        clearInterval(this.userLive[data.camera].interval)
+      }
+    }
+    this.$options.sockets.forceStopCamera = (data) => {
+      console.log('forceStopCamera')
+      this.userLive[data.camera].cam = 0
+      this.userLive[data.camera].userName = null
+      clearInterval(this.userLive[data.camera].interval)
+      if (this.userLive[data.camera].isMe === true && this.isTutor === false) {
+        this.stream.getVideoTracks()[0].stop()
+      }
+    }
   },
   methods: {
-    checkRef () {
-      console.log(this.$refs)
-    },
     startStream (val) {
       this.liveStatus = true
       this.requestMedia()
@@ -244,7 +264,7 @@ export default {
     stopStream (val) {
       this.liveStatus = false
       this.stream.getVideoTracks()[0].stop()
-      let data = {
+      const data = {
         room: 1212335
       }
       this.$socket.emit('stoplive', data)
@@ -252,7 +272,7 @@ export default {
       clearInterval(this.interval)
     },
     requestCamera (index) {
-      let data = {
+      const data = {
         room: 1212335,
         name: 'Theerapat Vijitpoo',
         camera: index
@@ -260,7 +280,7 @@ export default {
       this.$socket.emit('requestCamera', data)
     },
     refuseCamera (index) {
-      let data = {
+      const data = {
         room: 1212335,
         name: 'Theerapat Vijitpoo',
         camera: index
@@ -268,12 +288,31 @@ export default {
       this.$socket.emit('refuseCamera', data)
     },
     allowCamera (index) {
-      let data = {
+      const data = {
         room: 1212335,
         name: 'Theerapat Vijitpoo',
         camera: index
       }
       this.$socket.emit('allowCamera', data)
+    },
+    stopCamera (index) {
+      this.userLive[index].cam = 0
+      this.userLive[index].userName = null
+      clearInterval(this.userLive[index].interval)
+      this.stream.getVideoTracks()[0].stop()
+      console.log('Methods: stopCamera')
+      const data = {
+        room: 1212335,
+        camera: index
+      }
+      this.$socket.emit('stopCamera', data)
+    },
+    forceStopCamera (index) {
+      const data = {
+        room: 1212335,
+        camera: index
+      }
+      this.$socket.emit('forceStopCamera', data)
     },
     hasMedia () {
       return !!this.getMedia()
@@ -332,10 +371,10 @@ export default {
       canvas: null,
       liveMessage: [],
       userLive: [
-        { cam: 0, userName: 'ben1', source: '', interval: null, ref: 'cam1', canvas: null },
-        { cam: 0, userName: 'ben2', source: '', interval: null, ref: 'cam2', canvas: null },
-        { cam: 0, userName: 'ben3', source: '', interval: null, ref: 'cam3', canvas: null },
-        { cam: 0, userName: 'ben4', source: '', interval: null, ref: 'cam4', canvas: null }
+        { cam: 0, userName: 'ben1', source: '', interval: null, ref: 'cam1', isMe: false },
+        { cam: 0, userName: 'ben2', source: '', interval: null, ref: 'cam2', isMe: false },
+        { cam: 0, userName: 'ben3', source: '', interval: null, ref: 'cam3', isMe: false },
+        { cam: 0, userName: 'ben4', source: '', interval: null, ref: 'cam4', isMe: false }
       ]
     }
   }
