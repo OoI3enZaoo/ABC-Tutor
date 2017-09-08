@@ -26,7 +26,7 @@
               </v-avatar>
             </v-flex>
             <v-flex xs3>
-              <p class="blue--text">Theerapat Vijitpoo</p>
+              <nuxt-link to="/user" tag="span" style="cursor:pointer;"><p style="display:inline;"class="blue--text">Theerapat Vijitpoo</p></nuxt-link><br>
               <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore a qui officia deserunt mollit anim id est laborum.</span>
             </v-flex>
           </v-layout>
@@ -91,6 +91,27 @@
               </div>
             </v-card-text>
           </v-card>
+          <br><br>
+          <p class="headline">รายชื่อคนที่ซื้อไปแล้ว</p>
+          <v-list>
+            <div style="max-height:480px; overflow:scroll;">
+              <template v-for="a in 50">
+                <v-list-tile @click="" avatar>
+                  <v-list-tile-avatar>
+                    <img src="http://c12.incisozluk.com.tr/res/incisozluk//11503/3/1891623_od3a8.jpg" alt="avatar">
+                  </v-list-tile-avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>
+                      mark zuckerberg
+                    </v-list-tile-title>
+                    <v-list-tile-sub-title>
+                      8/9/2560 16:58
+                    </v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </template>
+            </div>
+          </v-list>
         </v-flex>
       </v-layout>
 

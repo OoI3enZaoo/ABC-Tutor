@@ -61,6 +61,7 @@
                   label='ชื่อวิชาหรือรหัสวิชา..'
                   single-line
                   append-icon='search'
+                  v-model="search"
                 ></v-text-field>
                 <v-spacer></v-spacer>
              <v-toolbar-items class='hidden-xs-only'>
@@ -135,7 +136,8 @@
             link: '/login',
             primary: true
           }
-        ]
+        ],
+        search: null
       }
     },
     components: {
@@ -144,6 +146,15 @@
     computed: {
       projectName () {
         return this.$store.state.projectName
+      }
+    },
+    watch: {
+      search: function (val) {
+        if (val !== '') {
+          this.$router.push('/search/' + val)
+        } else {
+          this.$router.push('/')
+        }
       }
     }
   }

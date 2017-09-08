@@ -45,7 +45,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: ['vuetify', 'axios', 'vue-quill-editor/ssr'],
+    vendor: ['vuetify', 'axios', 'vue-quill-editor/ssr', 'vue-socket.io'],
     extractCSS: true,
     /*
     ** Run ESLINT on save

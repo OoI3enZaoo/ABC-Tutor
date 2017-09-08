@@ -2,7 +2,8 @@
 export const state = () => ({
   branchs: '',
   isLogin: false,
-  projectName: 'ABC-Tutor'
+  projectName: 'ABC-Tutor',
+  route: '/'
 })
 export const mutations = {
   setBranchs (state, data) {
@@ -10,6 +11,9 @@ export const mutations = {
   },
   setIsLogin (state, data) {
     state.isLogin = data
+  },
+  beforeRoute (state, data) {
+    state.route = data
   }
 }
 export const actions = {
