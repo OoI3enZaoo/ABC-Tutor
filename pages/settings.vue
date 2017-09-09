@@ -3,7 +3,8 @@
     <v-container>
       <v-subheader>ข้อมูลส่วนตัว</v-subheader>
       <v-card class="ml-3 mr-3">
-        <v-card-text>          
+        <v-card-text>
+          
             <div class="text-xs-right">
               <v-btn primary>บันทึก</v-btn>
             </div>
