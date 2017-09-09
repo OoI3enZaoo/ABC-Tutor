@@ -31,18 +31,17 @@
         </v-list>
         <v-divider></v-divider>
         <v-list>
-          <v-list-tile>
+          <v-list-tile >
             <v-list-tile-action>
-              <v-switch v-model="message" color="primary"></v-switch>
+              <v-switch v-model="notification" color="primary"></v-switch>
             </v-list-tile-action>
             <v-list-tile-title>การแจ้งเตือน</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile>
+          <v-list-tile @click="">
             <v-list-tile-action>
               <v-list-tile-title>
-                <nuxt-link tag="span" to="/login">ลงชื่อออก</nuxt-link>
+                <nuxt-link tag="span" to="/signout">ลงชื่อออก</nuxt-link>
               </v-list-tile-title>
-
             </v-list-tile-action>
           </v-list-tile>
         </v-list>
@@ -52,15 +51,20 @@
 </template>
 <script>
   export default {
+    created () {
+      console.log('statusNotification: ' + this.$store.state.statusNotification)
+      this.notification = this.$store.state.statusNotification
+    },
     data: () => ({
       fav: true,
       menu: false,
-      message: false,
+      notification: false,
       hints: true
     }),
-    methods: {
-      logout () {
-        console.log('test')
+    watch: {
+      notification: function (val) {
+        // ถ้า notification model มีการเปลี่ยนแปลงให้ทำการ commit ข้อมูล(true,false)ไปยัง store
+        this.$store.commit('setStatusNotifictaion', val)
       }
     }
   }

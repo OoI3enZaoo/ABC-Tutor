@@ -1,9 +1,9 @@
 <template>
   <div>
-    <parallax height="200" src= "https://archive.org/download/abstract-colored-circle-red-material-designlines-background/abstract-colored-circle-red-material-designlines-background.jpg"  >
+    <parallax height="200" :src= "branch.img">
       <div class="mt-4">
-        <h5 style="display:inline;"><v-btn icon nuxt to='/'><v-icon dark>home</v-icon></v-btn><span>/&nbsp;&nbsp;วิทยาการคอมพิวเตอร์</span></h5><br>
-        <h4 style="display:inline;" >วิชาวิทยาการคอมพิวเตอร์ทั้งหมด พบ 265 คอร์ส</h4>
+        <h5 style="display:inline;"><v-btn icon nuxt to='/'><v-icon dark>home</v-icon></v-btn><span>/&nbsp;&nbsp;{{branch.name}}</span></h5><br>
+        <h4 style="display:inline;" >{{branch.name}} พบ 265 คอร์ส</h4>
       </div>
     </parallax>
     <v-container grid-list-lg>
@@ -54,6 +54,14 @@
 <script>
 import parallax from '../../components/parallax.vue'
 export default {
+  created () {
+    this.$store.dispatch('BRANCH_FROM_ID', this.$route.params.id)
+  },
+  computed: {
+    branch () {
+      return this.$store.state.branch
+    }
+  },
   components: {
     parallax
   }

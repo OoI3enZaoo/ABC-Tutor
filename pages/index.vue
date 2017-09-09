@@ -44,10 +44,12 @@
     <v-layout row wrap>
       <template v-for="data in $store.state.branchs">
         <v-flex xs12 sm6 md4>
-          <v-card>
-            <v-card-media :src = "data.img" height="200"></v-card-media>
-            <v-card-title>{{data.name}}</v-card-title>
-          </v-card>
+          <nuxt-link :to="'/allcourse/' + data.key" tag="span" style="cursor:pointer;">
+            <v-card>
+              <v-card-media :src = "data.img" height="200"></v-card-media>
+              <v-card-title>{{data.name}}</v-card-title>
+            </v-card>
+          </nuxt-link>
         </v-flex>
         </template>
     </v-layout>
@@ -107,21 +109,18 @@
         <popularCourse branchs = "วิทยาศาสตร์และเทคโนโลยีการอาหาร"></popularCourse>
         <popularCourse branchs = "วิชาการจัดการธุรกิจอาหาร"></popularCourse>
       </v-container>
-
 </template>
   </div>
 </template>
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import parallax from '../components/parallax.vue'
 import course from '../components/course.vue'
 import popularCourse from '../components/popularCourse.vue'
 export default {
   async asyncData ({ store, isServer }) {
-    console.log('branchs: ' + store.state.branchs)
-    if (store.state.isLogin === false && store.state.branchs === '') {
-      const { data } = await axios.get('https://tutor-dafcf.firebaseio.com/branchs.json')
-      store.commit('setBranchs', data)
+    if (store.state.isLogin === false && store.state.branchs.length === 0) {
+      store.dispatch('PULL_BRANCHS')
       console.log('get data from firebase')
     } else {
       console.log('get data from store')
