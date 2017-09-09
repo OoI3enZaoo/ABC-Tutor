@@ -51,7 +51,7 @@
                     </v-list-tile-sub-title>
                   </v-list-tile-content>
                   <v-list-tile-action>
-                    <v-btn icon><v-icon>settings</v-icon></v-btn>
+                    <v-btn icon @click.native="$router.push('/settings')"><v-icon>settings</v-icon></v-btn>
                   </v-list-tile-action>
                 </v-list-tile>
               </v-list>
@@ -114,10 +114,29 @@
         <main>
           <nuxt/>
         </main>
+<br>
 
+<v-card class="white--text grey darken-4" style=" bottom:0;">
+      <v-card-text class="pl-5 pr-5">
+        <v-card-actions>
+              <v-btn flat dark round @click.native="$router.push('/tutor/create')">สร้างคอร์ส</v-btn>
+              <v-spacer></v-spacer>
+              <template v-if="isLogin">
+                <v-btn flat dark round @click.native="$router.push('/signout')">ออกจากระบบ</v-btn>
+              </template>
+              <template v-else>
+                <v-btn flat dark round @click.native="$router.push('/login')">สมัครสมาชิก</v-btn>
+              </template>
+        </v-card-actions>
+        <hr>
+        <v-card-actions>
+          <v-btn flat dark round>ช่วยเหลือ</v-btn>
+          <v-btn flat dark round>เกี่ยวกับเรา</v-btn>
+        </v-card-actions>
+      </v-card-text>
+
+</v-card>
   </v-app>
-
-
     </div>
 </template>
 
@@ -173,6 +192,9 @@
     computed: {
       projectName () {
         return this.$store.state.projectName
+      },
+      isLogin () {
+        return this.$store.state.isLogin
       }
     },
     watch: {

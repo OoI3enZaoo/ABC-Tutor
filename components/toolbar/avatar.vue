@@ -23,6 +23,7 @@
             <v-list-tile-action>
               <v-btn
                 icon
+                @click.native="$router.push('/settings')"
               >
                 <v-icon>settings</v-icon>
               </v-btn>
