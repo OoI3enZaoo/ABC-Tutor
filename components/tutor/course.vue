@@ -15,7 +15,9 @@
              <v-flex xs4><v-btn primary outline block><v-icon>add_box</v-icon>&nbsp;เพิ่มไฟล์</v-btn></v-flex>
              <v-flex xs4><v-btn primary outline block><v-icon>add_box</v-icon>&nbsp;เพิ่มแบบฝึกหัด</v-btn></v-flex>
            </v-layout>
-           <v-btn primary  block><v-icon>add_box</v-icon>&nbsp;เพิ่มหลักสูตรใหม่</v-btn>
+           <div class="ml-2 mr-2">
+             <v-btn primary  block><v-icon>add_box</v-icon>&nbsp;เพิ่มหลักสูตรใหม่</v-btn>
+           </div>
         </v-card-text>
       </v-card>
     </v-container>

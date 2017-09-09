@@ -58,40 +58,66 @@
 <br>
   <div class="grey darken-4">
       <v-container>
-        <div class="text-xs-center">
-          <h6 class ="white--text">ไลฟ์แอนด์เลินทำงานอย่างไร?</h6>
-          <v-layout>
-            <v-flex xs6>
-              <span class ="white--text">ค้นหาวิชาที่จะติว</span><br>
-              <span class ="white--text">สำรวจวิชาที่สนใจจะติวด้วยรหัสวิชา</span>
-            </v-flex>
-            <v-flex xs6>
-                <span class ="white--text">สร้างคอร์ส</span><br>
-                <span class ="white--text">สร้างคอร์สของคุณเพื่อความก้าวหน้าของคุณ</span>
+        <v-card flat class="grey darken-4">
+          <v-card-text>
+            <div class="text-xs-center">
+              <h5 class ="white--text">{{$store.state.projectName}} ทำงานอย่างไร?</h5>
+              <v-layout>
+                <v-flex xs6>
+                  <v-layout>
+                    <v-flex xs3>
+                        <img src="http://www.clker.com/cliparts/D/k/0/U/i/k/search-icon-red-hi.png" height="55" alt="">
+                    </v-flex>
+                    <v-flex xs4 text-xs-left>
+                      <span class ="white--text"><b>ค้นหาวิชาที่จะติว</b></span><br>
+                      <span class ="white--text">สำรวจวิชาที่สนใจจะติวด้วยรหัสวิชา</span>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+                <v-flex xs6>
+                  <v-layout>
+                    <v-flex xs7 text-xs-right>
+                        <img src="https://cdn4.iconfinder.com/data/icons/keynote-and-powerpoint-icons/256/Plus-128.png" height="55" alt="">
+                    </v-flex>
+                    <v-flex xs4 text-xs-left class="ml-5">
+                      <span class ="white--text"><b>สร้างคอร์ส</b></span><br>
+                      <span class ="white--text">สร้างคอร์สของคุณเพื่อความก้าวหน้าของคุณ</span>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+              </v-layout>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-container>
+  </div>
 
-            </v-flex>
-          </v-layout>
-        </div>
-      </v-container>
-  </div>
-  <br>
-  <div>
+
       <v-container>
-        <h6 style="display:inline;"><b>ประสบการณ์การใหม่บนมือถือ</b></h6>
-        <p>ไม่ต้องติดตั้งแอปพลิเคชันบนมือถือ สำหรับ Android</p>
-        <v-layout row wrap>
-            <v-flex xs12 md6>
-                <img src="https://beebom-redkapmedia.netdna-ssl.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg" alt="" height="200">
-            </v-flex>
-            <v-flex xs6 md3>
-                <img src="http://tunecomp.net/wp-content/uploads/2016/01/03-website-to-home-screen-android.png" alt="" height="150">
-            </v-flex>
-            <v-flex xs6 md3>
-                <img src="http://pngimg.com/uploads/smartphone/smartphone_PNG8541.png" alt="" height="150">
-            </v-flex>
-        </v-layout>
+        <v-card flat>
+          <v-card-text>
+            <div class="text-xs-center">
+              <h5 style="display:inline;"><b>ประสบการณ์การใหม่บนมือถือ</b></h5>
+              <p>ไม่ต้องติดตั้งแอปพลิเคชันบนมือถือ สำหรับ Android ด้วยระบบ Progressive Web Apps &nbsp; <nuxt-link to="">ข้อมูลเพิ่มเติม</nuxt-link></p>
+            </div>
+            <br>
+            <v-layout row wrap>
+                <v-flex xs12 md6>
+                    <img src="https://blog.ionic.io/wp-content/uploads/2016/05/what-is-pwa-img.png" alt="" height="200">
+                </v-flex>
+                <v-flex xs6 md3 text-xs-right mt-3>
+                    <img src="http://tunecomp.net/wp-content/uploads/2016/01/03-website-to-home-screen-android.png" alt="" height="150">
+                </v-flex>
+
+                <v-flex xs6 md3 text-xs-center mt-3>
+                    <img src="http://pngimg.com/uploads/smartphone/smartphone_PNG8541.png" alt="" height="150">
+                </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+
       </v-container>
-  </div>
+
 
 
 </template>
@@ -120,7 +146,7 @@ import popularCourse from '../components/popularCourse.vue'
 export default {
   async asyncData ({ store, isServer }) {
     if (store.state.isLogin === false && store.state.branchs.length === 0) {
-      store.dispatch('PULL_BRANCHS')
+      await store.dispatch('PULL_BRANCHS')
       console.log('get data from firebase')
     } else {
       console.log('get data from store')

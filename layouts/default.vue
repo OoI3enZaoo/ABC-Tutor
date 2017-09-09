@@ -19,7 +19,7 @@
               <v-toolbar-side-icon  @click.stop='slideNav=!slideNav'></v-toolbar-side-icon>
             </div>
              <v-toolbar-title >
-               <nuxt-link to="/" style="text-decoration: none;">{{projectName}}</nuxt-link>
+               <logo></logo>
              </v-toolbar-title>
              <v-spacer></v-spacer>
              <v-toolbar-items class='hidden-xs-only'>
@@ -72,11 +72,11 @@
               <v-toolbar-side-icon  @click.stop='slideNav=!slideNav'></v-toolbar-side-icon>
             </div>
              <v-toolbar-title  >
-               <nuxt-link to="/" style="text-decoration: none;">{{projectName}}</nuxt-link>
+               <logo></logo>
              </v-toolbar-title>
                 <v-text-field
                   solo
-                  class='ml-2 pr-5'
+                  class='ml-3 pr-5'
                   label='ชื่อวิชาหรือรหัสวิชา..'
                   single-line
 
@@ -143,6 +143,7 @@
 <script>
   import avatar from '../components/toolbar/avatar.vue'
   import notification from '../components/toolbar/notification.vue'
+  import logo from '../components/logo.vue'
   export default {
     data () {
       return {
@@ -187,7 +188,7 @@
       }
     },
     components: {
-      avatar, notification
+      avatar, notification, logo
     },
     computed: {
       projectName () {
