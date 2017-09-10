@@ -58,7 +58,10 @@
     },
     methods: {
       createQuestion (type) {
+        this.dialog = false
         this.$emit('result', this.content)
+        this.content.title = ''
+        this.content.description = ''
       }
     },
     computed: {

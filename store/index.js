@@ -2,10 +2,10 @@
 import { db } from '../firebase'
 export const state = () => ({
   branchs: [],
+  branch: {},
   isLogin: false,
   projectName: 'ABC-Tutor',
   route: '/',
-  branch: {},
   statusNotification: false,
   announcement: [],
   qa: [],
@@ -13,6 +13,13 @@ export const state = () => ({
   chat: [],
   course: []
 })
+export const getters = {
+  BRANCH_FROM_ID (state) {
+    return routeId => state.branchs.filter(item => {
+      return item.key === routeId
+    })
+  }
+}
 export const mutations = {
   addBranchs (state, data) {
     state.branchs.push(data)
@@ -22,9 +29,6 @@ export const mutations = {
   },
   beforeRoute (state, data) {
     state.route = data
-  },
-  setBranch (state, data) {
-    state.branch = data
   },
   setStatusNotifictaion (state, data) {
     state.statusNotification = data
@@ -56,13 +60,6 @@ export const actions = {
       data.key = snapshot.key
       commit('addBranchs', data)
       console.log(data)
-    })
-  },
-  BRANCH_FROM_ID ({commit, state}, key) {
-    state.branchs.filter(data => {
-      if (data.key === key) {
-        commit('setBranch', data)
-      }
     })
   },
   PULL_ANNOUNCEMENTS ({commit}) {

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <parallax height="200" :src= "branch.img">
+    <parallax height="200" :src= "branch[0].img">
       <div class="mt-4">
-        <h5 style="display:inline;"><v-btn icon nuxt to='/'><v-icon dark>home</v-icon></v-btn><span>/&nbsp;&nbsp;{{branch.name}}</span></h5><br>
-        <h4 style="display:inline;" >{{branch.name}} พบ 265 คอร์ส</h4>
+        <h5 style="display:inline;"><v-btn icon nuxt to='/'><v-icon dark>home</v-icon></v-btn><span>/&nbsp;&nbsp;{{branch[0].name}}</span></h5><br>
+        <h4 style="display:inline;" >{{branch[0].name}} พบ 265 คอร์ส</h4>
       </div>
     </parallax>
     <v-container grid-list-lg>
@@ -45,21 +45,20 @@
                 </nuxt-link>
              </v-flex>
          </template>
-
-
       </v-layout>
     </v-container>
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import parallax from '../../components/parallax.vue'
 export default {
-  created () {
-    this.$store.dispatch('BRANCH_FROM_ID', this.$route.params.id)
-  },
   computed: {
+    ...mapGetters([
+      'BRANCH_FROM_ID'
+    ]),
     branch () {
-      return this.$store.state.branch
+      return this.BRANCH_FROM_ID(this.$route.params.id)
     }
   },
   components: {
