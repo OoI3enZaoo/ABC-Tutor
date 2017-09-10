@@ -144,7 +144,7 @@ import parallax from '../components/parallax.vue'
 import course from '../components/course.vue'
 import popularCourse from '../components/popularCourse.vue'
 export default {
-  async asyncData ({ store, isServer }) {
+  async asyncData ({ store }) {
     if (store.state.isLogin === false && store.state.branchs.length === 0) {
       await store.dispatch('PULL_BRANCHS')
       console.log('get data from firebase')

@@ -24,10 +24,9 @@
        </v-tabs-item>
      </v-tabs-bar>
      <hr>
-
        <!-- ภาพรวม -->
        <v-tabs-content id='tab-0'>
-         <overall></overall>
+           <overall></overall>
        </v-tabs-content>
 
        <!-- วีดีโอ -->
@@ -54,10 +53,7 @@
        <v-tabs-content id='tab-5'>
          <chat></chat>
        </v-tabs-content>
-
    </v-tabs>
-
-
   </div>
 </template>
 <script>
@@ -66,9 +62,15 @@ import overall from '../../../components/courseTabs/overall.vue'
 import announcement from '../../../components/courseTabs/announcement.vue'
 import live from '../../../components/courseTabs/live'
 import qa from '../../../components/courseTabs/qa/index.vue'
-import videoCourse from '../../../components/courseTabs/videoCourse.vue'
+import videoCourse from '../../../components/courseTabs/courseContent.vue'
 import chat from '../../../components/courseTabs/chat.vue'
 export default {
+  async asyncData ({ store }) {
+    store.dispatch('PULL_ANNOUNCEMENTS')
+    store.dispatch('PULL_QA')
+    store.dispatch('PULL_COURSECONTENTS')
+    store.dispatch('PULL_CHATS')
+  },
   components: {
     parallax, overall, announcement, live, qa, videoCourse, chat
   },

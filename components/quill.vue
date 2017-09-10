@@ -13,12 +13,7 @@ export default {
     return {
       content: '<p>I am Example</p>',
       editorOption: {
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote', 'code-block']
-          ]
-        }
+        modules: {}
       },
       num: 'numnum',
       message: '5555555'

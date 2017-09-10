@@ -1,6 +1,6 @@
 <template>
   <div>
-  <v-app light toolbar footer>
+  <v-app toolbar footer>
     <template v-if='$store.state.isLogin==false'>
           <v-navigation-drawer v-model='slideNav' temporary>
             <v-list>
@@ -76,11 +76,12 @@
              </v-toolbar-title>
                 <v-text-field
                   solo
-                  class='ml-3 pr-5'
+                  class=' ml-3 pr-5 elevation-0'
                   label='ชื่อวิชาหรือรหัสวิชา..'
                   single-line
-
                   v-model="search"
+                    style="border: 1px solid grey"
+
                 ></v-text-field>
                 <v-spacer></v-spacer>
              <v-toolbar-items class='hidden-xs-only'>
@@ -145,6 +146,27 @@
   import notification from '../components/toolbar/notification.vue'
   import logo from '../components/logo.vue'
   export default {
+    beforeMount () {
+      this.$socket.emit('subscribe', 1212335)
+    },
+    mounted () {
+      this.$options.sockets.announcement = (data) => {
+        console.log('announcement: ' + JSON.stringify(data))
+        this.$store.commit('addAnnouncement', data)
+      }
+      this.$options.sockets.qa = (data) => {
+        console.log('qa: ' + JSON.stringify(data))
+        this.$store.commit('addQA', data)
+      }
+      this.$options.sockets.courseContent = (data) => {
+        console.log('courseContent: ' + JSON.stringify(data))
+        this.$store.commit('addCourseContent', data)
+      }
+      this.$options.sockets.chat = (data) => {
+        console.log('addChat: ' + JSON.stringify(data))
+        this.$store.commit('addChat', data)
+      }
+    },
     data () {
       return {
         slideNav: false,

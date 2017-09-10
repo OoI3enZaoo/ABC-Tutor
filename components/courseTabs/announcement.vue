@@ -1,7 +1,17 @@
 <template>
   <div>
+    {{$store.state.announcement}}
     <v-container grid-list-lg>
+      <v-switch color="primary" v-model="isTutor" label="เป็นติวเตอร์"></v-switch>
+
           <v-layout row wrap>
+            <v-flex xs10>
+            </v-flex>
+            <v-flex xs2 text-xs-right >
+              <template v-if="isTutor">
+                  <create title="สร้างคำประกาศ" type="2" style="margin-left:60px;" @result="dataFromQuill"></create>
+              </template>
+            </v-flex>
             <template v-for="a in 2">
                 <v-flex xs12>
                   <v-card>
@@ -51,7 +61,24 @@
   </div>
 </template>
 <script>
+import create from './addon/createQuestion.vue'
 export default {
-
+  data () {
+    return {
+      isTutor: false
+    }
+  },
+  components: {
+    create
+  },
+  methods: {
+    dataFromQuill (val) {
+      const data = {
+        room: 1212335,
+        description: val.description
+      }
+      this.$socket.emit('announcement', data)
+    }
+  }
 }
 </script>

@@ -6,7 +6,11 @@ export const state = () => ({
   projectName: 'ABC-Tutor',
   route: '/',
   branch: {},
-  statusNotification: false
+  statusNotification: false,
+  announcement: [],
+  qa: [],
+  courseContent: [],
+  chat: []
 })
 export const mutations = {
   addBranchs (state, data) {
@@ -23,6 +27,18 @@ export const mutations = {
   },
   setStatusNotifictaion (state, data) {
     state.statusNotification = data
+  },
+  addAnnouncement (state, data) {
+    state.announcement.push(data)
+  },
+  addQA (state, data) {
+    state.qa.push(data)
+  },
+  addCourseContent (state, data) {
+    state.courseContent.push(data)
+  },
+  addChat (state, data) {
+    state.chat.push(data)
   }
 }
 export const actions = {
@@ -43,6 +59,38 @@ export const actions = {
       if (data.key === key) {
         commit('setBranch', data)
       }
+    })
+  },
+  PULL_ANNOUNCEMENTS ({commit}) {
+    console.log('PULL_ANNOUNCEMENTS')
+    db.ref('announcements').on('child_added', snapshot => {
+      let data = snapshot.val()
+      data.key = snapshot.key
+      commit('addAnnouncement', data)
+    })
+  },
+  PULL_QA ({commit}) {
+    console.log('PULL_QA')
+    db.ref('qa').on('child_added', snapshot => {
+      let data = snapshot.val()
+      data.key = snapshot.key
+      commit('addQA', data)
+    })
+  },
+  PULL_COURSECONTENTS ({commit}) {
+    console.log('PULL_COURSECONTENT')
+    db.ref('courseContent').on('child_added', snapshot => {
+      let data = snapshot.val()
+      data.key = snapshot.key
+      commit('addCourseContent', data)
+    })
+  },
+  PULL_CHATS ({commit}) {
+    console.log('PULL_COURSECONTENT')
+    db.ref('chats').on('child_added', snapshot => {
+      let data = snapshot.val()
+      data.key = snapshot.key
+      commit('addChat', data)
     })
   }
 }

@@ -140,9 +140,6 @@ export default {
   components: {
     chat
   },
-  beforeMount () {
-    this.$socket.emit('subscribe', 1212335)
-  },
   mounted () {
     this.$options.sockets.live_tutor = (data) => {
       this.videoLive = data.message

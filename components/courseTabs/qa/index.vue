@@ -1,7 +1,9 @@
 <template>
   <div>
 <br><br>
+{{$store.state.qa}}
 <v-container grid-list-lg>
+  <v-switch color="primary" v-model="isTutor" label="เป็นติวเตอร์"></v-switch>
     <v-layout row wrap>
       <v-flex xs12 sm11>
         <v-text-field
@@ -12,7 +14,7 @@
         </v-text-field>
       </v-flex>
       <v-flex xs12 sm1>
-          <create></create>
+          <create title="ตั้งคำถาม" type="1"  @result="dataFromQuill"></create>
       </v-flex>
     </v-layout>
 
@@ -47,10 +49,25 @@
   </div>
 </template>
 <script>
-import create from './create.vue'
+import create from '../addon/createQuestion.vue'
 export default {
   components: {
     create
+  },
+  data () {
+    return {
+      isTutor: false
+    }
+  },
+  methods: {
+    dataFromQuill (val) {
+      const data = {
+        room: 1212335,
+        title: val.title,
+        description: val.description
+      }
+      this.$socket.emit('qa', data)
+    }
   }
 }
 </script>

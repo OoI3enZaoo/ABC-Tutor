@@ -59,9 +59,6 @@
 </template>
 <script>
 export default {
-  beforeMount () {
-    this.$socket.emit('subscribe', this.roomId)
-  },
   mounted () {
     setInterval(() => {
       this.scrollToEnd()
@@ -91,6 +88,7 @@ export default {
         date: new Date()
       }
       this.$socket.emit('private_message', data)
+      this.$socket.emit('chat', data)
     },
     scrollToEnd () {
       var container = this.$el.querySelector('#container')

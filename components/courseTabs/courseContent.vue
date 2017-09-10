@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{$store.state.courseContent}}
     <v-container grid-list-lg>
       <template v-for="a in 5">
             <v-expansion-panel expand>
