@@ -1,7 +1,7 @@
 <template>
   <div>
 <br><br>
-{{$store.state.qa}}
+
 <template v-if="!dataOfQuestion">
   <v-container grid-list-lg>
     <v-switch color="primary" v-model="isTutor" label="เป็นติวเตอร์"></v-switch>
@@ -20,7 +20,7 @@
       </v-layout>
 
     <br><br>
-    <v-card v-for="(a,index) in 3" :key="index">
+    <v-card v-for="(a,index) in $store.state.qa" :key="index">
           <v-list two-line>
             <v-list-tile avatar @click="" @click.native="dataOfQuestion=true">
               <v-list-tile-avatar>
@@ -31,16 +31,15 @@
                     <span>สมศรีไง</span>
                 </v-list-tile-sub-title>
                 <v-list-tile-title>
-                    <span>ส่วนประกอบของคอมพิวเตอร์มีอะไรบ้างคะ?</span>
+                    <span>{{a.title}}</span>
                 </v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                  <v-list-tile-action-text>15 นาทีที่แล้ว</v-list-tile-action-text>
+                  <v-list-tile-action-text>{{a.tstamp}}</v-list-tile-action-text>
                   <v-list-tile-action-text class="mr-4 black--text">5</v-list-tile-action-text>
                   <v-list-tile-action-text>ตอบกลับ</v-list-tile-action-text>
               </v-list-tile-action>
             </v-list-tile>
-
           </v-list>
         </v-card>
       </v-container>
@@ -132,8 +131,10 @@ export default {
     dataFromQuill (val) {
       const data = {
         room: 1212335,
+        userId: 'xxxben',
         title: val.title,
-        description: val.description
+        description: val.description,
+        tstamp: new Date()
       }
       this.$socket.emit('qa', data)
     }

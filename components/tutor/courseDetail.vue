@@ -5,7 +5,7 @@
         <v-card-text>
     <v-layout>
     <v-flex xs11>
-      <v-text-field @keyup.enter="addTargetStudent" v-model="targetStudentModel" label="สิ่งที่ผู้เรียนจะได้รับ" hint="เช่น เนื้อหาวิชาบทที่ 1 เรื่องคอมพิวเตอร์เบื้องต้น"></v-text-field>
+      <v-text-field @keyup.enter="addTargetStudent" v-model="targetStudentModel" label="เนื้อหาเรียน" hint="เช่น เนื้อหาวิชาบทที่ 1 เรื่องคอมพิวเตอร์เบื้องต้น"></v-text-field>
     </v-flex>
     <v-flex xs1>
       <div class="mt-2 text-xs-right">
@@ -29,12 +29,10 @@
                </v-flex>
              </v-layout>
            </template>
-
            <br><br>
-
            <v-layout>
              <v-flex xs11>
-               <v-text-field v-model="courseForModel" @keyup.enter="addCourseFor" label="เนื้อหาเรียนสำหรับ"></v-text-field>
+               <v-text-field v-model="courseForModel" @keyup.enter="addCourseFor" label="เนื้อหาสำหรับ" hint="เช่น ผู้ที่ต้องสอบกลางภาควิชาAA"></v-text-field>
              </v-flex>
              <v-flex xs1>
                <div class="mt-2">

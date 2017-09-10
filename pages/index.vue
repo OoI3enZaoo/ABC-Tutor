@@ -42,7 +42,7 @@
     <br>
     <h5 class="black--text">สำรวจ</h5>
     <v-layout row wrap>
-      <template v-for="data in $store.state.branchs">
+      <template v-for="data in branch">
         <v-flex xs12 sm6 md4>
           <nuxt-link :to="'/allcourse/' + data.key" tag="span" style="cursor:pointer;">
             <v-card>
@@ -128,12 +128,9 @@
       </parallax>
 
       <v-container grid-list-lg>
-        <popularCourse branchs = "วิทยาการคอมพิวเตอร์"></popularCourse>
-        <popularCourse branchs = "คอมพิวเตอร์แอนิเมชั่น"></popularCourse>
-        <popularCourse branchs = "เทคโนโลยีสารสนเทศและการสื่อสาร"></popularCourse>
-        <popularCourse branchs = "วิศวกรรมการเงิน"></popularCourse>
-        <popularCourse branchs = "วิทยาศาสตร์และเทคโนโลยีการอาหาร"></popularCourse>
-        <popularCourse branchs = "วิชาการจัดการธุรกิจอาหาร"></popularCourse>
+        <template v-for="data in branch">
+          <popularCourse :branchs = "data.name" :mKey="data.key"></popularCourse>
+        </template>
       </v-container>
 </template>
   </div>
@@ -145,7 +142,7 @@ import course from '../components/course.vue'
 import popularCourse from '../components/popularCourse.vue'
 export default {
   async asyncData ({ store }) {
-    if (store.state.isLogin === false && store.state.branchs.length === 0) {
+    if (store.state.branchs.length === 0) {
       await store.dispatch('PULL_BRANCHS')
       console.log('get data from firebase')
     } else {
@@ -153,6 +150,11 @@ export default {
     }
     if (store.state.isLogin === true) {
       await store.dispatch('PULL_COURSES')
+    }
+  },
+  computed: {
+    branch () {
+      return this.$store.state.branchs
     }
   },
   components: {

@@ -3,7 +3,7 @@
     <br>
     <v-layout>
       <v-flex xs11><h6>คอร์สที่ได้รับความนิยมใน "{{branchs}}"</h6></v-flex>
-      <v-flex xs1 text-xs-right><nuxt-link to="/allcourse/xxx">ดูทั้งหมด</nuxt-link></v-flex>
+      <v-flex xs1 text-xs-right><nuxt-link :to="'/allcourse/'+mKey">ดูทั้งหมด</nuxt-link></v-flex>
     </v-layout>
       <div v-swiper:mySwiper="swiperOption">
         <div class="swiper-wrapper">
@@ -33,7 +33,7 @@
 </template>
 <script>
 export default {
-  props: ['branchs'],
+  props: ['branchs', 'mKey'],
   data () {
     return {
       swiperOption: {
