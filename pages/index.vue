@@ -151,6 +151,9 @@ export default {
     } else {
       console.log('get data from store')
     }
+    if (store.state.isLogin === true) {
+      await store.dispatch('PULL_COURSES')
+    }
   },
   components: {
     parallax,

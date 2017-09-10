@@ -10,7 +10,8 @@ export const state = () => ({
   announcement: [],
   qa: [],
   courseContent: [],
-  chat: []
+  chat: [],
+  course: []
 })
 export const mutations = {
   addBranchs (state, data) {
@@ -39,6 +40,9 @@ export const mutations = {
   },
   addChat (state, data) {
     state.chat.push(data)
+  },
+  addCourse (state, data) {
+    state.course.push(data)
   }
 }
 export const actions = {
@@ -91,6 +95,14 @@ export const actions = {
       let data = snapshot.val()
       data.key = snapshot.key
       commit('addChat', data)
+    })
+  },
+  PULL_COURSES ({commit}) {
+    console.log('PULL_COURSES')
+    db.ref('courses').on('child_added', snapshot => {
+      let data = snapshot.val()
+      data.key = snapshot.key
+      commit('addCourse', data)
     })
   }
 }

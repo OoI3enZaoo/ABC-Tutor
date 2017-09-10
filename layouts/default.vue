@@ -166,6 +166,10 @@
         console.log('addChat: ' + JSON.stringify(data))
         this.$store.commit('addChat', data)
       }
+      this.$options.sockets.course = (data) => {
+        console.log('addChat: ' + JSON.stringify(data))
+        this.$store.commit('addCourse', data)
+      }
     },
     data () {
       return {
