@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{$store.state.announcement}}
+
     <v-container grid-list-lg>
       <v-switch color="primary" v-model="isTutor" label="เป็นติวเตอร์"></v-switch>
 
