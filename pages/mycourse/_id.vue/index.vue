@@ -66,10 +66,10 @@ import videoCourse from '../../../components/courseTabs/courseContent.vue'
 import chat from '../../../components/courseTabs/chat.vue'
 export default {
   async asyncData ({ store }) {
-    store.dispatch('PULL_ANNOUNCEMENTS')
-    store.dispatch('PULL_QA')
-    store.dispatch('PULL_COURSECONTENTS')
-    store.dispatch('PULL_CHATS')
+    // store.dispatch('PULL_ANNOUNCEMENTS')
+    // store.dispatch('PULL_QA')
+    // store.dispatch('PULL_COURSECONTENTS')
+    // store.dispatch('PULL_CHATS')
   },
   components: {
     parallax, overall, announcement, live, qa, videoCourse, chat

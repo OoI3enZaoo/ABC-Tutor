@@ -40,14 +40,15 @@
 <div class="text-xs-center white">
   <v-container grid-list-lg>
     <br>
+
     <h5 class="black--text">สำรวจ</h5>
     <v-layout row wrap>
-      <template v-for="data in branch">
+      <template v-for="data in branchs">
         <v-flex xs12 sm6 md4>
-          <nuxt-link :to="'/allcourse/' + data.key" tag="span" style="cursor:pointer;">
+          <nuxt-link :to="'/allcourse/' + data.branch_id" tag="span" style="cursor:pointer;">
             <v-card>
               <v-card-media :src = "data.img" height="200"></v-card-media>
-              <v-card-title>{{data.name}}</v-card-title>
+              <v-card-title>{{data.text}}</v-card-title>
             </v-card>
           </nuxt-link>
         </v-flex>
@@ -142,20 +143,20 @@ import course from '../components/course.vue'
 import popularCourse from '../components/popularCourse.vue'
 export default {
   async asyncData ({ store }) {
-    if (store.state.branchs.length === 0) {
+    if (store.state.branchs === '') {
       await store.dispatch('PULL_BRANCHS')
-      console.log('get data from firebase')
-    } else {
-      console.log('get data from store')
     }
     if (store.state.isLogin === true) {
       await store.dispatch('PULL_COURSES')
     }
   },
   computed: {
-    branch () {
+    branchs () {
       return this.$store.state.branchs
     }
+  },
+  mounted () {
+    console.log('branchs Length: ' + JSON.stringify(this.branchs))
   },
   components: {
     parallax,

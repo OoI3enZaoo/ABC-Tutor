@@ -2,8 +2,8 @@
   <div>
     <parallax height="200" :src= "branch[0].img">
       <div class="mt-4">
-        <h5 style="display:inline;"><v-btn icon nuxt to='/'><v-icon dark>home</v-icon></v-btn><span>/&nbsp;&nbsp;{{branch[0].name}}</span></h5><br>
-        <h4 style="display:inline;" >{{branch[0].name}} พบ 265 คอร์ส</h4>
+        <h5 style="display:inline;"><v-btn icon nuxt to='/'><v-icon dark>home</v-icon></v-btn><span>/&nbsp;&nbsp;{{branch[0].text}}</span></h5><br>
+        <h4 style="display:inline;" >{{branch[0].text}} พบ 265 คอร์ส</h4>
       </div>
     </parallax>
     <v-container grid-list-lg>

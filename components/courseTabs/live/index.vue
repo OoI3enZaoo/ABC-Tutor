@@ -41,7 +41,9 @@
                     <v-flex xs3  :key="index">
                       <v-card class="white" height="200px">
                         <template v-if="data.cam === 2">
-                           <v-card-media :src="data.source" height="200"></v-card-media>
+
+                            <v-card-media :src="data.source" height="200"></v-card-media>
+
                         </template>
                         <template v-else-if="data.cam === 1">
                             <div class="text-xs-center" style="padding-top:45px;">
