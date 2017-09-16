@@ -87,7 +87,7 @@
               <span class="headline">350.-</span><br><br>
               <div class="text-xs-center">
                   <v-btn primary block>ซื้อตอนนี้</v-btn>
-                  <v-btn primary outline block>เก็บใส่ตะกร้า</v-btn>
+                  <v-btn primary outline block>เพิ่มเป็นรายการที่อยากได้</v-btn>
               </div>
             </v-card-text>
           </v-card>
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import parallax from '../../components/parallax.vue'
+import parallax from '../../../components/parallax.vue'
 export default {
   components: {
     parallax

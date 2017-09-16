@@ -123,29 +123,16 @@
 
 </template>
 <template v-else>
-      <parallax height = "200" src="https://archive.org/download/abstract-colored-circle-red-material-designlines-background/abstract-colored-circle-red-material-designlines-background.jpg" position="center">
-        <h4 class="white--text" ><b>ค้นหาคอร์ส</b></h4>
-        <h6 class="white--text" ><b>กว่า 635 คอร์สที่ให้ใช้งานอยู่ในขณะนี้ </b></h6>
-      </parallax>
-
-      <v-container grid-list-lg>
-        <template v-for="data in branch">
-          <popularCourse :branchs = "data.name" :mKey="data.key"></popularCourse>
-        </template>
-      </v-container>
+  <mycourse></mycourse>
 </template>
   </div>
 </template>
 <script>
-// import axios from 'axios'
 import parallax from '../components/parallax.vue'
 import course from '../components/course.vue'
-import popularCourse from '../components/popularCourse.vue'
+import mycourse from '../components/mycourse.vue'
 export default {
   async asyncData ({ store }) {
-    if (store.state.branchs === '') {
-      await store.dispatch('PULL_BRANCHS')
-    }
     if (store.state.isLogin === true) {
       await store.dispatch('PULL_COURSES')
     }
@@ -156,12 +143,12 @@ export default {
     }
   },
   mounted () {
-    console.log('branchs Length: ' + JSON.stringify(this.branchs))
+    console.log(JSON.stringify(this.branchs))
   },
   components: {
     parallax,
     course,
-    popularCourse
+    mycourse
   }
 }
 </script>

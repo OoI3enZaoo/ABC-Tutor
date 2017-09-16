@@ -55,10 +55,9 @@ export const mutations = {
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
-    // if (state.branchs === '') {
-    //   console.log('nuxtServerInit')
-    //   dispatch('PULL_BRANCHS')
-    // }
+    if (state.branchs === '') {
+      await dispatch('PULL_BRANCHS')
+    }
     // const { data } = await axios.get('https://tutor-dafcf.firebaseio.com/branchs.json')
     // commit('setBranchs', data)
   },

@@ -1,8 +1,11 @@
 <template>
   <div>
-    <parallax height="200" :src= "branch[0].img">
+    <parallax height="200" src= "https://archive.org/download/abstract-colored-circle-red-material-designlines-background/abstract-colored-circle-red-material-designlines-background.jpg">
       <div class="mt-4">
-        <h5 style="display:inline;"><v-btn icon nuxt to='/'><v-icon dark>home</v-icon></v-btn><span>/&nbsp;&nbsp;{{branch[0].text}}</span></h5><br>
+        {{$store.state.isLogin }}
+        <div v-if="$store.state.isLogin === true">
+          <h5 style="display:inline;"><v-btn icon nuxt to="/"><v-icon large dark>home</v-icon></v-btn>&nbsp;&nbsp;/&nbsp;&nbsp;<nuxt-link to="/course" class="white--text">คอร์สทั้งหมด</nuxt-link><span>/&nbsp;&nbsp;{{branch[0].text}}</span></h5><br>
+        </div>
         <h4 style="display:inline;" >{{branch[0].text}} พบ 265 คอร์ส</h4>
       </div>
     </parallax>
@@ -17,7 +20,7 @@
       <v-layout row wrap>
           <template v-for="a in 3">
              <v-flex xs12>
-               <nuxt-link to="/course/xs" tag="span">
+               <nuxt-link to="/course/xs" tag="span" style="cursor:pointer;">
                   <v-card>
                     <v-layout row wrap>
                       <v-flex lg3 xs12>

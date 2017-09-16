@@ -176,9 +176,9 @@
         slideNav: false,
         menuAfterLoginItem: [
           {
-            name: 'คอร์สของฉัน',
+            name: 'สำรวจ',
             icon: 'class',
-            link: '/mycourse'
+            link: '/course'
           },
           {
             name: 'สำหรับติวเตอร์',
