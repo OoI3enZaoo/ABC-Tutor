@@ -18,12 +18,10 @@ module.exports = {
     ]
   },
   plugins: [
-    { src: '~/plugins/vuetify.js' },
-    { src: '~/plugins/swiper.js', ssr: false }
+    { src: '~/plugins/vuetify.js' }
   ],
   css: [
     '~/assets/style/app.styl',
-    'swiper/dist/css/swiper.css',
     'quill/dist/quill.snow.css',
   	'quill/dist/quill.bubble.css',
   	'quill/dist/quill.core.css'

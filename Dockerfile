@@ -11,7 +11,7 @@ Run npm install
 Run node --version
 
 # Bundle app source
-COPY . /usr/src/app
+COPY . /usr/src/app/
 
-EXPOSE 3000
-CMD [ "npm", "start" ]
+EXPOSE 4500
+CMD [ "npm", "run", "dev" ]

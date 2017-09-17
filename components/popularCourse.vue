@@ -34,23 +34,6 @@
 </template>
 <script>
 export default {
-  props: ['branchs', 'mKey'],
-  data () {
-    return {
-      swiperOption: {
-        pagination: '.swiper-pagination',
-        paginationElement: 'li',
-        slidesPerView: 5,
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev',
-        paginationClickable: true,
-        spaceBetween: 30,
-        onTap: swiper => {
-          console.log('onTap', swiper.realIndex)
-          this.$router.push('/course/xxxx')
-        }
-      }
-    }
-  }
+  props: ['branchs', 'mKey']
 }
 </script>

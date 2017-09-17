@@ -1,33 +1,28 @@
 {
-  "name": "test",
+  "name": "my-project",
   "version": "1.0.0",
   "description": "Nuxt.js + Vuetify.js project",
-  "author": "OoI3enZaoO <Teerapath-Ben@hotmail.com>",
+  "author": "",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "build-check": "nuxt build --analyze",
     "start": "nuxt start",
-    "generate": "nuxt generate",
-    "heroku-postbuild": "npm run build"
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^1.0.0-rc6",
+    "vuetify": "^0.15.7",
+    "axios": "^0.16.2",
+    "@nuxtjs/component-cache": "^1.1.0",
+    "@nuxtjs/pwa": "^0.2.1",
+    "vue-quill-editor": "2.3.2",
+    "vue-socket.io": "^2.1.1-a"
   },
   "config": {
     "nuxt": {
       "host": "0.0.0.0",
-      "port": "5000"
+      "port": "4500"
     }
-  },
-  "dependencies": {
-    "@nuxtjs/component-cache": "^1.1.0",
-    "@nuxtjs/pwa": "^0.2.1",
-    "axios": "^0.16.2",
-    "firebase": "^4.3.1",
-    "nuxt": "1.0.0-rc8",
-    "vue-awesome-swiper": "^2.6.2",
-    "vue-quill-editor": "2.3.2",
-    "vue-socket.io": "^2.1.1-a",
-    "vuefire": "^1.4.3",
-    "vuetify": "^0.15"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

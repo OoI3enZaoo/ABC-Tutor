@@ -1,4 +1,4 @@
-# test
+# my-project
 
 > Nuxt.js + Vuetify.js project
 
