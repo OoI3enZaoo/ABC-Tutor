@@ -18,7 +18,6 @@
        <hr>
          <!-- คอร์สทั้งหมด -->
          <v-tabs-content id='tab-0'>
-
            <v-container grid-list-lg>
              <div class="text-xs-right">
                <v-layout row>
@@ -31,6 +30,7 @@
                  </v-flex>
                </v-layout>
              </div>
+             <br>
              <nuxt-link to="/mycourse/myid" tag="span" style="cursor:pointer;">
                <v-layout row>
                  <v-flex xs12>
@@ -49,7 +49,6 @@
                           </v-flex>
                           <v-flex lg3 xs12 text-xs-right>
                             <v-card-text>
-
                               <span class="grey--text">อัพเดทล่าสุด 18/8/2560 23:06</span><br>
                               <br>
                                 <div>

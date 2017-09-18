@@ -19,11 +19,19 @@ export const getters = {
     return routeId => state.branchs.filter(item => {
       return routeId == item.branch_id
     })
+  },
+  ALL_COURSE_FROM_ID (state) {
+    return routeId => state.course.filter(item => {
+      return routeId == item.branch_id
+    })
   }
 }
 export const mutations = {
   addBranchs (state, data) {
     state.branchs = data
+  },
+  addCourses (state, data) {
+    state.course = data
   },
   setIsLogin (state, data) {
     state.isLogin = data
@@ -62,11 +70,18 @@ export const actions = {
     // commit('setBranchs', data)
   },
   async PULL_BRANCHS ({commit}) {
-    await axios.get('http://172.104.167.197:1150/api')
+    await axios.get('http://localhost:4000/api')
       .then(res => {
         let result = res.data
         commit('addBranchs', result)
       })
+  },
+  async PULL_COURSE_FROM_BRANCH_ID ({commit}, branch_id) {
+    await axios.get('http://localhost:4000/api/getcourse/' + branch_id)
+    .then(res => {
+      let result = res.data
+      commit('addCourses', result)
+    })
   }
   // PULL_ANNOUNCEMENTS ({commit}) {
   //   console.log('PULL_ANNOUNCEMENTS')
