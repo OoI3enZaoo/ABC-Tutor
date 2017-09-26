@@ -1,5 +1,3 @@
-const path = require('path')
-
 const find = (arr, key, val) => arr.find(obj => val ? obj[key] === val : obj[key])
 
 module.exports = function nuxtMeta (_options) {
@@ -11,6 +9,7 @@ module.exports = function nuxtMeta (_options) {
     viewport: 'width=device-width, initial-scale=1, minimal-ui',
     mobileApp: true,
     favicon: true,
+    mobileAppIOS: false,
     appleStatusBarStyle: 'default',
     theme_color: this.options.loading && this.options.loading.color,
     lang: 'en',
@@ -20,7 +19,7 @@ module.exports = function nuxtMeta (_options) {
   }
 
   // Combine sources
-  const options = Object.assign({}, defaults, this.options.manifest, _options)
+  const options = Object.assign({}, defaults, this.options.manifest, this.options.meta, _options)
 
   // Charset
   if (options.charset && !find(this.options.head.meta, 'charset')) {
@@ -37,29 +36,44 @@ module.exports = function nuxtMeta (_options) {
     this.options.head.meta.push({ name: 'mobile-web-app-capable', content: 'yes' })
   }
 
-  // statusBarStyle
-  if (options.appleStatusBarStyle && !find(this.options.head.meta, 'name', 'apple-mobile-web-app-status-bar-style')) {
+  // mobileApp (IOS)
+  if (options.mobileAppIOS && !find(this.options.head.meta, 'name', 'apple-mobile-web-app-capable')) {
+    this.options.head.meta.push({ name: 'apple-mobile-web-app-capable', content: 'yes' })
+  }
+
+  // statusBarStyle (IOS)
+  if (options.mobileAppIOS && options.appleStatusBarStyle && !find(this.options.head.meta, 'name', 'apple-mobile-web-app-status-bar-style')) {
     this.options.head.meta.push({ name: 'apple-mobile-web-app-status-bar-style', content: options.appleStatusBarStyle })
   }
 
-  // Favicon
-  if (options.favicon === true) {
-    options.favicon = options.icons && options.icons.length > 0 && options.icons[0].src
-    options.applefavicon = options.icons && options.icons.length > 0 && options.icons[3].src
-  }
-  if (options.favicon) {
+  // Icons
+  if (options.favicon && options.icons && options.icons.length > 0) {
+    const iconSmall = options.icons[0]
+    const iconBig = options.icons[options.icons.length - 1]
+
     if (!find(this.options.head.link, 'rel', 'shortcut icon')) {
-      this.options.head.link.push({ rel: 'shortcut icon', href: options.favicon })
+      this.options.head.link.push({ rel: 'shortcut icon', href: iconSmall.src })
     }
 
     if (!find(this.options.head.link, 'rel', 'apple-touch-icon')) {
-      this.options.head.link.push({ rel: 'apple-touch-icon', href: options.applefavicon })
+      this.options.head.link.push({ rel: 'apple-touch-icon', href: iconBig.src, sizes: iconBig.sizes })
+    }
+
+    // Launch Screen Image (IOS)
+    if (options.mobileAppIOS && !find(this.options.head.link, 'rel', 'apple-touch-startup-image')) {
+      this.options.head.link.push({ rel: 'apple-touch-startup-image', href: iconBig.src })
     }
   }
 
   // Title
   if (options.name && !this.options.head.title) {
     this.options.head.title = options.name
+  }
+
+  // IOS launch icon title
+  const title = options.name || this.options.head.title || false
+  if (title && !find(this.options.head.meta, 'name', 'apple-mobile-web-app-title')) {
+    this.options.head.meta.push({ name: 'apple-mobile-web-app-title', content: title })
   }
 
   // description meta
@@ -81,26 +95,25 @@ module.exports = function nuxtMeta (_options) {
   }
 
   // og:type
-  if (options.ogType && !find(this.options.head.meta, 'property', 'og:type')) {
-    this.options.head.meta.push({ property: 'og:type', content: options.ogType })
+  if (options.ogType && !find(this.options.head.meta, 'name', 'og:type')) {
+    this.options.head.meta.push({ name: 'og:type', content: options.ogType })
   }
 
   // og:title
   if (options.ogTitle === true) {
     options.ogTitle = options.name
   }
-  if (options.ogTitle && !find(this.options.head.meta, 'property', 'og:title')) {
-    this.options.head.meta.push({ property: 'og:title', content: options.ogTitle })
+  if (options.ogTitle && !find(this.options.head.meta, 'name', 'og:title')) {
+    this.options.head.meta.push({ name: 'og:title', content: options.ogTitle })
   }
 
   // og:description
   if (options.ogDescription === true) {
     options.ogDescription = options.description
   }
-  if (options.ogDescription && !find(this.options.head.meta, 'property', 'og:description')) {
-    this.options.head.meta.push({ property: 'og:description', content: options.ogDescription })
+  if (options.ogDescription && !find(this.options.head.meta, 'name', 'og:description')) {
+    this.options.head.meta.push({ name: 'og:description', content: options.ogDescription })
   }
-
 }
 
 module.exports.meta = require('./package.json')

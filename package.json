@@ -10,13 +10,16 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "nuxt": "^1.0.0-rc6",
-    "vuetify": "^0.15.7",
-    "axios": "^0.16.2",
     "@nuxtjs/component-cache": "^1.1.0",
     "@nuxtjs/pwa": "^0.2.1",
+    "axios": "^0.16.2",
+    "nuxt": "^1.0.0-rc6",
+    "socketio-file-upload": "^0.6.0",
     "vue-quill-editor": "2.3.2",
-    "vue-socket.io": "^2.1.1-a"
+    "vue-simple-upload": "^0.1.6",
+    "vue-socket.io": "^2.1.1-a",
+    "vue-upload-component": "^2.5.1-beta.3",
+    "vuetify": "^0.15.7"
   },
   "config": {
     "nuxt": {

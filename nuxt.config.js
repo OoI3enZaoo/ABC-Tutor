@@ -1,7 +1,7 @@
 module.exports = {
   /*
   ** Headers of the page
-  */
+  */  
   head: {
     title: 'ABC-Tutor',
     meta: [
