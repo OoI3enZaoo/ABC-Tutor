@@ -20,9 +20,9 @@
       </v-text-field>
       <br>
       <v-layout row wrap>
-          <template v-for="(data,key) in $store.state.currentCourse">
+          <template v-for="(data,key) in courseAfterSearch">
              <v-flex xs12 :key="key">
-               <nuxt-link to="/course/xs" tag="span" style="cursor:pointer;">
+               <nuxt-link :to="'/course/' + data.course_id" tag="span" style="cursor:pointer;">
                   <v-card>
                     <v-layout row wrap>
                       <v-flex lg3 xs12>
@@ -52,11 +52,6 @@
              </v-flex>
          </template>
       </v-layout>
-      <div class="text-xs-center">
-        <template v-for="(data,index) in $store.state.courseCount" >
-            <v-pagination v-if="data.branch_id == $route.params.branchId" :length="data.count" v-model="page"></v-pagination>
-        </template>
-      </div>
     </v-container>
   </div>
 </template>
@@ -65,13 +60,12 @@ import parallax from '../../../components/parallax.vue'
 export default {
   async asyncData ({ store, route}) {
     if (store.getters.ALL_COURSE_FROM_ID(route.params.branchId).length == 0) {
-      await store.dispatch('PULL_COURSE_LENGTH', route.params.branchId)
+      await store.dispatch('PULL_COURSE_FROM_BRANCH_ID', route.params.branchId)
       console.log('params: ' + JSON.stringify(route.params))
     }
   },
   created () {
-    // this.courseAfterSearch = this.course
-    this.courseAfterSearch = this.$store.state.currentCourse
+    this.courseAfterSearch = this.course
   },
   computed: {
     branch () {
@@ -79,9 +73,6 @@ export default {
     },
     course () {
       return this.$store.getters.ALL_COURSE_FROM_ID(this.$route.params.branchId)
-    },
-    courseCount () {
-      return this.$store.getters.COURSE_COUNT(this.$route.params.branchId)
     }
   },
   components: {
@@ -95,14 +86,6 @@ export default {
     }
   },
   watch: {
-    page: function (val) {
-      const data = {
-        branch_id: this.$route.params.branchId,
-        page: val
-      }
-      this.$store.dispatch('PULL_COURSE', data)
-      // this.courseAfterSearch = this.$store.state.currentCourse
-    },
     searchModel: function (val) {
       this.getAnswer(val)
     }

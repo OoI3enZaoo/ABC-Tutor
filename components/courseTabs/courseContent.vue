@@ -1,6 +1,10 @@
 <template>
   <div>
     <v-container grid-list-lg>
+      <div class="text-xs-right">
+        <createCourseContent></createCourseContent>
+      </div>
+      <br>
       <template v-for="a in 5">
             <v-expansion-panel expand>
                 <v-expansion-panel-content>
@@ -32,12 +36,15 @@
       </template>
 <br><br><br><br>
 
-
     </v-container>
   </div>
 </template>
 <script>
-export default {
 
+import createCourseContent from './addon/createContent/createCourseContent.vue'
+export default {
+  components: {
+    createCourseContent
+  }
 }
 </script>

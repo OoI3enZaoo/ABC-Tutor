@@ -1,7 +1,8 @@
 module.exports = {
   /*
   ** Headers of the page
-  */  
+  */
+  // mode: 'spa',
   head: {
     title: 'ABC-Tutor',
     meta: [

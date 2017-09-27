@@ -7,12 +7,26 @@ export const state = () => ({
   projectName: 'ABC-Tutor',
   route: '/',
   statusNotification: false,
+  profile: {
+    avatar: 'https://scontent.fbkk1-2.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=ce1fb663302049cbb304c38276bc1638&oe=5A4E0989',
+    fname: 'Theerapat',
+    lname: 'Vijitpoo',
+    sex: 'male',
+    birthday: '7/09/1996',
+    social: {
+      email: 'Blend.Theerapat@gmail.com',
+      facebook: '/BA.BLEND',
+      twiiter: '',
+      youtube: ''
+    }
+  },
   announcement: [],
   qa: [],
   courseContent: [],
   chat: [],
   course: [],
-  courseTest: []
+  courseTest: [],
+  user: []
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -23,6 +37,17 @@ export const getters = {
   ALL_COURSE_FROM_ID (state) {
     return routeId => state.course.filter(item => {
       return routeId == item.branch_id
+    })
+  },
+  COURSE_FROM_ID (state) {
+    return courseId => state.course.filter(item => {
+      return courseId == item.course_id
+    })
+  },
+  user: (state) => state.user,
+  USER_FROM_ID (state) {
+    return userId => state.user.filter(item => {
+      return userId == item.user_id
     })
   }
 }
@@ -59,6 +84,12 @@ export const mutations = {
   },
   addCourseTest (state, data) {
     state.courseTest.push(data)
+  },
+  addUser (state, data) {
+    let a = state.user
+    let b = data
+    let c = a.concat(b)
+    state.user = c
   }
 }
 export const actions = {
@@ -70,18 +101,60 @@ export const actions = {
     // commit('setBranchs', data)
   },
   async PULL_BRANCHS ({commit}) {
-    await axios.get('http://localhost:4000/api')
+    await axios.get('http://172.104.167.197:1150/api')
       .then(res => {
         let result = res.data
         commit('addBranchs', result)
       })
   },
   async PULL_COURSE_FROM_BRANCH_ID ({commit}, branch_id) {
-    await axios.get('http://localhost:4000/api/getcourse/' + branch_id)
+    await axios.get('http://172.104.167.197:1150/api/getcourse/' + branch_id)
     .then(res => {
       let result = res.data
       commit('addCourses', result)
     })
+  },
+  async PULL_USER_FROM_ID ({commit, state}, courseId) {
+    let user_id
+     for (let i = 0; i < state.course.length; i++) {
+       console.log('state.course_user_id: ' + state.course[i].user_id + ' id: ' + courseId );
+      if (state.course[i].course_id == courseId) {
+        console.log('found user_id in course state');
+        await (user_id =  state.course[i].user_id)
+        break;
+      }
+    }
+    let alreadyGet = false
+    for (let i = 0; i < state.user.length; i++) {
+      console.log('loop')
+        if (state.user[i].user_id == user_id) {
+          await (alreadyGet = true)
+          console.log('true')
+          break;
+        } else {
+          alreadyGet = false
+        }
+    }
+    if(alreadyGet == false) {
+      console.log('get: ' + user_id)
+      await axios.get('http://172.104.167.197:1150/api/user/' + user_id)
+      .then (res => {
+        let result = res.data[0]
+        const data = {
+          user_id: result.user_id,
+          fname: result.fname,
+          lname: result.lname,
+          user_img: result.user_img,
+          sex: result.sex,
+          birthday: result.birthday,
+          email: result.email,
+          facebook: result.facebook,
+          twitter: result.twitter,
+          youtube: result.youtube
+        }
+        commit('addUser', data)
+      })
+    }
   }
   // PULL_ANNOUNCEMENTS ({commit}) {
   //   console.log('PULL_ANNOUNCEMENTS')

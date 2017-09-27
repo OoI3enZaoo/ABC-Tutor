@@ -14,13 +14,13 @@ const _46e816c1 = () => import('..\\pages\\course\\index.vue' /* webpackChunkNam
 const _145a3653 = () => import('..\\pages\\login.vue' /* webpackChunkName: "pages\\login" */).then(m => m.default || m)
 const _6fbe161c = () => import('..\\pages\\tutor\\create.vue' /* webpackChunkName: "pages\\tutor\\create" */).then(m => m.default || m)
 const _5f4cd485 = () => import('..\\pages\\tutor\\manage\\_id.vue' /* webpackChunkName: "pages\\tutor\\manage\\_id" */).then(m => m.default || m)
-const _a8d8c78e = () => import('..\\pages\\user\\_id.vue' /* webpackChunkName: "pages\\user\\_id" */).then(m => m.default || m)
-const _fb3bd478 = () => import('..\\pages\\allcourse\\_id.vue' /* webpackChunkName: "pages\\allcourse\\_id" */).then(m => m.default || m)
+const _25bc6cc2 = () => import('..\\pages\\allcourse\\backup\\_id.vue' /* webpackChunkName: "pages\\allcourse\\backup\\_id" */).then(m => m.default || m)
+const _b362a486 = () => import('..\\pages\\mycourse\\_id.vue' /* webpackChunkName: "pages\\mycourse\\_id" */).then(m => m.default || m)
 const _b1c07708 = () => import('..\\pages\\allcourse\\_branchId\\index.vue' /* webpackChunkName: "pages\\allcourse\\_branchId\\index" */).then(m => m.default || m)
 const _c235720e = () => import('..\\pages\\course\\_id\\index.vue' /* webpackChunkName: "pages\\course\\_id\\index" */).then(m => m.default || m)
-const _b362a486 = () => import('..\\pages\\mycourse\\_id.vue' /* webpackChunkName: "pages\\mycourse\\_id" */).then(m => m.default || m)
 const _57875de6 = () => import('..\\pages\\mycourse\\_id.vue\\index.vue' /* webpackChunkName: "pages\\mycourse\\_id.vue\\index" */).then(m => m.default || m)
 const _01b17558 = () => import('..\\pages\\search\\_keyword.vue' /* webpackChunkName: "pages\\search\\_keyword" */).then(m => m.default || m)
+const _a8d8c78e = () => import('..\\pages\\user\\_id.vue' /* webpackChunkName: "pages\\user\\_id" */).then(m => m.default || m)
 
 
 
@@ -112,14 +112,14 @@ export function createRouter () {
 			name: "tutor-manage-id"
 		},
 		{
-			path: "/user/:id?",
-			component: _a8d8c78e,
-			name: "user-id"
+			path: "/allcourse/backup/:id?",
+			component: _25bc6cc2,
+			name: "allcourse-backup-id"
 		},
 		{
-			path: "/allcourse/:id?",
-			component: _fb3bd478,
-			name: "allcourse-id"
+			path: "/mycourse/:id?",
+			component: _b362a486,
+			name: "mycourse-id"
 		},
 		{
 			path: "/allcourse/:branchId?",
@@ -132,11 +132,6 @@ export function createRouter () {
 			name: "course-id"
 		},
 		{
-			path: "/mycourse/:id?",
-			component: _b362a486,
-			name: "mycourse-id"
-		},
-		{
 			path: "/mycourse/:id.vue?",
 			component: _57875de6,
 			name: "mycourse-id.vue"
@@ -145,6 +140,11 @@ export function createRouter () {
 			path: "/search/:keyword?",
 			component: _01b17558,
 			name: "search-keyword"
+		},
+		{
+			path: "/user/:id?",
+			component: _a8d8c78e,
+			name: "user-id"
 		}
     ],
     fallback: false

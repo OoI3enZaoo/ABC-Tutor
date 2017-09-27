@@ -27,6 +27,9 @@
        <v-tabs-slider class="red"></v-tabs-slider>
      </v-tabs-bar>
      <hr>
+     <div class="text-xs-right">
+       <v-btn primary>เปิดสารธาณะ</v-btn>
+     </div>
      <v-tabs-items>
        <!-- รายละเอียดคอร์ส -->
        <v-tabs-content id="0">
@@ -39,9 +42,9 @@
        </v-tabs-content>
 
        <!-- หลักสูตร -->
-       <v-tabs-content id="2">
-         <course></course>     
-       </v-tabs-content>
+       <!-- <v-tabs-content id="2">
+         <course></course>
+       </v-tabs-content> -->
      </v-tabs-items>
    </v-tabs>
   </div>
@@ -50,17 +53,16 @@
 import parallax from '../../../components/parallax.vue'
 import courseDetail from '../../../components/tutor/courseDetail.vue'
 import payment from '../../../components/tutor/payment.vue'
-import course from '../../../components/tutor/course.vue'
+// import course from '../../../components/tutor/course.vue'
 export default {
   components: {
     parallax,
     courseDetail,
-    payment,
-    course
+    payment
   },
   data () {
     return {
-      tabs: ['รายละเอียดคอร์ส', 'ราคา&การชำระเงิน', 'หลักสูตร'],
+      tabs: ['รายละเอียดคอร์ส', 'ราคา&การชำระเงิน'],
       active: null
     }
   }

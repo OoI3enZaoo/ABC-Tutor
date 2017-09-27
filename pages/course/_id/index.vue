@@ -1,33 +1,37 @@
 <template>
   <div>
     <parallax height = "200"  src="https://www.guttersupply.com/file_area/public/categories/ImageUrl_1241190124_7226.jpg">
-        <h5 class="white--text mt-4">วิชาคอมพิวเตอร์เบื้องต้น (SP521)</h5>
-        <h6 class="white--text">ผู้ที่ต้องการสอบกลางภาควิชาคอมพิวเตอร์เบื้องต้น (SP521)</h6>
-        <h6 class="white--text">สร้างโดย <span class="blue--text">Theerapat Vijitpoo</span> อัพเดทข้อมูลล่าสุดเมื่อ 18/92560 16:18</h6>
+        <h5 class="white--text mt-4">{{course.subject}} ({{course.code}})</h5>
+        <!-- <h6 class="white--text">ผู้ที่ต้องการสอบกลางภาควิชาคอมพิวเตอร์เบื้องต้น (SP521)</h6> -->
+        <h6 class="white--text">สร้างโดย <span class="blue--text">{{instructor.fname}} {{instructor.lname}}</span> อัพเดทข้อมูลล่าสุดเมื่อ {{course.lastUpdate}}</h6>
     </parallax>
     <br>
     <v-container grid-list-lg>
       <v-layout row wrap>
         <v-flex xs12 sm9>
-          <h6 class="headline">สิ่งที่ผู้เรียนจะได้รับ</h6>
-          <ul>
-            <li>ติวเข็มบทที่ 1 เรื่องคอมพิวเตอร์เบื้องต้น</li>
-            <li>ติวเข็มบทที่ 2 ส่วนประกอบของคอมพิวเตอร์</li>
-          </ul>
-          <br><br><br>
-          <h6 class="headline">เนื้อหาสำหรับ</h6>
-          <span>ผู้ที่่ต้องการสอบกลางภาควิชาคอมพิวเตอร์เบื้องต้น (SP521)</span>
+          <h6 class="headline">เนื้อหาเรียน</h6>
+          <span>{{course.des}}</span>
           <br><br><br>
           <h6 class="headline">เกี่ยวกับผู้สอน</h6>
           <v-layout>
             <v-flex xs2>
               <v-avatar tile size="80px">
-                <img src="https://scontent.fbkk2-4.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?_nc_eui2=v1%3AAeHK1rd2oRtb-z5eaABMDoa_ZZO1Vt9C_dyvbyH7me7jRPK1VH4BkQ-B3l3E4-UCfv8f48-uzvc1E3JbfAeFAZeSaSFSWLWoaRU2NzmLv9hqIg&oh=fe0776c03fef863ba5ec6b9dcb16bff9&oe=5A267C89" alt="John">
+                <img :src="instructor.user_img" alt="John">
               </v-avatar>
             </v-flex>
             <v-flex xs3>
-              <nuxt-link to="/user" tag="span" style="cursor:pointer;"><p style="display:inline;"class="blue--text">Theerapat Vijitpoo</p></nuxt-link><br>
-              <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore a qui officia deserunt mollit anim id est laborum.</span>
+              <nuxt-link to="/user" tag="span" style="cursor:pointer;"><p style="display:inline;"class="blue--text">{{instructor.fname}} {{instructor.lname}}</p></nuxt-link><br>
+              <v-layout>
+                <v-flex xs2>
+                  <v-btn icon><v-icon>fa-facebook-square</v-icon></v-btn>
+                </v-flex>
+                <v-flex xs2>
+                    <v-btn icon><v-icon>fa-twitter-square</v-icon></v-btn>
+                </v-flex>
+                <v-flex xs2>
+                    <v-btn icon><v-icon>fa-youtube-square</v-icon></v-btn>
+                </v-flex>
+              </v-layout>
             </v-flex>
           </v-layout>
           <br><br><br>
@@ -114,8 +118,6 @@
           </v-list>
         </v-flex>
       </v-layout>
-
-
     </v-container>
   </div>
 </template>
@@ -123,8 +125,19 @@
 <script>
 import parallax from '../../../components/parallax.vue'
 export default {
+  async asyncData ({store, route}) {
+    store.dispatch('PULL_USER_FROM_ID', route.params.id)
+  },
   components: {
     parallax
+  },
+  computed: {
+    course () {
+      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
+    },
+    instructor () {
+      return this.$store.getters.USER_FROM_ID(this.course.user_id)[0]
+    }
   }
 }
 </script>

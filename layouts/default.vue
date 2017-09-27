@@ -145,6 +145,7 @@
   import avatar from '../components/toolbar/avatar.vue'
   import notification from '../components/toolbar/notification.vue'
   import logo from '../components/logo.vue'
+  import { mapGetters } from 'vuex'
   export default {
     beforeMount () {
       this.$socket.emit('subscribe', 1212335)
@@ -170,6 +171,7 @@
         console.log('addChat: ' + JSON.stringify(data))
         this.$store.commit('addCourse', data)
       }
+      console.log('user: ' + JSON.stringify(this.user))
     },
     data () {
       return {
@@ -222,7 +224,8 @@
       },
       isLogin () {
         return this.$store.state.isLogin
-      }
+      },
+      ...mapGetters(['user'])
     },
     watch: {
       search: function (val) {
