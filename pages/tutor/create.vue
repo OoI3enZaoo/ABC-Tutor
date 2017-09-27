@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <br>
     <!-- <v-container grid-list-lg>
       <p class="headline text-xs-center">สร้างคอร์สใหม่</p>
@@ -18,30 +19,28 @@
     </v-container> -->
 
     <v-container grid-list-lg>
-      <p class="headline text-xs-center">สร้างคอร์สใหม่</p>
-      <blockquote v-show="isBranchSelect">
-        <ul>
-          <li>สาขา: {{branch}}</li>
-          <li v-if="lessonName !== null">ชื่อวิชา: {{lessonName}}</li>
-          <li v-if="lessonCode !== null">รหัสวิชา: {{lessonCode}}</li>
-        </ul>
-      </blockquote>
-      <br>
+      <div class="text-xs-center">
+        <p class="headline">สร้างคอร์ส</p>
+        <h6>สร้างคอร์สใหม่ด้วยตัวเองง่าย ๆ เพียง 5 ขั้นตอน</h6>
+      </div>
         <v-stepper v-model="e1">
         <v-stepper-header>
           <v-stepper-step step="1" :complete="e1 > 1">เลือกสาขา</v-stepper-step>
           <v-divider></v-divider>
           <v-stepper-step step="2" :complete="e1 > 2">เลือกวิชา</v-stepper-step>
           <v-divider></v-divider>
-          <v-stepper-step step="3">ภาพหน้าปก</v-stepper-step>
+          <v-stepper-step step="3" :complete="e1 > 3">ภาพหน้าปก</v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="4" :complete="e1 > 4">รายละเอียด</v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="5">ราคา</v-stepper-step>
         </v-stepper-header>
         <v-stepper-content step="1">
-
           <v-card class="elevation-0">
             <v-card-text>
               <v-select
              v-bind:items="items"
-             v-model="branch"
+             v-model="data.branch_id"
              label="Select"
              single-line
              bottom
@@ -57,43 +56,157 @@
 
           <v-card class="elevation-0">
             <v-card-text>
-              <v-text-field v-model="lessonName" label="ชื่อวิชา" hint ="วิชาเช่น คอมพิวเตอร์เบื้องต้น"></v-text-field>
-              <v-text-field v-model="lessonCode"label="รหัสวิชา" hint="รหัสวิชา 6 หลัก เช่น SP402"></v-text-field>
+              <v-text-field v-model="data.subject" label="ชื่อวิชา" hint ="วิชาเช่น คอมพิวเตอร์เบื้องต้น"></v-text-field>
+              <v-text-field v-model="data.code"label="รหัสวิชา" hint="รหัสวิชา 6 หลัก เช่น SP402"></v-text-field>
             </v-card-text>
           </v-card>
           <v-btn primary :disabled="isLessonSelect== false" @click.native="e1 = 3">ต่อไป</v-btn>
-          <v-btn flat primary @click.native="e1 = 1">ย้อนกลับ</v-btn>
+          <v-btn flat primary @click.native="e1 = 2">ย้อนกลับ</v-btn>
         </v-stepper-content>
         <v-stepper-content step="3">
             <v-card class="elevation-0">
               <v-card-text>
-                <input type="file">
+                  <base64upload imageSrc="https://goo.gl/Fyb2eG" @change="onChangeImage" style="width:300px;"></base64upload>
               </v-card-text>
             </v-card>
-          <v-btn primary nuxt to="/tutor/manage/dd">สร้างคอร์ส</v-btn>
-          <v-btn flat primary @click.native="e1 = 2">ย้อนกลับ</v-btn>
+          <v-btn primary @click.native="e1 = 4">ต่อไป</v-btn>
+          <v-btn flat primary @click.native="e1 = 3">ย้อนกลับ</v-btn>
+        </v-stepper-content>
+        <v-stepper-content step="4">
+          <v-card class="elevation-0">
+            <v-card-text>
+              <p class="headline">เพิ่มรายละเอียดของคอร์ส</p>
+              <quill v-model="data.des"></quill>
+            </v-card-text>
+          </v-card>
+          <v-btn primary :disabled="isDesSelect == false" @click.native="e1 = 5">ต่อไป</v-btn>
+          <v-btn flat primary @click.native="e1 = 3">ย้อนกลับ</v-btn>
+        </v-stepper-content>
+        <v-stepper-content step="5">
+          <v-card class="elevation-0">
+            <v-card-text>
+               <v-text-field label="ราคาของคอร์ส" type="number" v-model="data.price"></v-text-field>
+               <br>
+               <span>รหัสคูปอง</span>
+               <v-layout>
+                 <v-flex xs12 md3 sm6>
+                   <v-text-field v-model="data.coupon" label="กรอกรหัสคูปองที่นี่"></v-text-field>
+                  </v-flex>
+               </v-layout>
+            </v-card-text>
+          </v-card>
+
+          <v-dialog v-model="dialog" lazy absolute>
+            <v-btn primary dark slot="activator" :disabled="isPriceSelect == false">สร้างคอร์ส</v-btn>
+            <v-card>
+              <v-card-title>
+                <div class="headline">แน่ใจใช่ไหม ?</div>
+              </v-card-title>
+              <v-card-text>คุณแน่ใจใช่หรือไม่ว่าจะสร้างคอร์สสอนวิชา {{data.subject}}({{data.code}})</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">ยกเลิก</v-btn>
+                <v-btn class="green--text darken-1" flat="flat" @click.native="create">แน่ใจ</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <v-btn flat primary @click.native="e1 = 4">ย้อนกลับ</v-btn>
         </v-stepper-content>
       </v-stepper>
+      <br>
+
+
+      <v-card class="grey lighten-3">
+        <v-card-text>
+          <h6>ข้อมูลตัวตัวอย่างคอร์ส</h6>
+            <img :src="data.cover" style="height:150px;">
+            <blockquote>
+            <ul>
+              <li>สาขา: {{branch}}</li>
+              <li v-if="lessonName !== null">ชื่อวิชา: {{lessonName}}</li>
+              <li v-if="lessonCode !== null">รหัสวิชา: {{lessonCode}}</li>
+            </ul>
+          </blockquote>
+        </v-card-text>
+      </v-card>
     </v-container>
+
+
+
   </div>
 </template>
 <script>
+import base64upload from '../../components/base64upload.vue'
+import quill from '../../components/quill.vue'
+import Vue from 'vue'
+const moment = require('moment')
+Vue.use(require('vue-moment'), {
+    moment
+})
 export default {
+  components: {
+    base64upload,
+    quill
+  },
+  created () {
+    //do something after creating vue instance
+    this.$store.state.branchs.map(data => this.items.push(data.text))
+  },
+  methods: {
+    onChangeImage(file) {
+        this.data.cover = 'data:image/jpeg;base64,' + file.base64
+      },
+      create () {
+        this.dialog = false
+        this.data.branch_id = this.$store.getters.BRANCH_FROM_NAME(this.data.branch_id)[0].branch_id
+        this.data.ts = this.time
+        this.data.user_id = this.$store.state.profile.user_id
+        this.data.course_id = (new Date().getTime())
+        this.data.lastUpdate = this.time
+        // console.log(this.data)
+        this.$socket.emit('PUSH_COURSE', this.data)
+        this.$store.dispatch('PUSH_COURSE', this.data)
+      }
+  },
   data () {
     return {
       e1: 0,
+      dialog: false,
+      data: {
+        course_id: null,
+        user_id: null,
+        branch_id: null,
+        subject: '',
+        code: '',
+        price: '',
+        des: '',
+        cover: 'https://goo.gl/Fyb2eG',
+        ts: null,
+        coupon: '',
+        lastUpdate: null
+      },
       branch: null,
-      items: ['วิทยาการคอมพิวเตอร์', 'คอมพิวเตอร์แอนิเมชั่น', 'เทคโนโลยีสารสนเทศและการสื่อสาร', 'วิศวกรรมการเงิน', 'วิทยาศาสตร์เทคโนโลยีการอาหาร', 'วิชาการจัดการธุรกิจอาหาร'],
+      items: [],
       lessonName: null,
       lessonCode: null
     }
   },
   computed: {
     isBranchSelect () {
-      return this.branch !== null
+      return this.data.branch_id !== null
     },
     isLessonSelect () {
-      return this.lessonName !== null && this.lessonCode !== null
+      return this.data.subject !== ''
+    },
+    isDesSelect () {
+      return this.data.des !== ''
+    },
+    isPriceSelect () {
+      return this.data.price !== ''
+    },
+    time () {
+      return Vue.moment().format('YYYY-MM-DD HH:mm:ss')
     }
   }
 }

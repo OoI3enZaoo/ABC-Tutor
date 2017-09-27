@@ -8,6 +8,7 @@ export const state = () => ({
   route: '/',
   statusNotification: false,
   profile: {
+    user_id: 1212312121,
     avatar: 'https://scontent.fbkk1-2.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=ce1fb663302049cbb304c38276bc1638&oe=5A4E0989',
     fname: 'Theerapat',
     lname: 'Vijitpoo',
@@ -26,7 +27,8 @@ export const state = () => ({
   chat: [],
   course: [],
   courseTest: [],
-  user: []
+  user: [],
+  createCourse: {}
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -48,6 +50,11 @@ export const getters = {
   USER_FROM_ID (state) {
     return userId => state.user.filter(item => {
       return userId == item.user_id
+    })
+  },
+  BRANCH_FROM_NAME (state) {
+    return name => state.branchs.filter(item => {
+      return name == item.text
     })
   }
 }
@@ -90,7 +97,8 @@ export const mutations = {
     let b = data
     let c = a.concat(b)
     state.user = c
-  }
+  },
+  addCreateCourse: (state, data) => state.createCourse = data
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
@@ -155,53 +163,13 @@ export const actions = {
         commit('addUser', data)
       })
     }
+  },
+  PUSH_COURSE ({commit}, data) {
+    // console.log(data)
+    axios.post('http://localhost:4000/api/insertcourse', data)
+    .then (res => {
+      let result = res.data
+      console.log(result)
+    })
   }
-  // PULL_ANNOUNCEMENTS ({commit}) {
-  //   console.log('PULL_ANNOUNCEMENTS')
-  //   db.ref('announcements').on('child_added', snapshot => {
-  //     let data = snapshot.val()
-  //     data.key = snapshot.key
-  //     commit('addAnnouncement', data)
-  //   })
-  // },
-  // PULL_QA ({commit}) {
-  //   console.log('PULL_QA')
-  //   db.ref('qa').on('child_added', snapshot => {
-  //     let data = snapshot.val()
-  //     data.key = snapshot.key
-  //     commit('addQA', data)
-  //   })
-  // },
-  // PULL_COURSECONTENTS ({commit}) {
-  //   console.log('PULL_COURSECONTENT')
-  //   db.ref('courseContent').on('child_added', snapshot => {
-  //     let data = snapshot.val()
-  //     data.key = snapshot.key
-  //     commit('addCourseContent', data)
-  //   })
-  // },
-  // PULL_CHATS ({commit}) {
-  //   console.log('PULL_COURSECONTENT')
-  //   db.ref('chats').on('child_added', snapshot => {
-  //     let data = snapshot.val()
-  //     data.key = snapshot.key
-  //     commit('addChat', data)
-  //   })
-  // },
-  // PULL_COURSES ({commit}) {
-  //   console.log('PULL_COURSES')
-  //   db.ref('courses').on('child_added', snapshot => {
-  //     let data = snapshot.val()
-  //     data.key = snapshot.key
-  //     commit('addCourse', data)
-  //   })
-  // },
-  // PULL_COURSES_TEST ({commit}) {
-  //   console.log('PULL_COURSES_TEST')
-  //   db.ref('courses').on('child_added', snapshot => {
-  //     let data = snapshot.val()
-  //     data.key = snapshot.key
-  //     commit('addCourseTest', data)
-  //   })
-  // }
 }
