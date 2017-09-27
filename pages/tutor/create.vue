@@ -150,7 +150,6 @@ export default {
     quill
   },
   created () {
-    //do something after creating vue instance
     this.$store.state.branchs.map(data => this.items.push(data.text))
   },
   methods: {
@@ -165,7 +164,9 @@ export default {
         this.data.course_id = (new Date().getTime())
         this.data.lastUpdate = this.time
         // console.log(this.data)
-        this.$socket.emit('PUSH_COURSE', this.data)
+        let socket = this.data
+        socket.room = 1212335
+        this.$socket.emit('PUSH_COURSE', socket)
         this.$store.dispatch('PUSH_COURSE', this.data)
       }
   },

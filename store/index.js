@@ -26,7 +26,6 @@ export const state = () => ({
   courseContent: [],
   chat: [],
   course: [],
-  courseTest: [],
   user: [],
   createCourse: {}
 })
@@ -88,9 +87,6 @@ export const mutations = {
   },
   addCourse (state, data) {
     state.course.push(data)
-  },
-  addCourseTest (state, data) {
-    state.courseTest.push(data)
   },
   addUser (state, data) {
     let a = state.user
@@ -165,11 +161,12 @@ export const actions = {
     }
   },
   PUSH_COURSE ({commit}, data) {
-    // console.log(data)
     axios.post('http://localhost:4000/api/insertcourse', data)
     .then (res => {
-      let result = res.data
-      console.log(result)
+      console.log('finished: ' + res.status)
+      if (res.data == "200") {
+        console.log('status 200')
+      }
     })
   }
 }

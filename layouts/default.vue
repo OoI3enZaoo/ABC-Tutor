@@ -171,6 +171,12 @@
         console.log('addChat: ' + JSON.stringify(data))
         this.$store.commit('addCourse', data)
       }
+      this.$options.sockets.PUSH_COURSE = (data) => {
+        if (data.user_id != data.user_id) {
+          console.log('PUSH_COURSE: ' + data.user_id)
+        }
+        // if (this.$store.state.profile == data.)
+      }
       console.log('user: ' + JSON.stringify(this.user))
     },
     data () {

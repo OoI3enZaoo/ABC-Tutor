@@ -16,7 +16,8 @@ if (process.browser) {
   Quill.register('modules/imageImport', ImageImport)
   Quill.register('modules/imageResize', ImageResize)
   Vue.use(VueQuillEditor)
-  Vue.use(VueSocketio, 'http://172.104.167.197:1150/')
+  // Vue.use(VueSocketio, 'http://172.104.167.197:1150/')
+  Vue.use(VueSocketio, 'http://localhost:4000/')
   Vue.use(uploader)
 
   // const VueFire = require('vuefire')
