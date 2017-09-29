@@ -19,7 +19,9 @@ module.exports = {
     ]
   },
   plugins: [
-    { src: '~/plugins/vuetify.js' }
+    { src: '~/plugins/vuetify.js' },
+    { src: '~/plugins/VueSocketio.js' },
+    { src: '~/plugins/quill.js' }
   ],
   css: [
     '~/assets/style/app.styl',
@@ -27,9 +29,6 @@ module.exports = {
   	'quill/dist/quill.bubble.css',
   	'quill/dist/quill.core.css'
   ],
-  /*
-  ** Customize the progress-bar color
-  */
   loading: { color: '#F44336' },
   manifest: {
       name: 'ABC-Tutor',

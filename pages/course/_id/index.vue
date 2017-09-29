@@ -10,8 +10,10 @@
       <v-layout row wrap>
         <v-flex xs12 sm9>
           <h6 class="headline">เนื้อหาเรียน</h6>
-          <span>{{course.des}}</span>
-          <br><br><br>
+          <span v-html="course.des">{{course.des}}</span>
+          <br
+          <hr>
+          <br>
           <h6 class="headline">เกี่ยวกับผู้สอน</h6>
           <v-layout>
             <v-flex xs2>
@@ -34,7 +36,7 @@
               </v-layout>
             </v-flex>
           </v-layout>
-          <br><br><br>
+          <br><hr><br>
           <h6 class="headline">การตอบรับของผู้เรียน</h6>
           <v-layout>
             <v-flex xs2 text-xs-center>
@@ -63,7 +65,7 @@
                 </div>
             </v-flex>
           </v-layout>
-          <br><br><br>
+          <br><hr><br>
           <h6 class="headline">การรีวิว</h6>
             <v-layout>
               <v-flex xs1>
@@ -83,20 +85,19 @@
               </v-flex>
             </v-layout>
         </v-flex>
-
         <v-flex xs12 sm3>
           <v-card fixed>
-            <v-card-media src="https://us.123rf.com/450wm/juliatim/juliatim1603/juliatim160300025/54282789-young-man-sitting-in-the-park-under-a-tree-and-working-with-laptop-flat-modern-illustration-of-socia.jpg?ver=6" height="150"></v-card-media>
+            <v-card-media :src="course.cover" height="150"></v-card-media>
             <v-card-text>
               <span class="headline">350.-</span><br><br>
               <div class="text-xs-center">
-                  <v-btn primary block>ซื้อตอนนี้</v-btn>
-                  <v-btn primary outline block>เพิ่มเป็นรายการที่อยากได้</v-btn>
+                  <v-btn primary block @click.native="purchasedCourse">ซื้อตอนนี้</v-btn>
+                  <v-btn v-if="!checkCourse" primary outline block @click.native="favoriteCourse">เพิ่มเป็นรายการที่อยากได้</v-btn>
               </div>
             </v-card-text>
           </v-card>
           <br><br>
-          <p class="headline">รายชื่อคนที่ซื้อไปแล้ว</p>
+          <p class="headline ml-4">ซื้อไปแล้ว 5 คน</p>
           <v-list>
             <div style="max-height:480px; overflow:scroll;">
               <template v-for="a in 50">
@@ -117,6 +118,7 @@
             </div>
           </v-list>
         </v-flex>
+        a > {{$store.state.courseFavorite}}<br>
       </v-layout>
     </v-container>
   </div>
@@ -125,11 +127,24 @@
 <script>
 import parallax from '../../../components/parallax.vue'
 export default {
-  async asyncData ({store, route}) {
-    store.dispatch('PULL_USER_FROM_ID', route.params.id)
+  async fetch ({store, route}) {
+    await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
+    await store.dispatch('PULL_USER_FROM_COURSE_ID', route.params.id)
   },
   components: {
     parallax
+  },
+  methods: {
+    purchasedCourse() {
+      if (this.$store.state.isLogin == true) {
+        console.log('course_id: ' + this.course.course_id)
+        this.$store.dispatch('ADD_COURSE_PURCHASED', this.course.course_id)
+        this.$router.push('/')
+      }
+    },
+    favoriteCourse() {
+      this.$store.dispatch('ADD_COURSE_FAVORITE', this.course.course_id)
+    }
   },
   computed: {
     course () {
@@ -137,6 +152,9 @@ export default {
     },
     instructor () {
       return this.$store.getters.USER_FROM_ID(this.course.user_id)[0]
+    },
+    checkCourse () {
+      return this.$store.getters.COURSE(this.$route.params.id)[0]
     }
   }
 }

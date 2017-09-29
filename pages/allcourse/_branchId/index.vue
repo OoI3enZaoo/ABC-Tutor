@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <!-- {{$store.state.course}} -->
 <!-- {{$store.state.currentCourse}} -->
     <parallax height="200" src= "https://archive.org/download/abstract-colored-circle-red-material-designlines-background/abstract-colored-circle-red-material-designlines-background.jpg">
       <div class="mt-4">

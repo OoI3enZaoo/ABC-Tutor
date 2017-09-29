@@ -10,7 +10,6 @@
         </v-flex>
       </v-layout>
     </parallax>
-
     <v-tabs light>
       <hr>
      <v-tabs-bar class="white">
@@ -46,7 +45,7 @@
 
        <!-- ประกาศ -->
        <v-tabs-content id='tab-4'>
-         <announcement></announcement>
+         <announcement ></announcement>
        </v-tabs-content>
 
        <!-- แชท -->
@@ -66,10 +65,7 @@ import videoCourse from '../../../components/courseTabs/courseContent.vue'
 import chat from '../../../components/courseTabs/chat.vue'
 export default {
   async asyncData ({ store }) {
-    // store.dispatch('PULL_ANNOUNCEMENTS')
-    // store.dispatch('PULL_QA')
-    // store.dispatch('PULL_COURSECONTENTS')
-    // store.dispatch('PULL_CHATS')
+    // store.dispatch('PULL_COURSE_DATA')
   },
   components: {
     parallax, overall, announcement, live, qa, videoCourse, chat
@@ -84,6 +80,11 @@ export default {
         { title: 'ประกาศ' },
         { title: 'แชท' }
       ]
+    }
+  },
+  computed: {
+    courseData () {
+      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
     }
   }
 }

@@ -121,11 +121,14 @@
         <v-card-text>
           <h6>ข้อมูลตัวตัวอย่างคอร์ส</h6>
             <img :src="data.cover" style="height:150px;">
-            <blockquote>
+            <blockquote v-if="data.branch_id !== null">
             <ul>
-              <li>สาขา: {{branch}}</li>
-              <li v-if="lessonName !== null">ชื่อวิชา: {{lessonName}}</li>
-              <li v-if="lessonCode !== null">รหัสวิชา: {{lessonCode}}</li>
+              <li v-if="data.branch_id !== null">สาขา: {{data.branch_id}}</li>
+              <li v-if="data.subject !== ''">ชื่อวิชา: {{data.subject}}</li>
+              <li v-if="data.code !== ''">รหัสวิชา: {{data.code}}</li>
+              <li v-if="data.des !== ''" v-html="data.des"></li>
+              <li v-if="data.price !== ''">ราคา: {{data.price}}</li>
+              <li v-if="data.coupon !== ''">คูปอง: {{data.coupon}}</li>
             </ul>
           </blockquote>
         </v-card-text>
@@ -166,8 +169,15 @@ export default {
         // console.log(this.data)
         let socket = this.data
         socket.room = 1212335
+        // const instructor = {
+        //   fname: this.$store.state.profile.fname,
+        //   lname: this.$store.state.profile.lname,
+        //   user_img: this.$store.state.profile.user_img
+        // }
         this.$socket.emit('PUSH_COURSE', socket)
+        //this.$socket.emit('PUSH_INSTRUCTOR', instructor)
         this.$store.dispatch('PUSH_COURSE', this.data)
+        this.$router.push('/mycourse/' + this.data.course_id)
       }
   },
   data () {

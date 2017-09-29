@@ -9,7 +9,7 @@ export const state = () => ({
   statusNotification: false,
   profile: {
     user_id: 1212312121,
-    avatar: 'https://scontent.fbkk1-2.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=ce1fb663302049cbb304c38276bc1638&oe=5A4E0989',
+    user_img: 'https://scontent.fbkk1-2.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=ce1fb663302049cbb304c38276bc1638&oe=5A4E0989',
     fname: 'Theerapat',
     lname: 'Vijitpoo',
     sex: 'male',
@@ -27,7 +27,9 @@ export const state = () => ({
   chat: [],
   course: [],
   user: [],
-  createCourse: {}
+  createCourse: {},
+  coursePurchased: [],
+  courseFavorite: []
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -55,6 +57,11 @@ export const getters = {
     return name => state.branchs.filter(item => {
       return name == item.text
     })
+  },
+  COURSE (state) {
+    return CourseId => state.courseFavorite.filter(item => {
+      return CourseId == item
+    })
   }
 }
 export const mutations = {
@@ -62,7 +69,10 @@ export const mutations = {
     state.branchs = data
   },
   addCourses (state, data) {
-    state.course = data
+    let a = state.course
+    let b = data
+    let c = a.concat(b)
+    state.course = c
   },
   setIsLogin (state, data) {
     state.isLogin = data
@@ -94,7 +104,9 @@ export const mutations = {
     let c = a.concat(b)
     state.user = c
   },
-  addCreateCourse: (state, data) => state.createCourse = data
+  addCreateCourse: (state, data) => state.createCourse = data,
+  addCoursePurchased: (state, data) => state.coursePurchased.push(data),
+  addCourseFavorite: (state, data) => state.courseFavorite.push(data)
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
@@ -105,20 +117,20 @@ export const actions = {
     // commit('setBranchs', data)
   },
   async PULL_BRANCHS ({commit}) {
-    await axios.get('http://172.104.167.197:1150/api')
+    await axios.get('http://localhost:4000/api')
       .then(res => {
         let result = res.data
         commit('addBranchs', result)
       })
   },
   async PULL_COURSE_FROM_BRANCH_ID ({commit}, branch_id) {
-    await axios.get('http://172.104.167.197:1150/api/getcourse/' + branch_id)
+    await axios.get('http://localhost:4000/api/getcourse/' + branch_id)
     .then(res => {
       let result = res.data
       commit('addCourses', result)
     })
   },
-  async PULL_USER_FROM_ID ({commit, state}, courseId) {
+  async PULL_USER_FROM_COURSE_ID ({commit, state}, courseId) {
     let user_id
      for (let i = 0; i < state.course.length; i++) {
        console.log('state.course_user_id: ' + state.course[i].user_id + ' id: ' + courseId );
@@ -141,7 +153,7 @@ export const actions = {
     }
     if(alreadyGet == false) {
       console.log('get: ' + user_id)
-      await axios.get('http://172.104.167.197:1150/api/user/' + user_id)
+      await axios.get('http://localhost:4000/api/user/' + user_id)
       .then (res => {
         let result = res.data[0]
         const data = {
@@ -160,13 +172,32 @@ export const actions = {
       })
     }
   },
-  PUSH_COURSE ({commit}, data) {
-    axios.post('http://localhost:4000/api/insertcourse', data)
-    .then (res => {
-      console.log('finished: ' + res.status)
-      if (res.data == "200") {
-        console.log('status 200')
-      }
-    })
+  async PULL_COURSE_FROM_COURSE_ID ({commit, state}, courseId) {
+    let alreadyGet = false
+    if (state.course.length > 0) {
+      for (let i = 0; i < state.course.length; i++) {
+       if (state.course[i].course_id == courseId) {
+         await (alreadyGet = true)
+         break;
+       }
+     }
+    }
+    if(alreadyGet == false) {
+      await axios.get('http://localhost:4000/api/course/' + courseId)
+      .then (res => {
+        let result = res.data
+        commit('addCourses', result)
+      })
+    }
+  },
+  async PUSH_COURSE ({commit}, data) {
+    commit('addCourses', [data])
+    await axios.post('http://localhost:4000/api/insertcourse', data)
+  },
+  ADD_COURSE_PURCHASED ({commit}, payload) {
+    commit('addCoursePurchased', payload)
+  },
+  ADD_COURSE_FAVORITE ({commit}, payload) {
+    commit('addCourseFavorite', payload)
   }
 }
