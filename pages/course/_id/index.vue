@@ -3,7 +3,7 @@
     <parallax height = "200"  src="https://www.guttersupply.com/file_area/public/categories/ImageUrl_1241190124_7226.jpg">
         <h5 class="white--text mt-4">{{course.subject}} ({{course.code}})</h5>
         <!-- <h6 class="white--text">ผู้ที่ต้องการสอบกลางภาควิชาคอมพิวเตอร์เบื้องต้น (SP521)</h6> -->
-        <h6 class="white--text">สร้างโดย <span class="blue--text">{{instructor.fname}} {{instructor.lname}}</span> อัพเดทข้อมูลล่าสุดเมื่อ {{course.lastUpdate}}</h6>
+        <h6 class="white--text">สร้างโดย <span class="blue--text">{{course.fname}} {{course.lname}}</span> อัพเดทข้อมูลล่าสุดเมื่อ {{course.lastUpdate}}</h6>
     </parallax>
     <br>
     <v-container grid-list-lg>
@@ -18,11 +18,11 @@
           <v-layout>
             <v-flex xs2>
               <v-avatar tile size="80px">
-                <img :src="instructor.user_img" alt="John">
+                <img :src="course.user_img" alt="John">
               </v-avatar>
             </v-flex>
             <v-flex xs3>
-              <nuxt-link to="/user" tag="span" style="cursor:pointer;"><p style="display:inline;"class="blue--text">{{instructor.fname}} {{instructor.lname}}</p></nuxt-link><br>
+              <nuxt-link to="/user" tag="span" style="cursor:pointer;"><p style="display:inline;"class="blue--text">{{course.fname}} {{course.lname}}</p></nuxt-link><br>
               <v-layout>
                 <v-flex xs2>
                   <v-btn icon><v-icon>fa-facebook-square</v-icon></v-btn>
@@ -89,10 +89,21 @@
           <v-card fixed>
             <v-card-media :src="course.cover" height="150"></v-card-media>
             <v-card-text>
-              <span class="headline">350.-</span><br><br>
+              <span v-if="!checkCourse" class="headline">350.-</span><br><br>
               <div class="text-xs-center">
-                  <v-btn primary block @click.native="purchasedCourse">ซื้อตอนนี้</v-btn>
-                  <v-btn v-if="!checkCourse" primary outline block @click.native="favoriteCourse">เพิ่มเป็นรายการที่อยากได้</v-btn>
+                  <v-btn v-if="!checkCourse" primary block @click.native="purchasedCourse">ซื้อตอนนี้</v-btn>
+                  <template v-if="!checkCourse">
+                    <template v-if="!checkCourseFavorite">
+                      <v-btn  primary outline block @click.native="favoriteCourse(1)">เพิ่มเป็นรายการที่อยากได้</v-btn>
+                    </template>
+                    <template v-else>
+                        <v-btn  primary outline block @click.native="favoriteCourse(0)">นำออกจากรายการที่อยากได้</v-btn>
+                    </template>
+                  </template>
+                  <template v-else>
+                    <h6>คุณซื้อคอร์สนี้ไปแล้ว</h6>
+                    <v-btn primary nuxt :to="'/mycourse/' + course.course_id">ดูรายละเอียดคอร์ส</v-btn>
+                  </template>
               </div>
             </v-card-text>
           </v-card>
@@ -118,9 +129,9 @@
             </div>
           </v-list>
         </v-flex>
-        a > {{$store.state.courseFavorite}}<br>
       </v-layout>
     </v-container>
+
   </div>
 </template>
 
@@ -129,29 +140,33 @@ import parallax from '../../../components/parallax.vue'
 export default {
   async fetch ({store, route}) {
     await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
-    await store.dispatch('PULL_USER_FROM_COURSE_ID', route.params.id)
+    // await store.dispatch('PULL_USER_FROM_COURSE_ID', route.params.id)
   },
   components: {
     parallax
   },
   methods: {
     purchasedCourse() {
-      if (this.$store.state.isLogin == true) {
+      // if (this.$store.state.isLogin == true) {
         console.log('course_id: ' + this.course.course_id)
         this.$store.dispatch('ADD_COURSE_PURCHASED', this.course.course_id)
-        this.$router.push('/')
-      }
+        // this.$router.push('/')
+      // }
     },
-    favoriteCourse() {
-      this.$store.dispatch('ADD_COURSE_FAVORITE', this.course.course_id)
+    favoriteCourse(status) {
+      if (status == 1) {
+        this.$store.dispatch('ADD_COURSE_FAVORITE', this.course.course_id)
+      } else {
+        this.$store.dispatch('REMOVE_COURSE_FAVORITE', this.course.course_id)
+      }
     }
   },
   computed: {
     course () {
       return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
     },
-    instructor () {
-      return this.$store.getters.USER_FROM_ID(this.course.user_id)[0]
+    checkCourseFavorite () {
+      return this.$store.getters.COURSE_FAVORITE(this.$route.params.id)[0]
     },
     checkCourse () {
       return this.$store.getters.COURSE(this.$route.params.id)[0]

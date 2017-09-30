@@ -1,6 +1,6 @@
 <template>
 <div class="base64-upload">
-  คลิ๊กที่รูปภาพเพื่อเลือกรูปหน้าปก
+  <!-- คลิ๊กที่รูปภาพเพื่อเลือกรูปหน้าปก -->
   <img :src="src"
     :style="imageStyle"/>
   <input type="file"
@@ -44,17 +44,19 @@ export default {
 
 <style scoped>
 .base64-upload {
-  /*position: relative;*/
+  position: relative;
   cursor: pointer;
 }
 img {
   width: 100%;
   height: 100%;
+  text-align: center;
 }
 input {
   position: absolute;
   width: 100%;
   height: 100%;
+  text-align: center;
   top: 0;
   left: 0;
   opacity: 0;

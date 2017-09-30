@@ -26,13 +26,15 @@
                        <v-card-text>
                           <h5>คุณยังไม่มีคอร์สใด ๆ เลย</h5>
                           <v-btn primary nuxt to="/course">ค้นหาคอร์ส</v-btn>
+
+                          <v-btn outline primary nuxt to="/tutor/create">สร้างคอร์ส</v-btn>
                        </v-card-text>
                      </v-card>
                    </v-flex>
                  </v-layout>
                </v-container>
              </template>
-             <template v-else v-for="(data,index) in coursePurchased">
+             <template v-else >
                <v-container grid-list-lg>
                  <div class="text-xs-right">
                    <v-layout row>
@@ -46,37 +48,39 @@
                    </v-layout>
                  </div>
                  <br>
-                 <nuxt-link :to="'/mycourse/'+data.course_id" tag="span" style="cursor:pointer;">
-                        <v-card>
-                            <v-layout row wrap>
-                              <v-flex lg3 xs12>
-                                <v-card-media :src="data.cover" height="200"></v-card-media>
-                              </v-flex>
-                              <v-flex lg6 xs12>
-                                <v-card-text>
-                                  <span>{{data.subject}} ({{data.code}})</span><br>
-                                  <p class="grey--text">Theerapat Vijitpoo</p>
-                                  <p>เนื้อหาสอบบทที่ 1-5 เนื้อหาสำหรับการสอบกลางภาค</p>
-                                </v-card-text>
-                              </v-flex>
-                              <v-flex lg3 xs12 text-xs-right>
-                                <v-card-text>
-                                  <span class="grey--text">อัพเดทล่าสุด {{data.lastUpdate}}</span><br>
-                                  <br>
-                                    <!-- <div>
-                                      <v-icon medium primary>fa-video-camera</v-icon><br>
-                                    </div> -->
-
-                                      <div class="mt-5">
-                                          <template v-for="a in 5"><v-icon>star</v-icon></template>&nbsp; <span>5.0</span><br>
-                                          <span class="grey--text">จากผลโหวตทั้งหมด 33,888 คน</span>
-                                      </div>
+                 <template v-for="(data,index) in coursePurchased">
+                   <nuxt-link :to="'/mycourse/'+data.course_id" tag="span" style="cursor:pointer;">
+                          <v-card>
+                              <v-layout row wrap>
+                                <v-flex lg3 xs12>
+                                  <v-card-media :src="data.cover" height="200"></v-card-media>
+                                </v-flex>
+                                <v-flex lg6 xs12>
+                                  <v-card-text>
+                                    <span>{{data.subject}} ({{data.code}})</span><br>
+                                    <p class="grey--text">Theerapat Vijitpoo</p>
+                                    <p>เนื้อหาสอบบทที่ 1-5 เนื้อหาสำหรับการสอบกลางภาค</p>
                                   </v-card-text>
-                              </v-flex>
-                            </v-layout>
-                          </v-card>
-                          <br>
-                  </nuxt-link>
+                                </v-flex>
+                                <v-flex lg3 xs12 text-xs-right>
+                                  <v-card-text>
+                                    <span class="grey--text">อัพเดทล่าสุด {{data.lastUpdate}}</span><br>
+                                    <br>
+                                      <!-- <div>
+                                        <v-icon medium primary>fa-video-camera</v-icon><br>
+                                      </div> -->
+
+                                        <div class="mt-5">
+                                            <template v-for="a in 5"><v-icon>star</v-icon></template>&nbsp; <span>5.0</span><br>
+                                            <span class="grey--text">จากผลโหวตทั้งหมด 33,888 คน</span>
+                                        </div>
+                                    </v-card-text>
+                                </v-flex>
+                              </v-layout>
+                            </v-card>
+                            <br>
+                    </nuxt-link>
+                  </template>
                   </v-container>
               </template>
 
@@ -84,8 +88,8 @@
 
          <!-- รายการโปรด -->
          <v-tabs-content id='tab-1'>
-           <v-container grid-list-lg>
-             <v-layout>
+           <v-container grid-list-lg >
+             <v-layout v-if="courseFavorite.length == 0">
                <v-flex xs12 text-xs-center>
                  <v-card>
                    <v-card-text>
@@ -95,6 +99,11 @@
                  </v-card>
                </v-flex>
              </v-layout>
+              <v-layout v-else row wrap>
+                <template v-for="data in courseFavorite">
+                     <favoriteCard :id="data.course_id" :subject="data.subject" :code="data.code" :price="data.price" :cover = "data.cover" :fname="data.fname" :lname="data.lname"></favoriteCard>
+                </template>
+              </v-layout>
            </v-container>
          </v-tabs-content>
        </v-tabs>
@@ -102,9 +111,11 @@
 </template>
 <script>
 import parallax from './parallax.vue'
+import favoriteCard from './favoriteCard.vue'
 export default {
   components: {
-    parallax
+    parallax,
+    favoriteCard
   },
   created () {
     //do something before creating vue instance
@@ -115,6 +126,12 @@ export default {
       let c = b.concat(a)
       this.coursePurchased = c
     })
+    this.$store.state.courseFavorite.map(data => {
+      let a = this.$store.getters.COURSE_FROM_ID(data)
+      let b = this.courseFavorite
+      let c = b.concat(a)
+      this.courseFavorite = c
+    })
   },
   data () {
     return {
@@ -122,7 +139,13 @@ export default {
         { title: 'คอร์สทั้งหมด' },
         { title: 'รายการโปรด' }
       ],
-      coursePurchased: []
+      coursePurchased: [],
+      courseFavorite: []
+    }
+  },
+  computed: {
+    courseFavorite () {
+      return this.$store.state.courseFavorite
     }
   }
 }

@@ -7,18 +7,20 @@
       v-model="menu"
     >
       <v-avatar slot="activator">
-        <img src="https://scontent.fbkk2-4.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?_nc_eui2=v1%3AAeHK1rd2oRtb-z5eaABMDoa_ZZO1Vt9C_dyvbyH7me7jRPK1VH4BkQ-B3l3E4-UCfv8f48-uzvc1E3JbfAeFAZeSaSFSWLWoaRU2NzmLv9hqIg&oh=fe0776c03fef863ba5ec6b9dcb16bff9&oe=5A267C89" alt="ben">
+        <img :src="profile.user_img" >
       </v-avatar>
       </v-btn>
       <v-card>
         <v-list>
-          <v-list-tile avatar  @click="" >
-            <v-list-tile-avatar>
-              <img src="https://scontent.fbkk2-4.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?_nc_eui2=v1%3AAeHK1rd2oRtb-z5eaABMDoa_ZZO1Vt9C_dyvbyH7me7jRPK1VH4BkQ-B3l3E4-UCfv8f48-uzvc1E3JbfAeFAZeSaSFSWLWoaRU2NzmLv9hqIg&oh=fe0776c03fef863ba5ec6b9dcb16bff9&oe=5A267C89" alt="ben">
-            </v-list-tile-avatar>
+          <v-list-tile avatar  @click="">
+            <nuxt-link :to="'/user/' + profile.user_id">
+              <v-list-tile-avatar >
+                <img :src="profile.user_img">
+              </v-list-tile-avatar>
+            </nuxt-link>
             <v-list-tile-content>
-              <v-list-tile-title>Blend Theerapat</v-list-tile-title>
-              <v-list-tile-sub-title>Software Developer</v-list-tile-sub-title>
+              <v-list-tile-title>{{profile.fname}} {{profile.lname}}</v-list-tile-title>
+              <v-list-tile-sub-title>{{profile.career}}</v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-action>
               <v-btn
@@ -66,6 +68,11 @@
       notification: function (val) {
         // ถ้า notification model มีการเปลี่ยนแปลงให้ทำการ commit ข้อมูล(true,false)ไปยัง store
         this.$store.commit('setStatusNotifictaion', val)
+      }
+    },
+    computed: {
+      profile () {
+        return this.$store.state.profile
       }
     }
   }

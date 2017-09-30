@@ -14,12 +14,11 @@ export const state = () => ({
     lname: 'Vijitpoo',
     sex: 'male',
     birthday: '7/09/1996',
-    social: {
-      email: 'Blend.Theerapat@gmail.com',
-      facebook: '/BA.BLEND',
-      twiiter: '',
-      youtube: ''
-    }
+    email: 'Blend.Theerapat@gmail.com',
+    facebook: 'BA.BLEND',
+    twiiter: '',
+    youtube: '',
+    career: 'Web Developer'
   },
   announcement: [],
   qa: [],
@@ -48,18 +47,18 @@ export const getters = {
     })
   },
   user: (state) => state.user,
-  USER_FROM_ID (state) {
-    return userId => state.user.filter(item => {
-      return userId == item.user_id
-    })
-  },
   BRANCH_FROM_NAME (state) {
     return name => state.branchs.filter(item => {
       return name == item.text
     })
   },
-  COURSE (state) {
+  COURSE_FAVORITE (state) {
     return CourseId => state.courseFavorite.filter(item => {
+      return CourseId == item
+    })
+  },
+  COURSE (state) {
+    return CourseId => state.coursePurchased.filter(item => {
       return CourseId == item
     })
   }
@@ -106,7 +105,12 @@ export const mutations = {
   },
   addCreateCourse: (state, data) => state.createCourse = data,
   addCoursePurchased: (state, data) => state.coursePurchased.push(data),
-  addCourseFavorite: (state, data) => state.courseFavorite.push(data)
+  addCourseFavorite: (state, data) => state.courseFavorite.push(data),
+  removeCourseFavorite: (state, data) => {
+    let a = state.courseFavorite.indexOf(data)
+    let b = state.courseFavorite.splice(a, 1)
+  },
+  updateProfile: (state, data) => state.profile = data
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
@@ -130,48 +134,48 @@ export const actions = {
       commit('addCourses', result)
     })
   },
-  async PULL_USER_FROM_COURSE_ID ({commit, state}, courseId) {
-    let user_id
-     for (let i = 0; i < state.course.length; i++) {
-       console.log('state.course_user_id: ' + state.course[i].user_id + ' id: ' + courseId );
-      if (state.course[i].course_id == courseId) {
-        console.log('found user_id in course state');
-        await (user_id =  state.course[i].user_id)
-        break;
-      }
-    }
-    let alreadyGet = false
-    for (let i = 0; i < state.user.length; i++) {
-      console.log('loop')
-        if (state.user[i].user_id == user_id) {
-          await (alreadyGet = true)
-          console.log('true')
-          break;
-        } else {
-          alreadyGet = false
-        }
-    }
-    if(alreadyGet == false) {
-      console.log('get: ' + user_id)
-      await axios.get('http://localhost:4000/api/user/' + user_id)
-      .then (res => {
-        let result = res.data[0]
-        const data = {
-          user_id: result.user_id,
-          fname: result.fname,
-          lname: result.lname,
-          user_img: result.user_img,
-          sex: result.sex,
-          birthday: result.birthday,
-          email: result.email,
-          facebook: result.facebook,
-          twitter: result.twitter,
-          youtube: result.youtube
-        }
-        commit('addUser', data)
-      })
-    }
-  },
+  // async PULL_USER_FROM_COURSE_ID ({commit, state}, courseId) {
+  //   let user_id
+  //    for (let i = 0; i < state.course.length; i++) {
+  //      console.log('state.course_user_id: ' + state.course[i].user_id + ' id: ' + courseId );
+  //     if (state.course[i].course_id == courseId) {
+  //       console.log('found user_id in course state');
+  //       await (user_id =  state.course[i].user_id)
+  //       break;
+  //     }
+  //   }
+  //   let alreadyGet = false
+  //   for (let i = 0; i < state.user.length; i++) {
+  //     console.log('loop')
+  //       if (state.user[i].user_id == user_id) {
+  //         await (alreadyGet = true)
+  //         console.log('true')
+  //         break;
+  //       } else {
+  //         alreadyGet = false
+  //       }
+  //   }
+  //   if(alreadyGet == false) {
+  //     console.log('get: ' + user_id)
+  //     await axios.get('http://localhost:4000/api/user/' + user_id)
+  //     .then (res => {
+  //       let result = res.data[0]
+  //       const data = {
+  //         user_id: result.user_id,
+  //         fname: result.fname,
+  //         lname: result.lname,
+  //         user_img: result.user_img,
+  //         sex: result.sex,
+  //         birthday: result.birthday,
+  //         email: result.email,
+  //         facebook: result.facebook,
+  //         twitter: result.twitter,
+  //         youtube: result.youtube
+  //       }
+  //       commit('addUser', data)
+  //     })
+  //   }
+  // },
   async PULL_COURSE_FROM_COURSE_ID ({commit, state}, courseId) {
     let alreadyGet = false
     if (state.course.length > 0) {
@@ -199,5 +203,12 @@ export const actions = {
   },
   ADD_COURSE_FAVORITE ({commit}, payload) {
     commit('addCourseFavorite', payload)
+  },
+  REMOVE_COURSE_FAVORITE ({commit}, payload) {
+    commit('removeCourseFavorite', payload)
+  },
+  UPDATE_PROFILE ({commit}, payload) {
+    commit('updateProfile', payload)
+    axios.post('http://localhost:4000/api/updateuser', payload)    
   }
 }

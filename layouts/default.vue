@@ -40,14 +40,14 @@
               <v-list class="cover">
                 <v-list-tile avatar>
                   <v-list-tile-avatar>
-                    <img src="https://scontent.fbkk1-2.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=ce1fb663302049cbb304c38276bc1638&oe=5A4E0989" alt="avatar">
+                    <img :src="profile.user_img" alt="avatar">
                   </v-list-tile-avatar>
                   <v-list-tile-content>
                     <v-list-tile-title>
-                      Theerapat Vijitpoo
+                      {{profile.fname}} {{profile.lname}}
                     </v-list-tile-title>
                     <v-list-tile-sub-title>
-                      Web Developer
+                      {{profile.career}}
                     </v-list-tile-sub-title>
                   </v-list-tile-content>
                   <v-list-tile-action>
@@ -117,7 +117,7 @@
         </main>
 <br>
 
-<v-card class="white--text grey darken-4" style=" bottom:0;">
+<v-card class="white--text grey darken-4" style="position:relative; left:0; right:0; height: 50px;">
       <v-card-text class="pl-5 pr-5">
         <v-card-actions>
               <v-btn flat dark round @click.native="$router.push('/tutor/create')">สร้างคอร์ส</v-btn>
@@ -145,7 +145,6 @@
   import avatar from '../components/toolbar/avatar.vue'
   import notification from '../components/toolbar/notification.vue'
   import logo from '../components/logo.vue'
-  import { mapGetters } from 'vuex'
   export default {
     beforeMount () {
       this.$socket.emit('subscribe', 1212335)
@@ -231,7 +230,9 @@
       isLogin () {
         return this.$store.state.isLogin
       },
-      ...mapGetters(['user'])
+      profile () {
+        return this.$store.state.profile
+      }
     },
     watch: {
       search: function (val) {

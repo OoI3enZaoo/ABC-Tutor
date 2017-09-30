@@ -6,7 +6,6 @@
       <h6 class="white--text" ><b>กว่า 635 คอร์สที่ให้ใช้งานอยู่ในขณะนี้ </b></h6>
     </parallax>
       <template v-for="data in branchs">
-        {{data.branch_id}}
         <popularCourse :branchs="data.text" :mKey="data.branch_id"></popularCourse>
       </template>
   </div>

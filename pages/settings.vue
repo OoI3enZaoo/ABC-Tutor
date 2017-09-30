@@ -1,24 +1,25 @@
 <template>
   <div>
     <v-container>
+      <div class="text-xs-right">
+          <v-btn primary outline @click.native="restoreData">คืนค่าเดิม</v-btn>
+        <v-btn primary @click.native="saveData">บันทึก</v-btn>
+      </div>
       <v-subheader>ข้อมูลส่วนตัว</v-subheader>
       <v-card class="ml-3 mr-3">
         <v-card-text>
-            <div class="text-xs-right">
-              <v-btn primary>บันทึก</v-btn>
-            </div>
           <v-subheader>ข้อมูลทั่วไป</v-subheader>
           <v-list>
             <v-list-tile>
-              <v-text-field label="ชื่อจริง"></v-text-field>
+              <v-text-field label="ชื่อจริง" v-model="data.fname" ></v-text-field>
             </v-list-tile>
             <br>
             <v-list-tile>
-              <v-text-field label="นามสกุล"></v-text-field>
+              <v-text-field label="นามสกุล" :value="profile.lname"></v-text-field>
             </v-list-tile>
             <br>
             <v-list-tile>
-              <v-text-field counter label="พาดหัว" hint="เช่น Web Deverloper" max="50"></v-text-field>
+              <v-text-field counter label="อาชีพ" :value="profile.career" hint="เช่น Web Deverloper" max="50"></v-text-field>
             </v-list-tile>
           </v-list>
           <br>
@@ -39,7 +40,7 @@
                   <v-text-field class="grey lighten-1 elevation-0" disabled solo value="http://www.facebook.com/"></v-text-field>
                 </v-flex>
                 <v-flex xs6>
-                  <v-text-field class="elevation-0" flat solo label="เฟสบุ๊คลิงค์"></v-text-field>
+                  <v-text-field :value="profile.facebook" class="elevation-0" flat solo label="เฟสบุ๊คลิงค์"></v-text-field>
                 </v-flex>
               </v-layout>
               <br>
@@ -51,7 +52,7 @@
                   <v-text-field class="grey lighten-1 elevation-0" disabled solo value="http://twitter.com/"></v-text-field>
                 </v-flex>
                 <v-flex xs6>
-                  <v-text-field class="elevation-0" flat solo label="ทวิตเตอร์ลิงค์"></v-text-field>
+                  <v-text-field :value="profile.twitter" class="elevation-0" flat solo label="ทวิตเตอร์ลิงค์"></v-text-field>
                 </v-flex>
               </v-layout>
               <br>
@@ -63,7 +64,7 @@
                   <v-text-field class="grey lighten-1 elevation-0" disabled solo value="http://www.youtube.com/"></v-text-field>
                 </v-flex>
                 <v-flex xs6>
-                    <v-text-field class="elevation-0" flat solo label="ยูทูบลิงค์"></v-text-field>
+                    <v-text-field :value="profile.twitter" class="elevation-0" flat solo label="ยูทูบลิงค์"></v-text-field>
                 </v-flex>
               </v-layout>
           </v-card-text>
@@ -73,27 +74,15 @@
       <v-subheader>รูปภาพ</v-subheader>
       <v-card class="ml-3 mr-3">
         <v-card-text>
-          <div class="text-xs-right">
-            <v-btn primary>บันทึก</v-btn>
-          </div>
           <div class="text-xs-center">
-            <v-avatar size="20" tile>
-              <img src="https://scontent.fbkk1-2.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=ce1fb663302049cbb304c38276bc1638&oe=5A4E0989" style="height:150px;" alt="avatar">
-            </v-avatar>
-            <br><br>
-            <v-btn primary>อัพโหลดรูป</v-btn>
+            <base64upload :imageSrc="profile.user_img" @change="onChangeImage" style="width:150px; "/>
           </div>
       </v-card-text>
       </v-card>
-
-
       <br><br>
       <v-subheader>การชำระเงิน</v-subheader>
       <v-card class="ml-3 mr-3">
         <v-card-text>
-          <div class="text-xs-right">
-            <v-btn primary>บันทึก</v-btn>
-          </div>
           <v-subheader>ระบบชำระเงิน Paypal &nbsp;<nuxt-link to="">ข้อมูลเพิ่มเติม</nuxt-link></v-subheader>
           <v-list>
             <v-list-tile>
@@ -102,15 +91,66 @@
           </v-list>
         </v-card-text>
       </v-card>
+      <br>
+      <div class="text-xs-right">        
+          <v-btn primary outline @click.native="restoreData">คืนค่าเดิม</v-btn>
+        <v-btn primary @click.native="saveData">บันทึก</v-btn>
+      </div>
+
 
     </v-container>
   </div>
 </template>
 <script>
 import quill from '../components/quill.vue'
+import base64upload from '../components/base64upload.vue'
 export default {
+  created () {
+    this.setData()
+  },
+  data () {
+    return {
+      data: {
+        fname: '',
+        lname: '',
+        career: '',
+        user_img: '',
+        facebook: '',
+        twitter: '',
+        youtube: ''
+      }
+    }
+  },
+  methods: {
+    setData () {
+      this.data.user_id = this.profile.user_id
+      this.data.fname = this.profile.fname
+      this.data.lname = this.profile.lname
+      this.data.user_img = this.profile.user_img
+      this.data.career = this.profile.career
+      this.data.email = this.profile.email
+      this.data.facebook = this.profile.facebook
+      this.data.twitter = this.profile.twitter
+      this.data.youtube = this.profile.youtube
+    },
+    saveData() {
+      this.$store.dispatch('UPDATE_PROFILE', this.data)
+    },
+    restoreData () {
+      this.setData()
+    },
+    onChangeImage (data) {
+      this.data.user_img =  'data:image/jpeg;base64,' + data.base64
+    }
+  },
   components: {
-    quill
+    quill,
+    base64upload
+  },
+  computed: {
+    profile () {
+      return this.$store.state.profile
+    }
   }
 }
 </script>
