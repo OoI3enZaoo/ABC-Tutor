@@ -7,7 +7,7 @@
         <div v-if="$store.state.isLogin === true">
           <h5 style="display:inline;"><v-btn icon nuxt to="/"><v-icon large dark>home</v-icon></v-btn>&nbsp;&nbsp;/&nbsp;&nbsp;<nuxt-link to="/course" class="white--text">คอร์สทั้งหมด</nuxt-link><span>/&nbsp;&nbsp;{{branch[0].text}}</span></h5><br>
         </div>
-        <h4 style="display:inline;" >{{branch[0].text}} พบ 265 คอร์ส</h4>
+        <h4 style="display:inline;" >{{branch[0].text}} พบ {{courseLength}} คอร์ส</h4>
       </div>
     </parallax>
     <v-container grid-list-lg>
@@ -59,10 +59,10 @@
 import parallax from '../../../components/parallax.vue'
 export default {
   async asyncData ({ store, route}) {
-    if (store.getters.ALL_COURSE_FROM_ID(route.params.branchId).length == 0) {
+    // if (store.getters.ALL_COURSE_FROM_ID(route.params.branchId).length == 0) {
       await store.dispatch('PULL_COURSE_FROM_BRANCH_ID', route.params.branchId)
       console.log('params: ' + JSON.stringify(route.params))
-    }
+    // }
   },
   created () {
     this.courseAfterSearch = this.course
@@ -73,6 +73,9 @@ export default {
     },
     course () {
       return this.$store.getters.ALL_COURSE_FROM_ID(this.$route.params.branchId)
+    },
+    courseLength () {
+      return this.$store.getters.ALL_COURSE_FROM_ID(this.$route.params.branchId).length
     }
   },
   components: {

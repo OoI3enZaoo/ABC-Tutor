@@ -1,6 +1,5 @@
 <template>
   <div>
-    <template v-if="$store.state.isLogin==false">
     <parallax height = "500" type="link" src="http://www.gengotutors.com/img/slides/skype-language-tutor-homepage-background.jpg" position="center">
       <h1 class="white--text">เรียนกับอาจารย์ไม่รู้เรื่อง ?</h1>
       <h4 class="white--text">มาเริ่มต้นกับเราที่ ABC-Tutor</h4>
@@ -43,15 +42,8 @@
 
     <h5 class="black--text">สำรวจ</h5>
     <v-layout row wrap>
-      <template v-for="data in branchs">
-        <v-flex xs12 sm6 md4>
-          <nuxt-link :to="'/allcourse/' + data.branch_id" tag="span" style="cursor:pointer;">
-            <v-card>
-              <v-card-media :src = "data.img" height="200"></v-card-media>
-              <v-card-title>{{data.text}}</v-card-title>
-            </v-card>
-          </nuxt-link>
-        </v-flex>
+        <template v-for="data in branchs">
+          <branch :img = "data.img" :text="data.text" :branchId ="data.branch_id"></branch>
         </template>
     </v-layout>
   </v-container>
@@ -116,21 +108,12 @@
             </v-layout>
           </v-card-text>
         </v-card>
-
       </v-container>
-
-
-
-</template>
-<template v-else>
-  <mycourse></mycourse>
-</template>
   </div>
 </template>
 <script>
 import parallax from '../components/parallax.vue'
-import course from '../components/course.vue'
-import mycourse from '../components/mycourse.vue'
+import branch from '../components/branch.vue'
 export default {
   async asyncData ({ store }) {
     if (store.state.isLogin === true) {
@@ -147,8 +130,7 @@ export default {
   },
   components: {
     parallax,
-    course,
-    mycourse
+    branch
   }
 }
 </script>

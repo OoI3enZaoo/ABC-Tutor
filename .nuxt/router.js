@@ -5,20 +5,20 @@ Vue.use(Router)
 
 const _4ab2933c = () => import('..\\pages\\index.vue' /* webpackChunkName: "pages\\index" */).then(m => m.default || m)
 const _51144f63 = () => import('..\\pages\\ทด.vue' /* webpackChunkName: "pages\\ทด" */).then(m => m.default || m)
-const _8fff5e3c = () => import('..\\pages\\tutor\\index.vue' /* webpackChunkName: "pages\\tutor\\index" */).then(m => m.default || m)
-const _145a3653 = () => import('..\\pages\\login.vue' /* webpackChunkName: "pages\\login" */).then(m => m.default || m)
-const _31f4814a = () => import('..\\pages\\test2.vue' /* webpackChunkName: "pages\\test2" */).then(m => m.default || m)
-const _746632db = () => import('..\\pages\\signout.vue' /* webpackChunkName: "pages\\signout" */).then(m => m.default || m)
 const _46e816c1 = () => import('..\\pages\\course\\index.vue' /* webpackChunkName: "pages\\course\\index" */).then(m => m.default || m)
-const _2ef2a678 = () => import('..\\pages\\inspire.vue' /* webpackChunkName: "pages\\inspire" */).then(m => m.default || m)
+const _31f4814a = () => import('..\\pages\\test2.vue' /* webpackChunkName: "pages\\test2" */).then(m => m.default || m)
 const _9be6a9ae = () => import('..\\pages\\settings.vue' /* webpackChunkName: "pages\\settings" */).then(m => m.default || m)
+const _145a3653 = () => import('..\\pages\\login.vue' /* webpackChunkName: "pages\\login" */).then(m => m.default || m)
+const _746632db = () => import('..\\pages\\signout.vue' /* webpackChunkName: "pages\\signout" */).then(m => m.default || m)
+const _e7d76636 = () => import('..\\pages\\home.vue' /* webpackChunkName: "pages\\home" */).then(m => m.default || m)
+const _2ef2a678 = () => import('..\\pages\\inspire.vue' /* webpackChunkName: "pages\\inspire" */).then(m => m.default || m)
 const _6fbe161c = () => import('..\\pages\\tutor\\create.vue' /* webpackChunkName: "pages\\tutor\\create" */).then(m => m.default || m)
 const _a8d8c78e = () => import('..\\pages\\user\\_id.vue' /* webpackChunkName: "pages\\user\\_id" */).then(m => m.default || m)
-const _57875de6 = () => import('..\\pages\\mycourse\\_id.vue\\index.vue' /* webpackChunkName: "pages\\mycourse\\_id.vue\\index" */).then(m => m.default || m)
+const _01b17558 = () => import('..\\pages\\search\\_keyword.vue' /* webpackChunkName: "pages\\search\\_keyword" */).then(m => m.default || m)
+const _b362a486 = () => import('..\\pages\\mycourse\\_id.vue' /* webpackChunkName: "pages\\mycourse\\_id" */).then(m => m.default || m)
 const _c235720e = () => import('..\\pages\\course\\_id\\index.vue' /* webpackChunkName: "pages\\course\\_id\\index" */).then(m => m.default || m)
 const _b1c07708 = () => import('..\\pages\\allcourse\\_branchId\\index.vue' /* webpackChunkName: "pages\\allcourse\\_branchId\\index" */).then(m => m.default || m)
-const _b362a486 = () => import('..\\pages\\mycourse\\_id.vue' /* webpackChunkName: "pages\\mycourse\\_id" */).then(m => m.default || m)
-const _01b17558 = () => import('..\\pages\\search\\_keyword.vue' /* webpackChunkName: "pages\\search\\_keyword" */).then(m => m.default || m)
+const _57875de6 = () => import('..\\pages\\mycourse\\_id.vue\\index.vue' /* webpackChunkName: "pages\\mycourse\\_id.vue\\index" */).then(m => m.default || m)
 
 
 
@@ -65,14 +65,9 @@ export function createRouter () {
 			name: "ทด"
 		},
 		{
-			path: "/tutor",
-			component: _8fff5e3c,
-			name: "tutor"
-		},
-		{
-			path: "/login",
-			component: _145a3653,
-			name: "login"
+			path: "/course",
+			component: _46e816c1,
+			name: "course"
 		},
 		{
 			path: "/test2",
@@ -80,24 +75,29 @@ export function createRouter () {
 			name: "test2"
 		},
 		{
+			path: "/settings",
+			component: _9be6a9ae,
+			name: "settings"
+		},
+		{
+			path: "/login",
+			component: _145a3653,
+			name: "login"
+		},
+		{
 			path: "/signout",
 			component: _746632db,
 			name: "signout"
 		},
 		{
-			path: "/course",
-			component: _46e816c1,
-			name: "course"
+			path: "/home",
+			component: _e7d76636,
+			name: "home"
 		},
 		{
 			path: "/inspire",
 			component: _2ef2a678,
 			name: "inspire"
-		},
-		{
-			path: "/settings",
-			component: _9be6a9ae,
-			name: "settings"
 		},
 		{
 			path: "/tutor/create",
@@ -110,9 +110,14 @@ export function createRouter () {
 			name: "user-id"
 		},
 		{
-			path: "/mycourse/:id.vue?",
-			component: _57875de6,
-			name: "mycourse-id.vue"
+			path: "/search/:keyword?",
+			component: _01b17558,
+			name: "search-keyword"
+		},
+		{
+			path: "/mycourse/:id?",
+			component: _b362a486,
+			name: "mycourse-id"
 		},
 		{
 			path: "/course/:id",
@@ -125,14 +130,9 @@ export function createRouter () {
 			name: "allcourse-branchId"
 		},
 		{
-			path: "/mycourse/:id?",
-			component: _b362a486,
-			name: "mycourse-id"
-		},
-		{
-			path: "/search/:keyword?",
-			component: _01b17558,
-			name: "search-keyword"
+			path: "/mycourse/:id.vue?",
+			component: _57875de6,
+			name: "mycourse-id.vue"
 		}
     ],
     fallback: false

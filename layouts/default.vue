@@ -171,7 +171,7 @@
         this.$store.commit('addCourse', data)
       }
       this.$options.sockets.PUSH_COURSE = (data) => {
-        if (data.user_id != data.user_id) {
+        if (this.$store.state.profile.user_id != data.user_id) {
           console.log('PUSH_COURSE: ' + data.user_id)
         }
         // if (this.$store.state.profile == data.)
@@ -186,11 +186,6 @@
             name: 'สำรวจ',
             icon: 'class',
             link: '/course'
-          },
-          {
-            name: 'สำหรับติวเตอร์',
-            icon: 'card_travel',
-            link: '/tutor'
           },
           {
             name: 'ออกจากระบบ',

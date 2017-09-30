@@ -19,8 +19,8 @@ importScripts('workbox-sw.prod.v1.3.0.js');
  */
 const fileManifest = [
   {
-    "url": "/_nuxt/app.690e5bb22f8e5bdaa1bd.js",
-    "revision": "ed20dfa35a239a0d4dfb8422d439dfda"
+    "url": "/_nuxt/app.3b73d542855cb634e147.js",
+    "revision": "b5cf549b9129c7e8074bb767868c008c"
   },
   {
     "url": "/_nuxt/common.ec35cf21966e51eb6632b096b3eb2d56.css",
@@ -31,48 +31,52 @@ const fileManifest = [
     "revision": "0c4c45311b14b642d4394842fd83133a"
   },
   {
-    "url": "/_nuxt/layouts/default.72e0c887c4734ae69b99.js",
-    "revision": "4baad2f93b5b6bf398bbddcae6f7054e"
+    "url": "/_nuxt/layouts/default.15a936e3a13bf1b00848.js",
+    "revision": "07fb49121b0003f9f18dae1783705277"
   },
   {
-    "url": "/_nuxt/manifest.057e41c14b19e4de1403.js",
-    "revision": "0654563d4c022f50e2340a000f1da5e7"
+    "url": "/_nuxt/manifest.683d02035fbe2dc59131.js",
+    "revision": "ddede3ac90863b59412b879cd30d40a9"
   },
   {
-    "url": "/_nuxt/pages/allcourse\\_branchId\\index.1a530b7126ce465295dc.js",
-    "revision": "a3b7d02f6e629135e0fb677df50e0a10"
+    "url": "/_nuxt/pages/allcourse\\_branchId\\index.89881dbd41f93190bc03.js",
+    "revision": "3d15e77b63dd6017b1a9088b2f45c82c"
   },
   {
-    "url": "/_nuxt/pages/course\\_id\\index.7a83ad323d890790f0ee.js",
-    "revision": "eabcf92598c7c5d073e413d8544a4f84"
+    "url": "/_nuxt/pages/course\\_id\\index.83438a1afff01622cfab.js",
+    "revision": "89e84005e8a9d9b0407b433604d2be8e"
   },
   {
-    "url": "/_nuxt/pages/course\\index.8003a5d8770e335d5ab1.js",
-    "revision": "1b9568f564d58d8fb077c74d3d40451c"
+    "url": "/_nuxt/pages/course\\index.5db6651ba025bebee206.js",
+    "revision": "dbd5fbe1b229da31475b047c53148669"
   },
   {
-    "url": "/_nuxt/pages/index.25089339c0032a6ae227.js",
-    "revision": "ba95dfb91f9cd7664db1a581b29699f1"
+    "url": "/_nuxt/pages/home.364625eff544817efac5.js",
+    "revision": "ff69901f70f13dd53b99d607c909c429"
+  },
+  {
+    "url": "/_nuxt/pages/index.7b12aaec7df4f99d95a6.js",
+    "revision": "868880585260a9d7f1be532c08fac8cd"
   },
   {
     "url": "/_nuxt/pages/inspire.576aa4521552537ab166.js",
     "revision": "47cc808e9ee4c4e996eceadd92d9a818"
   },
   {
-    "url": "/_nuxt/pages/login.27c6635c6fc5a0fa827e.js",
-    "revision": "9442b47a46a8a98337128c89150485f7"
+    "url": "/_nuxt/pages/login.87140c1e42b06e2f03da.js",
+    "revision": "39d14ff4de36374f78bca9ce1fee3fad"
   },
   {
-    "url": "/_nuxt/pages/mycourse\\_id.vue\\index.f296455ea32f95092c39.js",
-    "revision": "c379adea87eb9c1725c1cafaad10c50d"
+    "url": "/_nuxt/pages/mycourse\\_id.c7061506d9aa9acc69cb.js",
+    "revision": "92ad9acc8a522ebc86a60bf581fce3e0"
   },
   {
     "url": "/_nuxt/pages/search\\_keyword.0bb5913e6c9e024099a8.js",
     "revision": "2acb51e9ececbe84ff485c1845e26698"
   },
   {
-    "url": "/_nuxt/pages/settings.5f4731b6b41e625f902d.js",
-    "revision": "67b9f96c7c50df15086eeb04cf838ae0"
+    "url": "/_nuxt/pages/settings.931c8fc211f919b2b2e7.js",
+    "revision": "20ed650ab3817d9222aa401fa1a98422"
   },
   {
     "url": "/_nuxt/pages/signout.98ec61cb133743f2fa32.js",
@@ -83,16 +87,12 @@ const fileManifest = [
     "revision": "5a70486ee8fa43b6dec527e9740d81ed"
   },
   {
-    "url": "/_nuxt/pages/tutor\\create.8e2bcb386565af38f9f3.js",
-    "revision": "a9566700c26b58ecfba5c3b978771b82"
+    "url": "/_nuxt/pages/tutor\\create.c1fe4a80ba74298eb213.js",
+    "revision": "fd8bd391a49b43ade9872d5dc343acce"
   },
   {
-    "url": "/_nuxt/pages/tutor\\index.ef41132530e220ec3ce6.js",
-    "revision": "66e858e4bbd9e9a3caee7d68d09cf002"
-  },
-  {
-    "url": "/_nuxt/pages/user\\_id.e02a4556a5e8d43cb0a4.js",
-    "revision": "26cd080ab268f03bdbbcb7be7c98ce8c"
+    "url": "/_nuxt/pages/user\\_id.04de8dc106ea25493c76.js",
+    "revision": "82fcea68f817dbf8494d638e7d79489e"
   },
   {
     "url": "/_nuxt/pages/ทด.0f7fb33761d5dcd067c9.js",

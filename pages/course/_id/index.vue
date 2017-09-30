@@ -89,10 +89,10 @@
           <v-card fixed>
             <v-card-media :src="course.cover" height="150"></v-card-media>
             <v-card-text>
-              <span v-if="!checkCourse" class="headline">350.-</span><br><br>
+              <span v-if="!checkCoursePurchase" class="headline">350.-</span><br><br>
               <div class="text-xs-center">
-                  <v-btn v-if="!checkCourse" primary block @click.native="purchasedCourse">ซื้อตอนนี้</v-btn>
-                  <template v-if="!checkCourse">
+                  <v-btn v-if="!checkCoursePurchase && !checkCourseCreate" primary block @click.native="purchasedCourse">ซื้อตอนนี้</v-btn>
+                  <template v-if="!checkCoursePurchase && !checkCourseCreate">
                     <template v-if="!checkCourseFavorite">
                       <v-btn  primary outline block @click.native="favoriteCourse(1)">เพิ่มเป็นรายการที่อยากได้</v-btn>
                     </template>
@@ -101,7 +101,7 @@
                     </template>
                   </template>
                   <template v-else>
-                    <h6>คุณซื้อคอร์สนี้ไปแล้ว</h6>
+                    <!-- <h6>ไม่สามารถผ</h6> -->
                     <v-btn primary nuxt :to="'/mycourse/' + course.course_id">ดูรายละเอียดคอร์ส</v-btn>
                   </template>
               </div>
@@ -131,7 +131,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-
+    {{checkCourseCreate}}
   </div>
 </template>
 
@@ -168,8 +168,11 @@ export default {
     checkCourseFavorite () {
       return this.$store.getters.COURSE_FAVORITE(this.$route.params.id)[0]
     },
-    checkCourse () {
-      return this.$store.getters.COURSE(this.$route.params.id)[0]
+    checkCoursePurchase () {
+      return this.$store.getters.COURSE_PURCHASE(this.$route.params.id)[0]
+    },
+    checkCourseCreate () {
+      return this.$store.getters.COURSE_CREATE(this.$route.params.id)[0]
     }
   }
 }

@@ -31,7 +31,7 @@ export default {
   methods: {
     login () {
       this.$store.commit('setIsLogin', true)
-      this.$router.push('/')
+      this.$router.push('/home')
     }
   }
 }

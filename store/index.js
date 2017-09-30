@@ -28,7 +28,9 @@ export const state = () => ({
   user: [],
   createCourse: {},
   coursePurchased: [],
-  courseFavorite: []
+  courseFavorite: [],
+  checkPullCourse: [],
+  courseCreate: []
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -52,13 +54,18 @@ export const getters = {
       return name == item.text
     })
   },
-  COURSE_FAVORITE (state) {
+  COURSE_FAVORITE (state) { //เช็คว่ามีการเพิ่มเป็นรายการโปรดหรือยัง
     return CourseId => state.courseFavorite.filter(item => {
       return CourseId == item
     })
   },
-  COURSE (state) {
+  COURSE_PURCHASE (state) { //เช็คว่า เคยมีการซื้อคอร์สหรือยัง
     return CourseId => state.coursePurchased.filter(item => {
+      return CourseId == item
+    })
+  },
+  COURSE_CREATE (state) { //เช็คว่า เคยมีการซื้อคอร์สหรือยัง
+    return CourseId => state.courseCreate.filter(item => {
       return CourseId == item
     })
   }
@@ -110,7 +117,9 @@ export const mutations = {
     let a = state.courseFavorite.indexOf(data)
     let b = state.courseFavorite.splice(a, 1)
   },
-  updateProfile: (state, data) => state.profile = data
+  updateProfile: (state, data) => state.profile = data,
+  addCheckPullCourse: (state, data) => state.checkPullCourse.push(data),
+  addCourseCreate: (state, data) => state.courseCreate.push(data)
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
@@ -121,18 +130,28 @@ export const actions = {
     // commit('setBranchs', data)
   },
   async PULL_BRANCHS ({commit}) {
-    await axios.get('http://localhost:4000/api')
+    await axios.get('http://172.104.167.197:1150/api')
       .then(res => {
         let result = res.data
         commit('addBranchs', result)
       })
   },
-  async PULL_COURSE_FROM_BRANCH_ID ({commit}, branch_id) {
-    await axios.get('http://localhost:4000/api/getcourse/' + branch_id)
-    .then(res => {
-      let result = res.data
-      commit('addCourses', result)
-    })
+  async PULL_COURSE_FROM_BRANCH_ID ({state, commit}, branch_id) {
+    let isCheck = false
+    for (let i = 0; i < state.checkPullCourse.length; i++) {
+      if (state.checkPullCourse[i] == branch_id) {
+        await (isCheck = true)
+        break
+      }
+    }
+    if (isCheck == false) {
+      await axios.get('http://172.104.167.197:1150/api/getcourse/' + branch_id)
+      .then(res => {
+        let result = res.data
+        commit('addCheckPullCourse', branch_id)
+        commit('addCourses', result)
+      })
+    }
   },
   // async PULL_USER_FROM_COURSE_ID ({commit, state}, courseId) {
   //   let user_id
@@ -157,7 +176,7 @@ export const actions = {
   //   }
   //   if(alreadyGet == false) {
   //     console.log('get: ' + user_id)
-  //     await axios.get('http://localhost:4000/api/user/' + user_id)
+  //     await axios.get('http://172.104.167.197:1150/api/user/' + user_id)
   //     .then (res => {
   //       let result = res.data[0]
   //       const data = {
@@ -177,17 +196,17 @@ export const actions = {
   //   }
   // },
   async PULL_COURSE_FROM_COURSE_ID ({commit, state}, courseId) {
-    let alreadyGet = false
+    let isCheck = false
     if (state.course.length > 0) {
       for (let i = 0; i < state.course.length; i++) {
        if (state.course[i].course_id == courseId) {
-         await (alreadyGet = true)
+         await (isCheck = true)
          break;
        }
      }
     }
-    if(alreadyGet == false) {
-      await axios.get('http://localhost:4000/api/course/' + courseId)
+    if(isCheck == false) {
+      await axios.get('http://172.104.167.197:1150/api/course/' + courseId)
       .then (res => {
         let result = res.data
         commit('addCourses', result)
@@ -196,7 +215,8 @@ export const actions = {
   },
   async PUSH_COURSE ({commit}, data) {
     commit('addCourses', [data])
-    await axios.post('http://localhost:4000/api/insertcourse', data)
+    commit('addCourseCreate', data.course_id)
+    await axios.post('http://172.104.167.197:1150/api/insertcourse', data)
   },
   ADD_COURSE_PURCHASED ({commit}, payload) {
     commit('addCoursePurchased', payload)
@@ -209,6 +229,6 @@ export const actions = {
   },
   UPDATE_PROFILE ({commit}, payload) {
     commit('updateProfile', payload)
-    axios.post('http://localhost:4000/api/updateuser', payload)    
+    axios.post('http://172.104.167.197:1150/api/updateuser', payload)
   }
 }

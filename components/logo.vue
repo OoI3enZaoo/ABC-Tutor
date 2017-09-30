@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxt-link to="/" style="text-decoration: none;">
+    <nuxt-link :to="linkto" style="text-decoration: none;">
         <div class="hidden-xs-only">
           <v-layout>
             <v-flex xs4 mt-2>
@@ -31,6 +31,13 @@ export default {
   computed: {
     projectName () {
       return this.$store.state.projectName
+    },
+    linkto () {
+      if (this.$store.isLogin == false) {
+        return '/'
+      } else {
+        return '/home'
+      }
     }
   }
 }

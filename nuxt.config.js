@@ -3,6 +3,9 @@ module.exports = {
   ** Headers of the page
   */
   // mode: 'spa',
+  router: {
+    middleware: 'checkLogin'
+  },
   head: {
     title: 'ABC-Tutor',
     meta: [
