@@ -1,5 +1,4 @@
 <template>
-
     <v-flex xs12 sm6 md4>
       <nuxt-link :to="'/allcourse/' + branchId" tag="span" style="cursor:pointer;">
         <v-card>
@@ -8,7 +7,6 @@
         </v-card>
       </nuxt-link>
     </v-flex>
-
 </template>
 <script>
 export default {

@@ -8,7 +8,7 @@
       </v-layout>
       <v-layout row wrap>
         <template v-for="a in 4">
-            <v-flex xs3>
+            <v-flex xs6 md4 lg3>
               <nuxt-link to="/course/d" tag="span" style="cursor:pointer;">
                 <v-card>
                   <v-card-media src="https://us.123rf.com/450wm/juliatim/juliatim1603/juliatim160300025/54282789-young-man-sitting-in-the-park-under-a-tree-and-working-with-laptop-flat-modern-illustration-of-socia.jpg?ver=6" height="150"></v-card-media>

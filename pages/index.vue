@@ -115,11 +115,6 @@
 import parallax from '../components/parallax.vue'
 import branch from '../components/branch.vue'
 export default {
-  async asyncData ({ store }) {
-    if (store.state.isLogin === true) {
-      await store.dispatch('PULL_COURSES')
-    }
-  },
   computed: {
     branchs () {
       return this.$store.state.branchs

@@ -1,29 +1,23 @@
 <template>
   <div>
-    <v-container grid-list-lg >
-      <v-layout v-if="courseFavorite.length == 0">
-        <v-flex xs12 text-xs-center>
-          <v-card>
-            <v-card-text>
-               <h5>คุณยังไม่ได้บันทึกอะไรไว้เลย</h5>
-               <v-btn primary nuxt to="/course">ค้นหาคอร์ส</v-btn>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-       <v-layout v-else row wrap>
-         <template v-for="data in courseFavorite">
-              <favoriteCard :id="data.course_id" :subject="data.subject" :code="data.code" :price="data.price" :cover = "data.cover" :fname="data.fname" :lname="data.lname"></favoriteCard>
-         </template>
-       </v-layout>
-    </v-container>
+    <template v-if="courseFavorite.length == 0">
+      <noDataCard :png="coursePng" text="คุณยังไม่ได้บันทึกอะไรไว้เลย" textbtn="ค้นหาคอร์ส" link="/course"></noDataCard>
+    </template>
+    <template v-else>
+      <template v-for="data in courseFavorite">
+           <favoriteCard :id="data.course_id" :subject="data.subject" :code="data.code" :price="data.price" :cover = "data.cover" :fname="data.fname" :lname="data.lname"></favoriteCard>
+      </template>
+    </template>
+
   </div>
 </template>
 <script>
-import favoriteCard from '../favoriteCard.vue'
+import favoriteCard from './addon/favoriteCard.vue'
+import noDataCard from './addon/noDataCard.vue'
 export default {
   components: {
-    favoriteCard
+    favoriteCard,
+    noDataCard
   },
   created () {
     //do something before creating vue instance
@@ -37,7 +31,8 @@ export default {
   },
   data () {
     return {
-      courseFavorite: []
+      courseFavorite: [],
+      coursePng: require('../../static/courseFavorite.png')
     }
   }
 }

@@ -5,7 +5,7 @@
     <parallax height="200" src= "https://archive.org/download/abstract-colored-circle-red-material-designlines-background/abstract-colored-circle-red-material-designlines-background.jpg">
       <div class="mt-4">
         <div v-if="$store.state.isLogin === true">
-          <h5 style="display:inline;"><v-btn icon nuxt to="/"><v-icon large dark>home</v-icon></v-btn>&nbsp;&nbsp;/&nbsp;&nbsp;<nuxt-link to="/course" class="white--text">คอร์สทั้งหมด</nuxt-link><span>/&nbsp;&nbsp;{{branch[0].text}}</span></h5><br>
+          <h5 style="display:inline;"><v-btn icon nuxt to="/"><v-icon large dark>home</v-icon></v-btn>&nbsp;&nbsp;/&nbsp;&nbsp;<nuxt-link to="/course" class="white--text">คอร์สทั้งหมด</nuxt-link><span>&nbsp;&nbsp;/&nbsp;&nbsp;{{branch[0].text}}</span></h5><br>
         </div>
         <h4 style="display:inline;" >{{branch[0].text}} พบ {{courseLength}} คอร์ส</h4>
       </div>

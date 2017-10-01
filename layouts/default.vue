@@ -117,7 +117,7 @@
         </main>
 <br>
 
-<v-card class="white--text grey darken-4" style="position:relative; left:0; right:0; height: 50px;">
+<v-card class="white--text grey darken-4" style="position:relative; bottom:0; left:0; right:0; height: 50px;">
       <v-card-text class="pl-5 pr-5">
         <v-card-actions>
               <v-btn flat dark round @click.native="$router.push('/tutor/create')">สร้างคอร์ส</v-btn>
@@ -150,26 +150,26 @@
       this.$socket.emit('subscribe', 1212335)
     },
     mounted () {
-      this.$options.sockets.announcement = (data) => {
-        console.log('announcement: ' + JSON.stringify(data))
-        this.$store.commit('addAnnouncement', data)
-      }
-      this.$options.sockets.qa = (data) => {
-        console.log('qa: ' + JSON.stringify(data))
-        this.$store.commit('addQA', data)
-      }
-      this.$options.sockets.courseContent = (data) => {
-        console.log('courseContent: ' + JSON.stringify(data))
-        this.$store.commit('addCourseContent', data)
-      }
-      this.$options.sockets.chat = (data) => {
-        console.log('addChat: ' + JSON.stringify(data))
-        this.$store.commit('addChat', data)
-      }
-      this.$options.sockets.course = (data) => {
-        console.log('addChat: ' + JSON.stringify(data))
-        this.$store.commit('addCourse', data)
-      }
+      // this.$options.sockets.announcement = (data) => {
+      //   console.log('announcement: ' + JSON.stringify(data))
+      //   this.$store.commit('addAnnouncement', data)
+      // }
+      // this.$options.sockets.qa = (data) => {
+      //   console.log('qa: ' + JSON.stringify(data))
+      //   this.$store.commit('addQA', data)
+      // }
+      // this.$options.sockets.courseContent = (data) => {
+      //   console.log('courseContent: ' + JSON.stringify(data))
+      //   this.$store.commit('addCourseContent', data)
+      // }
+      // this.$options.sockets.chat = (data) => {
+      //   console.log('addChat: ' + JSON.stringify(data))
+      //   this.$store.commit('addChat', data)
+      // }
+      // this.$options.sockets.course = (data) => {
+      //   console.log('addChat: ' + JSON.stringify(data))
+      //   this.$store.commit('addCourse', data)
+      // }
       this.$options.sockets.PUSH_COURSE = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
           console.log('PUSH_COURSE: ' + data.user_id)
@@ -182,6 +182,11 @@
       return {
         slideNav: false,
         menuAfterLoginItem: [
+          {
+            name: 'สร้างคอร์ส',
+            icon: 'note_add',
+            link: '/tutor/create'
+          },
           {
             name: 'สำรวจ',
             icon: 'class',

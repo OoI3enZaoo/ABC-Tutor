@@ -1,11 +1,9 @@
 import axios from 'axios'
 // import { db } from '../firebase'
 export const state = () => ({
-  branchs: '',
-  branch: [],
+  branchs: [],
   isLogin: false,
   projectName: 'ABC-Tutor',
-  route: '/',
   statusNotification: false,
   profile: {
     user_id: 1212312121,
@@ -20,17 +18,14 @@ export const state = () => ({
     youtube: '',
     career: 'Web Developer'
   },
-  announcement: [],
-  qa: [],
-  courseContent: [],
-  chat: [],
   course: [],
   user: [],
   createCourse: {},
   coursePurchased: [],
   courseFavorite: [],
-  checkPullCourse: [],
-  courseCreate: []
+  courseCreate: [],
+  checkPullCourse: []
+
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -72,43 +67,20 @@ export const getters = {
 }
 export const mutations = {
   addBranchs (state, data) {
-    state.branchs = data
+    state.branchs.push(...data)
   },
   addCourses (state, data) {
-    let a = state.course
-    let b = data
-    let c = a.concat(b)
-    state.course = c
+    console.log('data: ' + JSON.stringify(data))
+    state.course.unshift(...data)
   },
   setIsLogin (state, data) {
     state.isLogin = data
   },
-  beforeRoute (state, data) {
-    state.route = data
-  },
   setStatusNotifictaion (state, data) {
     state.statusNotification = data
   },
-  addAnnouncement (state, data) {
-    state.announcement.push(data)
-  },
-  addQA (state, data) {
-    state.qa.push(data)
-  },
-  addCourseContent (state, data) {
-    state.courseContent.push(data)
-  },
-  addChat (state, data) {
-    state.chat.push(data)
-  },
-  addCourse (state, data) {
-    state.course.push(data)
-  },
   addUser (state, data) {
-    let a = state.user
-    let b = data
-    let c = a.concat(b)
-    state.user = c
+    state.user.push(...data)
   },
   addCreateCourse: (state, data) => state.createCourse = data,
   addCoursePurchased: (state, data) => state.coursePurchased.push(data),
@@ -123,11 +95,9 @@ export const mutations = {
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
-    if (state.branchs === '') {
+    if (state.branchs.length == 0) {
       await dispatch('PULL_BRANCHS')
     }
-    // const { data } = await axios.get('https://tutor-dafcf.firebaseio.com/branchs.json')
-    // commit('setBranchs', data)
   },
   async PULL_BRANCHS ({commit}) {
     await axios.get('http://172.104.167.197:1150/api')

@@ -15,11 +15,11 @@
             </v-list-tile>
             <br>
             <v-list-tile>
-              <v-text-field label="นามสกุล" :value="profile.lname"></v-text-field>
+              <v-text-field label="นามสกุล" v-model="data.lname"></v-text-field>
             </v-list-tile>
             <br>
             <v-list-tile>
-              <v-text-field counter label="อาชีพ" :value="profile.career" hint="เช่น Web Deverloper" max="50"></v-text-field>
+              <v-text-field counter label="อาชีพ" v-model="data.career" hint="เช่น Web Deverloper" max="50"></v-text-field>
             </v-list-tile>
           </v-list>
           <br>
@@ -40,7 +40,7 @@
                   <v-text-field class="grey lighten-1 elevation-0" disabled solo value="http://www.facebook.com/"></v-text-field>
                 </v-flex>
                 <v-flex xs6>
-                  <v-text-field :value="profile.facebook" class="elevation-0" flat solo label="เฟสบุ๊คลิงค์"></v-text-field>
+                  <v-text-field v-model="data.facebook" class="elevation-0" flat solo label="เฟสบุ๊คลิงค์"></v-text-field>
                 </v-flex>
               </v-layout>
               <br>
@@ -52,7 +52,7 @@
                   <v-text-field class="grey lighten-1 elevation-0" disabled solo value="http://twitter.com/"></v-text-field>
                 </v-flex>
                 <v-flex xs6>
-                  <v-text-field :value="profile.twitter" class="elevation-0" flat solo label="ทวิตเตอร์ลิงค์"></v-text-field>
+                  <v-text-field v-model="data.twitter" class="elevation-0" flat solo label="ทวิตเตอร์ลิงค์"></v-text-field>
                 </v-flex>
               </v-layout>
               <br>
@@ -64,7 +64,7 @@
                   <v-text-field class="grey lighten-1 elevation-0" disabled solo value="http://www.youtube.com/"></v-text-field>
                 </v-flex>
                 <v-flex xs6>
-                    <v-text-field :value="profile.twitter" class="elevation-0" flat solo label="ยูทูบลิงค์"></v-text-field>
+                    <v-text-field v-model="data.youtube" class="elevation-0" flat solo label="ยูทูบลิงค์"></v-text-field>
                 </v-flex>
               </v-layout>
           </v-card-text>
@@ -92,7 +92,7 @@
         </v-card-text>
       </v-card>
       <br>
-      <div class="text-xs-right">        
+      <div class="text-xs-right">
           <v-btn primary outline @click.native="restoreData">คืนค่าเดิม</v-btn>
         <v-btn primary @click.native="saveData">บันทึก</v-btn>
       </div>

@@ -1,20 +1,9 @@
 <template>
   <div>
     <template v-if="coursePurchased.length == 0">
-      <v-container grid-list-lg>
-        <v-layout>
-          <v-flex xs12 text-xs-center>
-            <v-card>
-              <v-card-text>
-                 <h5>คุณยังไม่มีคอร์สใด ๆ เลย</h5>
-                 <v-btn primary nuxt to="/course">ค้นหาคอร์ส</v-btn>
-              </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <noDataCard :png="coursePng" text="คุณยังไม่มีคอร์สใด ๆ เลย" textbtn="ค้นหาคอร์ส" link="/course"></noDataCard>
     </template>
-    <template v-else >
+    <template v-else>
       <v-container grid-list-lg>
         <div class="text-xs-right">
           <v-layout row>
@@ -23,7 +12,6 @@
             </v-flex>
             <v-flex xs6>
               <v-btn primary outline nuxt to="/course">รายการคอร์ส</v-btn>
-              <v-btn nuxt to ="tutor/create" primary>สร้างคอร์ส</v-btn>
             </v-flex>
           </v-layout>
         </div>
@@ -66,7 +54,11 @@
   </div>
 </template>
 <script>
+import noDataCard from './addon/noDataCard.vue'
 export default {
+  components: {
+    noDataCard
+  },
   created () {
     this.$store.state.coursePurchased.map(data => {
       let a = this.$store.getters.COURSE_FROM_ID(data)
@@ -77,7 +69,8 @@ export default {
   },
   data () {
     return {
-      coursePurchased: []
+      coursePurchased: [],
+      coursePng: require('../../static/coursePurchase.png')
     }
   }
 }

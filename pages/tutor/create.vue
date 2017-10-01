@@ -61,7 +61,7 @@
             </v-card-text>
           </v-card>
           <v-btn primary :disabled="isLessonSelect== false" @click.native="e1 = 3">ต่อไป</v-btn>
-          <v-btn flat primary @click.native="e1 = 2">ย้อนกลับ</v-btn>
+          <v-btn flat primary @click.native="e1 = 1">ย้อนกลับ</v-btn>
         </v-stepper-content>
         <v-stepper-content step="3">
             <v-card class="elevation-0">
@@ -70,7 +70,7 @@
               </v-card-text>
             </v-card>
           <v-btn primary @click.native="e1 = 4">ต่อไป</v-btn>
-          <v-btn flat primary @click.native="e1 = 3">ย้อนกลับ</v-btn>
+          <v-btn flat primary @click.native="e1 = 2">ย้อนกลับ</v-btn>
         </v-stepper-content>
         <v-stepper-content step="4">
           <v-card class="elevation-0">
