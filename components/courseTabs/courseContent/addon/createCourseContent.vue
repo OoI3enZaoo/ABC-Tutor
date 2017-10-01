@@ -18,7 +18,7 @@
 
             <br>
 
-             <MultipleFileUploader @createcourse="createcourse" postURL="http://localhost:4000/api/upload/newwe/fd" successMessagePath="" errorMessagePath="">
+             <MultipleFileUploader @createcourse="createcourse" :postURL="postUrl" successMessagePath="" errorMessagePath="">
 
 
              </MultipleFileUploader>
@@ -28,7 +28,7 @@
           </v-container>
       </v-card>
     </v-dialog>
-  
+
 </template>
 <script>
   // import MultipleFileUploader from 'vue2-multi-uploader'
@@ -37,6 +37,13 @@ import MultipleFileUploader from './MultipleFileUploader.vue'
   export default {
     components: {
       MultipleFileUploader
+    },
+    watch: {
+      dialog: function (val) {
+        if (val == true) {
+          this.content_id = (new Date().getTime())
+        }
+      }
     },
     data () {
       return {
@@ -47,6 +54,7 @@ import MultipleFileUploader from './MultipleFileUploader.vue'
           target: '//localhost:4000/api/upload/newwe/fd',
           testChunks: false
         },
+        content_id: null,
         content: {
           title: '',
           description: ''
@@ -58,10 +66,16 @@ import MultipleFileUploader from './MultipleFileUploader.vue'
       }
     },
     methods: {
-      createcourse (data) {
+      createcourse (str) {
+        console.log('createcourse')
         this.dialog = false
-        console.log('data: ' + data)
-
+        const data = {
+          content_id: this.content_id,
+          content_title: this.content.title,
+          content_des: this.content.description,
+          files: str
+        }
+        this.$emit('contentcourse', data)
         this.content.title = ''
         this.content.description = ''
       },
@@ -80,7 +94,7 @@ import MultipleFileUploader from './MultipleFileUploader.vue'
         }
       },
       postUrl () {
-        return 'http://localhost:4000/api/upload/'+ this.id + '/55'
+        return 'http://localhost:4000/api/upload/' + this.content_id
       }
     }
   }

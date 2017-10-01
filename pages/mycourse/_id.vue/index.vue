@@ -3,10 +3,10 @@
     <parallax src="http://abcworldwidestone.com/material-portfolio/wp-content/uploads/2014/10/Belgium-Black-Polished-2cm-Lot-3071-Close-up.jpg" height="200">
       <v-layout>
         <v-flex sm3 xs6>
-            <img src="http://en.advancedfleetmanagementconsulting.com/wp-content/uploads/2016/06/6700226_m.jpg" height="150">
+            <img :src="courseData.cover" height="150">
         </v-flex>
         <v-flex sm9 xs6>
-          <h4 class="white--text" ><b>วิชาคอมพิวเตอร์เบื้องต้น (SP521)</b></h4>
+          <h4 class="white--text" ><b>{{courseData.subject}} ({{courseData.code}})</b></h4>
         </v-flex>
       </v-layout>
     </parallax>
@@ -60,12 +60,12 @@ import parallax from '../../../components/parallax.vue'
 import overall from '../../../components/courseTabs/overall.vue'
 import announcement from '../../../components/courseTabs/announcement.vue'
 import live from '../../../components/courseTabs/live'
-import qa from '../../../components/courseTabs/qa/index.vue'
-import videoCourse from '../../../components/courseTabs/courseContent.vue'
+import qa from '../../../components/courseTabs/qa'
+import videoCourse from '../../../components/courseTabs/courseContent'
 import chat from '../../../components/courseTabs/chat.vue'
 export default {
-  async asyncData ({ store }) {
-    // store.dispatch('PULL_COURSE_DATA')
+  async asyncData ({ store, route }) {
+    await store.dispatch('PULL_COURSE_DATA', route.params.id )
   },
   components: {
     parallax, overall, announcement, live, qa, videoCourse, chat

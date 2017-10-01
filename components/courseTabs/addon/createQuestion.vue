@@ -37,7 +37,7 @@
   </v-layout>
 </template>
 <script>
-  import quill from '../../quill'
+  import quill from '../../quill.vue'
   export default {
     props: ['title', 'type'],
     components: {

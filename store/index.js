@@ -24,8 +24,8 @@ export const state = () => ({
   coursePurchased: [],
   courseFavorite: [],
   courseCreate: [],
-  checkPullCourse: []
-
+  checkPullCourse: [],
+  courseContent: []
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -63,6 +63,11 @@ export const getters = {
     return CourseId => state.courseCreate.filter(item => {
       return CourseId == item
     })
+  },
+  COURSE_CONTENT (state) {
+    return courseId => state.courseContent.filter(item => {
+      return courseId = item.course_id
+    })
   }
 }
 export const mutations = {
@@ -91,7 +96,8 @@ export const mutations = {
   },
   updateProfile: (state, data) => state.profile = data,
   addCheckPullCourse: (state, data) => state.checkPullCourse.push(data),
-  addCourseCreate: (state, data) => state.courseCreate.push(data)
+  addCourseCreate: (state, data) => state.courseCreate.push(data),
+  addCourseContent: (state, data) => state.courseContent.push(data)
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
@@ -200,5 +206,13 @@ export const actions = {
   UPDATE_PROFILE ({commit}, payload) {
     commit('updateProfile', payload)
     axios.post('http://172.104.167.197:1150/api/updateuser', payload)
+  },
+  PULL_COURSE_DATA ({commit}, payload) {
+    console.log('payload: ' + payload)
+  },
+  ADD_COURSE_CONTENT ({commit}, payload) {
+    commit('addCourseContent', payload)
+    console.log('payload: ' + JSON.stringify(payload))
+    axios.post('http://172.104.167.197:1150/api/insertcoursecontent', payload)
   }
 }
