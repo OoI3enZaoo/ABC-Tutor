@@ -89,7 +89,7 @@
           <v-card fixed>
             <v-card-media :src="course.cover" height="150"></v-card-media>
             <v-card-text>
-              <span v-if="!checkCoursePurchase" class="headline">350.-</span><br><br>
+              <span v-if="!checkCoursePurchase" class="headline">{{course.price}}.-</span><br><br>
               <div class="text-xs-center">
                   <v-btn v-if="!checkCoursePurchase && !checkCourseCreate" primary block @click.native="purchasedCourse">ซื้อตอนนี้</v-btn>
                   <template v-if="!checkCoursePurchase && !checkCourseCreate">

@@ -90,7 +90,7 @@ import MultipleFileUploader from './MultipleFileUploader.vue'
         }
       },
       postUrl () {
-        return 'http://localhost:4000/api/upload/' + this.content_id
+        return 'http://172.104.167.197:1150/api/upload/' + this.content_id
       }
     }
   }

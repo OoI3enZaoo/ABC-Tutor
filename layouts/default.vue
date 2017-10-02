@@ -117,7 +117,7 @@
         </main>
 <br>
 
-<v-snackbar
+  <v-snackbar
     :timeout="6000"
     right
     bottom

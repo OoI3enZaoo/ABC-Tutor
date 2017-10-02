@@ -25,7 +25,8 @@ export const state = () => ({
   courseFavorite: [],
   courseCreate: [],
   checkPullCourse: [],
-  courseContent: []
+  courseContent: [],
+  popularcourse: []
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -66,7 +67,12 @@ export const getters = {
   },
   COURSE_CONTENT (state) {
     return courseId => state.courseContent.filter(item => {
-      return courseId = item.course_id
+      return courseId == item.course_id
+    })
+  },
+  COURSE_POPULAR (state) {
+    return branchId => state.popularcourse.filter(item => {
+      return branchId == item.branch_id
     })
   }
 }
@@ -98,7 +104,8 @@ export const mutations = {
   addCheckPullCourse: (state, data) => state.checkPullCourse.push(data),
   addCourseCreate: (state, data) => state.courseCreate.push(data),
   addCourseContent: (state, data) => state.courseContent.push(data),
-  updateuserid: (state, data) => state.profile.user_id = (new Date().getTime())
+  updateuserid: (state, data) => state.profile.user_id = (new Date().getTime()),
+  addPopularCourse: (state, data) => state.popularcourse.push(...data)
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
@@ -216,5 +223,19 @@ export const actions = {
     commit('addCourseContent', payload)
     console.log('payload: ' + JSON.stringify(payload))
     axios.post('http://172.104.167.197:1150/api/insertcoursecontent', payload)
+  },
+  async PULL_POPULAR_COURSE ({commit, state}) {
+    if (state.popularcourse.length == 0) {
+      await state.branchs.map(data => {
+         axios.get('http://172.104.167.197:1150/api/popularcourse/' + data.branch_id)
+        .then (res => {
+          let result = res.data
+          console.log(result);
+          commit('addCourses', result)
+          commit('addPopularCourse', result)
+        })
+      })
+    }
   }
+
 }
