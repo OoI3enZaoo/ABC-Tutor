@@ -38,7 +38,10 @@
             <v-list-tile-action>
               <v-switch v-model="notification" color="primary"></v-switch>
             </v-list-tile-action>
-            <v-list-tile-title>การแจ้งเตือน</v-list-tile-title>
+            <v-list-tile-content>
+              <v-list-tile-title>การแจ้งเตือน</v-list-tile-title>
+              <v-list-tile-sub-title>{{$store.state.profile.user_id}}</v-list-tile-sub-title>
+            </v-list-tile-content>
           </v-list-tile>
           <v-list-tile @click="">
             <v-list-tile-action>

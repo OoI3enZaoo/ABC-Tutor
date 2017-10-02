@@ -26,7 +26,7 @@
                   <nuxt-link :to="'/mycourse/'" tag="span">
                       <v-layout>
                         <v-flex xs3>
-                            <v-card-media src="https://us.123rf.com/450wm/juliatim/juliatim1603/juliatim160300025/54282789-young-man-sitting-in-the-park-under-a-tree-and-working-with-laptop-flat-modern-illustration-of-socia.jpg?ver=6" height="200"></v-card-media>
+                            <v-card-media :src="data.cover" height="200"></v-card-media>
                         </v-flex>
                         <v-flex xs9>
                           <v-card-text>

@@ -49,11 +49,7 @@ import MultipleFileUploader from './MultipleFileUploader.vue'
       return {
         dialog: false,
         id: '',
-        options: {
-          // https://github.com/simple-uploader/Uploader/tree/develop/samples/Node.js
-          target: '//localhost:4000/api/upload/newwe/fd',
-          testChunks: false
-        },
+
         content_id: null,
         content: {
           title: '',

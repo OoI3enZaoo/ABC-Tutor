@@ -2,6 +2,8 @@
   <div>
     <!-- {{$store.state.course}} -->
 <!-- {{$store.state.currentCourse}} -->
+
+<!-- {{$store.getters.ALL_COURSE_FROM_ID(this.$route.params.branchId).length}} -->
     <parallax height="200" src= "https://archive.org/download/abstract-colored-circle-red-material-designlines-background/abstract-colored-circle-red-material-designlines-background.jpg">
       <div class="mt-4">
         <div v-if="$store.state.isLogin === true">
@@ -20,7 +22,7 @@
       </v-text-field>
       <br>
       <v-layout row wrap>
-          <template v-for="(data,key) in courseAfterSearch">
+          <template v-for="(data,key) in course">
              <v-flex xs12 :key="key">
                <nuxt-link :to="'/course/' + data.course_id" tag="span" style="cursor:pointer;">
                   <v-card>

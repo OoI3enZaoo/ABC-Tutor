@@ -117,6 +117,18 @@
         </main>
 <br>
 
+<v-snackbar
+    :timeout="6000"
+    right
+    bottom
+    secondary
+    multi-line
+    v-model="snackbar"
+  >
+    {{ snackbarText }}
+    <v-btn flat class="white--text" @click.native="snackbar = false">ปิด</v-btn>
+  </v-snackbar>
+
 <v-card class="white--text grey darken-4" style="position:relative; bottom:0; left:0; right:0; height: 50px;">
       <v-card-text class="pl-5 pr-5">
         <v-card-actions>
@@ -173,6 +185,9 @@
       this.$options.sockets.PUSH_COURSE = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
           console.log('PUSH_COURSE: ' + data.user_id)
+          this.$store.commit('addCourses', [data])
+          this.snackbarText  = 'คอร์ส ' + data.subject + ' (' + data.code +')' + ' ถูกสร้างขึ้นแล้ว'
+          this.snackbar = true
         }
         // if (this.$store.state.profile == data.)
       }
@@ -181,6 +196,8 @@
     data () {
       return {
         slideNav: false,
+        snackbar: true,
+        snackbarText: '',
         menuAfterLoginItem: [
           {
             name: 'สร้างคอร์ส',

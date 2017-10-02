@@ -97,13 +97,15 @@ export const mutations = {
   updateProfile: (state, data) => state.profile = data,
   addCheckPullCourse: (state, data) => state.checkPullCourse.push(data),
   addCourseCreate: (state, data) => state.courseCreate.push(data),
-  addCourseContent: (state, data) => state.courseContent.push(data)
+  addCourseContent: (state, data) => state.courseContent.push(data),
+  updateuserid: (state, data) => state.profile.user_id = (new Date().getTime())
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
     if (state.branchs.length == 0) {
       await dispatch('PULL_BRANCHS')
     }
+    commit('updateuserid')
   },
   async PULL_BRANCHS ({commit}) {
     await axios.get('http://172.104.167.197:1150/api')
@@ -121,7 +123,7 @@ export const actions = {
       }
     }
     if (isCheck == false) {
-      await axios.get('http://172.104.167.197:1150/api/getcourse/' + branch_id)
+        await axios.get('http://172.104.167.197:1150/api/getcourse/' + branch_id)
       .then(res => {
         let result = res.data
         commit('addCheckPullCourse', branch_id)
