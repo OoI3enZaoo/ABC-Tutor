@@ -231,7 +231,6 @@ export const actions = {
             }
             console.log('PULL_POPULAR_COURSE_HOME')
             commit('addUser', [user])
-            commit('addCourses', [course])
             commit('addPopularCourseHome', [course])
           })
         })
@@ -240,7 +239,7 @@ export const actions = {
   },
   async PULL_POPULAR_COURSE_INDEX ({commit, state}) {
     if (state.popularCourseIndex.length == 0) {
-      await axios.get('http://localhost:4000/api/popularcourse')
+      await axios.get('http://172.104.167.197:1150/api/popularcourse')
       .then (res => {
         let result = res.data
         result.map(str => {
@@ -270,7 +269,6 @@ export const actions = {
             lastUpdate: str.lastUpdate
           }
           commit('addUser', [user])
-          commit('addCourses', [course])
           commit('addPopularCourseIndex', [course])
         })
       })
@@ -284,7 +282,7 @@ export const actions = {
       }
     }
     if (isCheck == false) {
-      await axios.get('http://localhost:4000/api/userpurchased/' + course_id)
+      await axios.get('http://172.104.167.197:1150/api/userpurchased/' + course_id)
       .then (res => {
         let result = res.data
         commit('addCourseUserPurchased', result)
@@ -301,11 +299,14 @@ export const actions = {
       }
     }
     if (isCheck == false) {
-      await axios.get('http://localhost:4000/api/user/' + user_id)
+      await axios.get('http://172.104.167.197:1150/api/user/' + user_id)
       .then(res => {
         let result = res.data
         commit('addUser', result)
       })
     }
+  },
+  ADD_REVIEW ({commit}, payload) {
+    axios.post('http://localhost:4000/api/insertreview', payload)
   }
 }

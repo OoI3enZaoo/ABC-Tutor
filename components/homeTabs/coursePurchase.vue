@@ -1,6 +1,8 @@
 <template>
   <div>
-    <template v-if="coursePurchased.length == 0">
+    <!-- {{point}} -->
+    {{$store.state.coursePurchased}}
+    <template v-if="coursePur.length == 0">
       <noDataCard :png="coursePng" text="คุณยังไม่มีคอร์สใด ๆ เลย" textbtn="ค้นหาคอร์ส" link="/course"></noDataCard>
     </template>
     <template v-else>
@@ -16,9 +18,9 @@
           </v-layout>
         </div>
         <br>
-        <template v-for="(data,index) in coursePurchased">
-          <nuxt-link :to="'/mycourse/'+data.course_id" tag="span" style="cursor:pointer;">
-                 <v-card>
+        <template v-for="(data,index) in coursePur">
+
+                 <v-card :key="index">
                      <v-layout row wrap>
                        <v-flex lg3 xs12>
                          <v-card-media :src="data.cover" height="200"></v-card-media>
@@ -26,51 +28,150 @@
                        <v-flex lg6 xs12>
                          <v-card-text>
                            <span>{{data.subject}} ({{data.code}})</span><br>
-                           <p class="grey--text">Theerapat Vijitpoo</p>
-                           <p>เนื้อหาสอบบทที่ 1-5 เนื้อหาสำหรับการสอบกลางภาค</p>
+                           <p class="grey--text">{{data.fname}} {{data.lname}}</p>
+                            <span>ให้คะแนนคอร์สนี้</span><br>
+                               <div
+                                v-for="(str,starindex) in point[index]"
+                                :key="str.id"
+                                style="display:inline;"
+                               >
+
+                               <div
+                               @mouseover="mouseOver(index,starindex)"
+                               @mouseleave="mouseLeave(index,starindex)"
+                               @click="mouseClick(index,starindex)"
+                               style="cursor:pointer; display:inline; ">
+                               <v-dialog v-model="dialog" persistent>
+                                 <v-icon  slot="activator">{{str.icon}}</v-icon>
+                                  <v-card>
+                                    <v-card-title class="headline">คอร์สนี้สอนเป็นอย่างไร</v-card-title>
+                                    <v-card-text>
+                                      <v-text-field v-model="reviewText" multi-line label="กรอกคำวิจารณ์"></v-text-field>
+                                      </v-card-text>
+                                    <v-card-actions>
+                                      <v-spacer></v-spacer>
+                                      <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">ยกเลิก</v-btn>
+                                      <v-btn class="green--text darken-1" flat="flat" @click.native="sendReview(data.course_id,numberPoint[index].mypoint)">ส่งคำวิจารณ์</v-btn>
+                                    </v-card-actions>
+                                  </v-card>
+                                </v-dialog>
+
+                               </div>
+                             </div>
+                             <span v-text="numberPoint[index]"></span>
+                             <br>
+                              <span class="grey--text">จากผลโหวตทั้งหมด 33,888 คน</span>
+
                          </v-card-text>
                        </v-flex>
+
                        <v-flex lg3 xs12 text-xs-right>
                          <v-card-text>
                            <span class="grey--text">อัพเดทล่าสุด {{data.lastUpdate}}</span><br>
                            <br>
-                             <!-- <div>
-                               <v-icon medium primary>fa-video-camera</v-icon><br>
-                             </div> -->
-
-                               <div class="mt-5">
-                                   <template v-for="a in 5"><v-icon>star</v-icon></template>&nbsp; <span>5.0</span><br>
-                                   <span class="grey--text">จากผลโหวตทั้งหมด 33,888 คน</span>
-                               </div>
+                             <v-btn class="mt-2" primary @click.native="linkTo(data.course_id)">ดูรายละเอียดคอร์ส</v-btn><br><br>
                            </v-card-text>
                        </v-flex>
                      </v-layout>
                    </v-card>
                    <br>
-           </nuxt-link>
+
          </template>
          </v-container>
      </template>
+
   </div>
 </template>
 <script>
 import noDataCard from './addon/noDataCard.vue'
+import Vue from 'vue'
+const moment = require('moment')
+Vue.use(require('vue-moment'), {
+    moment
+})
 export default {
   components: {
     noDataCard
   },
-  created () {
+  async created () {
+
     this.$store.state.coursePurchased.map(data => {
-      let a = this.$store.getters.COURSE_FROM_ID(data)
-      let b = this.coursePurchased
-      let c = b.concat(a)
-      this.coursePurchased = c
+      this.coursePur.push(...this.$store.getters.COURSE_FROM_ID(data))
+    })
+    this.$store.state.coursePurchased.map(data => {
+      this.point.push([{id:1,icon:'start_border'},{id:2,icon:'start_border'},{id:3,icon:'start_border'},{id:4,icon:'start_border'},{id:5,icon:'start_border'}])
+      this.numberPoint.push({id: 1, mypoint: 0})
+      console.log(this.point)
     })
   },
   data () {
     return {
-      coursePurchased: [],
-      coursePng: require('../../static/coursePurchase.png')
+      coursePur: [],
+      coursePng: require('../../static/coursePurchase.png'),
+      point: [],
+      numberPoint: [],
+      reviewText: null,
+      dialog: false
+    }
+  },
+  methods: {
+    mouseOver (index,dex) {
+      console.log('over: ' + index)
+      if (dex == 0) {
+        this.point[index][dex].icon = 'star'
+        this.numberPoint[index].mypoint = 1
+      }
+      else if (dex == 1) {
+        this.point[index][dex - 1].icon = 'star'
+        this.point[index][dex].icon = 'star'
+        this.numberPoint[index].mypoint = 2
+      }
+      else if (dex == 2) {
+        this.point[index][dex - 2].icon = 'star'
+        this.point[index][dex - 1].icon = 'star'
+        this.point[index][dex].icon = 'star'
+        this.numberPoint[index].mypoint = 3
+      }
+      else if (dex == 3) {
+        this.point[index][dex - 3].icon = 'star'
+        this.point[index][dex - 2].icon = 'star'
+        this.point[index][dex - 1].icon = 'star'
+        this.point[index][dex].icon = 'star'
+        this.numberPoint[index].mypoint = 4
+      }
+      else if (dex == 4) {
+        this.point[index][dex - 4].icon = 'star'
+        this.point[index][dex - 3].icon = 'star'
+        this.point[index][dex - 2].icon = 'star'
+        this.point[index][dex - 1].icon = 'star'
+        this.point[index][dex].icon = 'star'
+        this.numberPoint[index].mypoint = 5
+      }
+
+    },
+    mouseLeave (index,dex) {
+      console.log('leave: ' + index)
+      console.log(this.point)
+      this.point[index][dex].icon = 'star_border'
+    },
+    linkTo (course_id) {
+      this.$router.push('/mycourse/' + course_id)
+    },
+    mouseClick () {
+      console.log('click')
+    },
+    sendReview (courseid, point) {
+      const data = {
+        course_id: courseid,
+        user_id: this.$store.state.profile.user_id,
+        review_text: this.reviewText,
+        review_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss'),
+        review_vote: point
+      }
+      this.$store.dispatch('ADD_REVIEW', data)
+      console.log('id: ' + courseid + ' point: ' + point)
+      this.reviewText = null
+      this.dialog = false
     }
   }
 }
