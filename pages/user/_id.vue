@@ -2,7 +2,7 @@
   <div>
     <parallax src="https://static1.squarespace.com/static/51609147e4b0715db61d32b6/521b97cee4b05f031fd12dde/5519e33de4b06a1002802805/1431718693701/?format=1500w" height="150">
     <div class="mt-4">
-      <p class="headline">Theerapat Vijitpoo</p>
+      <p class="headline">{{user.fname}} {{user.lname}}</p>
       <h6>Freelancing Web Designer</h6>
     </div>
     </parallax>
@@ -10,7 +10,7 @@
       <v-layout>
         <v-flex xs2>
           <v-card flat>
-            <v-card-media src="https://www.runscope.com/static/img/public/customer-portrait-human-api.png" height="200"></v-card-media>
+            <v-card-media :src="user.user_img" height="200"></v-card-media>
             <v-layout>
               <v-flex xs3><v-btn icon><v-icon class="blue--text">fa-facebook</v-icon></v-btn></v-flex>
               <v-flex xs3><v-btn icon><v-icon class="blue--text">fa-twitter</v-icon></v-btn></v-flex>
@@ -59,7 +59,7 @@
 <br>
 
       <div class="text-xs-center">
-        <p class="headline">คอร์ส Theerapat Vijitpoo ที่ลงเรียน</p>
+        <p class="headline">คอร์สที่ {{user.fname}} {{user.lname}} ลงเรียน</p>
       </div>
       <v-layout row wrap>
         <template v-for="a in 7">
@@ -75,15 +75,22 @@
 
     </v-layout>
 
-
     </v-container>
   </div>
 </template>
 <script>
 import parallax from '../../components/parallax.vue'
 export default {
+  async asyncData ({store, route}) {
+    await store.dispatch('PULL_USER', route.params.id)
+  },
   components: {
     parallax
+  },
+  computed: {
+    user () {
+      return this.$store.getters.USER_FROM_ID(this.$route.params.id)[0]
+    }
   }
 }
 </script>

@@ -6,7 +6,7 @@
       <h6 class="white--text" ><b>กว่า 635 คอร์สที่ให้ใช้งานอยู่ในขณะนี้ </b></h6>
     </parallax>
       <template v-for="data in branchs">
-        <popularCourse :branchs="data.text" :course="$store.getters.COURSE_POPULAR(data.branch_id)" :mKey="data.branch_id"></popularCourse>
+        <popularCourse :branchs="data.text" :course="$store.getters.COURSE_POPULAR_HOME(data.branch_id)" :branchid="data.branch_id"></popularCourse>
       </template>
   </div>
 </template>
@@ -15,7 +15,7 @@ import popularCourse from '../../components/popularCourse.vue'
 import parallax from '../../components/parallax.vue'
 export default {
   async asyncData ({store}) {
-    await store.dispatch('PULL_POPULAR_COURSE')
+    await store.dispatch('PULL_POPULAR_COURSE_HOME')
   },
   created () {
   //  this.$store.dispatch('PULL_POPULAR_COURSE')

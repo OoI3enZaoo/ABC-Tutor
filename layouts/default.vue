@@ -122,7 +122,6 @@
     right
     bottom
     secondary
-    multi-line
     v-model="snackbar"
   >
     {{ snackbarText }}
@@ -196,7 +195,7 @@
     data () {
       return {
         slideNav: false,
-        snackbar: true,
+        snackbar: false,
         snackbarText: '',
         menuAfterLoginItem: [
           {

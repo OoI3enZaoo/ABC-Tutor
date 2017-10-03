@@ -26,7 +26,8 @@ export const state = () => ({
   courseCreate: [],
   checkPullCourse: [],
   courseContent: [],
-  popularcourse: [],
+  popularCourseHome: [],
+  popularCourseIndex: [],
   courseUserPurchased: []
 })
 export const getters = {
@@ -71,14 +72,19 @@ export const getters = {
       return courseId == item.course_id
     })
   },
-  COURSE_POPULAR (state) {
-    return branchId => state.popularcourse.filter(item => {
+  COURSE_POPULAR_HOME (state) {
+    return branchId => state.popularCourseHome.filter(item => {
       return branchId == item.branch_id
     })
   },
   COURSE_USER_PURCHASED (state) {
     return courseId => state.courseUserPurchased.filter(item => {
       return courseId == item.course_id
+    })
+  },
+  USER_FROM_ID (state) {
+    return userId => state.user.filter(item => {
+      return userId == item.user_id
     })
   }
 }
@@ -111,7 +117,8 @@ export const mutations = {
   addCourseCreate: (state, data) => state.courseCreate.push(data),
   addCourseContent: (state, data) => state.courseContent.push(data),
   updateuserid: (state, data) => state.profile.user_id = (new Date().getTime()),
-  addPopularCourse: (state, data) => state.popularcourse.push(...data),
+  addPopularCourseHome: (state, data) => state.popularCourseHome.push(...data),
+  addPopularCourseIndex: (state, data) => state.popularCourseIndex.push(...data),
   addCourseUserPurchased: (state, data) => state.courseUserPurchased.push(...data)
 }
 export const actions = {
@@ -145,48 +152,6 @@ export const actions = {
       })
     }
   },
-  // async PULL_USER_FROM_COURSE_ID ({commit, state}, courseId) {
-  //   let user_id
-  //    for (let i = 0; i < state.course.length; i++) {
-  //      console.log('state.course_user_id: ' + state.course[i].user_id + ' id: ' + courseId );
-  //     if (state.course[i].course_id == courseId) {
-  //       console.log('found user_id in course state');
-  //       await (user_id =  state.course[i].user_id)
-  //       break;
-  //     }
-  //   }
-  //   let alreadyGet = false
-  //   for (let i = 0; i < state.user.length; i++) {
-  //     console.log('loop')
-  //       if (state.user[i].user_id == user_id) {
-  //         await (alreadyGet = true)
-  //         console.log('true')
-  //         break;
-  //       } else {
-  //         alreadyGet = false
-  //       }
-  //   }
-  //   if(alreadyGet == false) {
-  //     console.log('get: ' + user_id)
-  //     await axios.get('http://172.104.167.197:1150/api/user/' + user_id)
-  //     .then (res => {
-  //       let result = res.data[0]
-  //       const data = {
-  //         user_id: result.user_id,
-  //         fname: result.fname,
-  //         lname: result.lname,
-  //         user_img: result.user_img,
-  //         sex: result.sex,
-  //         birthday: result.birthday,
-  //         email: result.email,
-  //         facebook: result.facebook,
-  //         twitter: result.twitter,
-  //         youtube: result.youtube
-  //       }
-  //       commit('addUser', data)
-  //     })
-  //   }
-  // },
   async PULL_COURSE_FROM_COURSE_ID ({commit, state}, courseId) {
     let isCheck = false
     if (state.course.length > 0) {
@@ -232,15 +197,81 @@ export const actions = {
     console.log('payload: ' + JSON.stringify(payload))
     axios.post('http://172.104.167.197:1150/api/insertcoursecontent', payload)
   },
-  async PULL_POPULAR_COURSE ({commit, state}) {
-    if (state.popularcourse.length == 0) {
+  async PULL_POPULAR_COURSE_HOME ({commit, state}) {
+    if (state.popularCourseHome.length == 0) {
       await state.branchs.map(data => {
          axios.get('http://172.104.167.197:1150/api/popularcourse/' + data.branch_id)
         .then (res => {
           let result = res.data
-          console.log(result);
-          commit('addCourses', result)
-          commit('addPopularCourse', result)
+          result.map(str => {
+            let user = {
+              user_id: str.user_id,
+              fname: str.fname,
+              lname: str.lname,
+              user_img: str.user_img,
+              sex: str.sex,
+              birthday: str.birthday,
+              email: str.email,
+              facebook: str.facebook,
+              twitter: str.twitter,
+              youtube: str.youtube
+            }
+            let course = {
+              course_id: str.course_id,
+              user_id: str.user_id,
+              branch_id: str.branch_id,
+              subject: str.subject,
+              code: str.code,
+              price: str.price,
+              des: str.des,
+              cover: str.cover,
+              ts: str.ts,
+              coupon: str.coupon,
+              lastUpdate: str.lastUpdate
+            }
+            console.log('PULL_POPULAR_COURSE_HOME')
+            commit('addUser', [user])
+            commit('addCourses', [course])
+            commit('addPopularCourseHome', [course])
+          })
+        })
+      })
+    }
+  },
+  async PULL_POPULAR_COURSE_INDEX ({commit, state}) {
+    if (state.popularCourseIndex.length == 0) {
+      await axios.get('http://localhost:4000/api/popularcourse')
+      .then (res => {
+        let result = res.data
+        result.map(str => {
+          let user = {
+            user_id: str.user_id,
+            fname: str.fname,
+            lname: str.lname,
+            user_img: str.user_img,
+            sex: str.sex,
+            birthday: str.birthday,
+            email: str.email,
+            facebook: str.facebook,
+            twitter: str.twitter,
+            youtube: str.youtube
+          }
+          let course = {
+            course_id: str.course_id,
+            user_id: str.user_id,
+            branch_id: str.branch_id,
+            subject: str.subject,
+            code: str.code,
+            price: str.price,
+            des: str.des,
+            cover: str.cover,
+            ts: str.ts,
+            coupon: str.coupon,
+            lastUpdate: str.lastUpdate
+          }
+          commit('addUser', [user])
+          commit('addCourses', [course])
+          commit('addPopularCourseIndex', [course])
         })
       })
     }
@@ -253,13 +284,28 @@ export const actions = {
       }
     }
     if (isCheck == false) {
-      axios.get('http://172.104.167.197:1150/api/userpurchased/' + course_id)
+      await axios.get('http://localhost:4000/api/userpurchased/' + course_id)
       .then (res => {
         let result = res.data
-        console.log(result);
         commit('addCourseUserPurchased', result)
       })
     }
+  },
+  async PULL_USER ({commit, state}, user_id) {
+    console.log('PULL_USER: ' + user_id)
+    let isCheck = false
+    for (let i = 0; i < state.user.length; i ++) {
+      if (state.user.user_id == user_id) {
+        await(isCheck = true)
+        break
+      }
+    }
+    if (isCheck == false) {
+      await axios.get('http://localhost:4000/api/user/' + user_id)
+      .then(res => {
+        let result = res.data
+        commit('addUser', result)
+      })
+    }
   }
-
 }

@@ -12,13 +12,14 @@
     <h6>ที่ได้รับความนิยม</h6>
     <v-spacer></v-spacer>
     <v-layout row wrap>
-      <template v-for="a in 4">
+      <template v-for="data in popularCourseIndex">
           <v-flex xs6 md3>
+            <nuxt-link :to="'/course/' + data.course_id"  tag="span" style="cursor:pointer;">
             <v-card>
-              <v-card-media src="https://us.123rf.com/450wm/juliatim/juliatim1603/juliatim160300025/54282789-young-man-sitting-in-the-park-under-a-tree-and-working-with-laptop-flat-modern-illustration-of-socia.jpg?ver=6" height="150"></v-card-media>
+              <v-card-media :src="data.cover" height="150"></v-card-media>
               <v-card-text>
-                <p style="display:inline;">คอมพิวเตอร์เบื้องต้น (SP521)</p><br>
-                <span class="grey--text">Theerapat Vijitpoo</span><br>
+                <p style="display:inline;">{{data.subject}} ({{data.code}})</p><br>
+                <span class="grey--text">{{data.fname}} {{data.lname}}</span><br>
                 <template v-for="a in 5">
                     <v-icon>star</v-icon>
                 </template>
@@ -26,9 +27,10 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <h6 class="red--text"><b>350.-</b></h6>
+                <h6 class="red--text"><b>{{data.price}}.-</b></h6>
               </v-card-actions>
             </v-card>
+            </nuxt-link>
           </v-flex>
       </template>
     </v-layout>
@@ -114,10 +116,17 @@
 <script>
 import parallax from '../components/parallax.vue'
 import branch from '../components/branch.vue'
+import popularCourse from '../components/popularCourse.vue'
 export default {
+  async asyncData ({store}) {
+    await store.dispatch('PULL_POPULAR_COURSE_INDEX')
+  },
   computed: {
     branchs () {
       return this.$store.state.branchs
+    },
+    popularCourseIndex () {
+      return this.$store.state.popularCourseIndex
     }
   },
   mounted () {
@@ -125,7 +134,8 @@ export default {
   },
   components: {
     parallax,
-    branch
+    branch,
+    popularCourse
   }
 }
 </script>

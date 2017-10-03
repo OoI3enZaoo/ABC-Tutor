@@ -10,8 +10,8 @@
       <v-layout row wrap>
         <v-flex xs12 sm9>
           <h6 class="headline">เนื้อหาเรียน</h6>
-          <span v-html="course.des">{{course.des}}</span>
-          <br
+          <span v-html="course.des">{{course.des}}</span><br>
+          <br>
           <hr>
           <br>
           <h6 class="headline">เกี่ยวกับผู้สอน</h6>
@@ -112,7 +112,7 @@
           <v-list>
             <div style="max-height:480px; overflow:scroll; overflow-x:hidden;">
               <template v-for="data in courseUserPurchased" >
-                <v-list-tile @click="" avatar>
+                <v-list-tile @click="" avatar nuxt :to="'/user/' + data.user_id" tag="span">
                   <v-list-tile-avatar>
                     <img :src="data.user_img" alt="avatar">
                   </v-list-tile-avatar>
