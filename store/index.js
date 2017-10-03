@@ -26,7 +26,8 @@ export const state = () => ({
   courseCreate: [],
   checkPullCourse: [],
   courseContent: [],
-  popularcourse: []
+  popularcourse: [],
+  courseUserPurchased: []
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -74,6 +75,11 @@ export const getters = {
     return branchId => state.popularcourse.filter(item => {
       return branchId == item.branch_id
     })
+  },
+  COURSE_USER_PURCHASED (state) {
+    return courseId => state.courseUserPurchased.filter(item => {
+      return courseId == item.course_id
+    })
   }
 }
 export const mutations = {
@@ -105,14 +111,15 @@ export const mutations = {
   addCourseCreate: (state, data) => state.courseCreate.push(data),
   addCourseContent: (state, data) => state.courseContent.push(data),
   updateuserid: (state, data) => state.profile.user_id = (new Date().getTime()),
-  addPopularCourse: (state, data) => state.popularcourse.push(...data)
+  addPopularCourse: (state, data) => state.popularcourse.push(...data),
+  addCourseUserPurchased: (state, data) => state.courseUserPurchased.push(...data)
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
     if (state.branchs.length == 0) {
       await dispatch('PULL_BRANCHS')
     }
-    commit('updateuserid')
+    // commit('updateuserid')
   },
   async PULL_BRANCHS ({commit}) {
     await axios.get('http://172.104.167.197:1150/api')
@@ -204,7 +211,8 @@ export const actions = {
     await axios.post('http://172.104.167.197:1150/api/insertcourse', data)
   },
   ADD_COURSE_PURCHASED ({commit}, payload) {
-    commit('addCoursePurchased', payload)
+    commit('addCoursePurchased', payload.course_id)
+    axios.post('http://172.104.167.197:1150/api/insertuserpurchase', payload)
   },
   ADD_COURSE_FAVORITE ({commit}, payload) {
     commit('addCourseFavorite', payload)
@@ -234,6 +242,22 @@ export const actions = {
           commit('addCourses', result)
           commit('addPopularCourse', result)
         })
+      })
+    }
+  },
+  async PULL_USER_PURCHASED ({commit, state}, course_id) {
+    let isCheck = false
+    for (let i = 0; i < state.courseUserPurchased.length; i++ ) {
+      if (state.courseUserPurchased[i].course_id == course_id) {
+        await (isCheck = true)
+      }
+    }
+    if (isCheck == false) {
+      axios.get('http://172.104.167.197:1150/api/userpurchased/' + course_id)
+      .then (res => {
+        let result = res.data
+        console.log(result);
+        commit('addCourseUserPurchased', result)
       })
     }
   }

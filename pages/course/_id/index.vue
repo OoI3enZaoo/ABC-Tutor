@@ -108,20 +108,20 @@
             </v-card-text>
           </v-card>
           <br><br>
-          <p class="headline ml-4">ซื้อไปแล้ว 5 คน</p>
+          <p class="headline ml-4">ซื้อไปแล้ว {{courseUserPurchased.length}} คน</p>
           <v-list>
-            <div style="max-height:480px; overflow:scroll;">
-              <template v-for="a in 50">
+            <div style="max-height:480px; overflow:scroll; overflow-x:hidden;">
+              <template v-for="data in courseUserPurchased" >
                 <v-list-tile @click="" avatar>
                   <v-list-tile-avatar>
-                    <img src="http://c12.incisozluk.com.tr/res/incisozluk//11503/3/1891623_od3a8.jpg" alt="avatar">
+                    <img :src="data.user_img" alt="avatar">
                   </v-list-tile-avatar>
                   <v-list-tile-content>
                     <v-list-tile-title>
-                      mark zuckerberg
+                      {{data.fname}} {{data.lname}}
                     </v-list-tile-title>
                     <v-list-tile-sub-title>
-                      8/9/2560 16:58
+                      {{data.purchase_ts}}
                     </v-list-tile-sub-title>
                   </v-list-tile-content>
                 </v-list-tile>
@@ -131,16 +131,21 @@
         </v-flex>
       </v-layout>
     </v-container>
-    {{checkCourseCreate}}
+
   </div>
 </template>
 
 <script>
 import parallax from '../../../components/parallax.vue'
+import Vue from 'vue'
+const moment = require('moment')
+Vue.use(require('vue-moment'), {
+    moment
+})
 export default {
   async fetch ({store, route}) {
     await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
-    // await store.dispatch('PULL_USER_FROM_COURSE_ID', route.params.id)
+    await store.dispatch('PULL_USER_PURCHASED', route.params.id)
   },
   components: {
     parallax
@@ -149,7 +154,13 @@ export default {
     purchasedCourse() {
       // if (this.$store.state.isLogin == true) {
         console.log('course_id: ' + this.course.course_id)
-        this.$store.dispatch('ADD_COURSE_PURCHASED', this.course.course_id)
+        const data = {
+          course_id: this.course.course_id,
+          branch_id: this.course.branch_id,
+          user_id: this.$store.state.profile.user_id,
+          purchase_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+        }
+        this.$store.dispatch('ADD_COURSE_PURCHASED', data)
         // this.$router.push('/')
       // }
     },
@@ -173,6 +184,9 @@ export default {
     },
     checkCourseCreate () {
       return this.$store.getters.COURSE_CREATE(this.$route.params.id)[0]
+    },
+    courseUserPurchased () {
+      return this.$store.getters.COURSE_USER_PURCHASED(this.$route.params.id)
     }
   }
 }

@@ -10,7 +10,7 @@
                       <h6 style="display:inline;">{{description}}</h6>
                     </v-flex>
                     <v-flex xs2 text-xs-right>
-                      <span class="grey--text">18/8/14 18:15</span>
+                      <span class="grey--text">{{time}}</span>
                     </v-flex>
                   </v-layout>
               </v-container>
@@ -31,8 +31,8 @@
   </div>
 </template>
 <script>
-export default {  
-  props: ['title', 'description', 'files', 'contentId'],
+export default {
+  props: ['title', 'description', 'files', 'contentId', 'time'],
   methods: {
     openFile (name) {
       console.log(' filename: ' + name + ' contentId: ' + this.contentId)

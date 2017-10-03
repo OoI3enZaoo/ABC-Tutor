@@ -6,7 +6,7 @@
       </div>
       <br>
       <template v-for="data in courseContent">
-          <expansion :title="data.content_title" :description="data.content_des" :files="data.files" :contentId="data.content_id"></expansion>
+          <expansion :title="data.content_title" :time= "data.content_ts" :description="data.content_des" :files="data.files" :contentId="data.content_id"></expansion>
       <br>
       </template>
 <br><br><br><br>
@@ -19,6 +19,11 @@
 
 import createCourseContent from './addon/createCourseContent.vue'
 import expansion from './addon/expansion.vue'
+import Vue from 'vue'
+const moment = require('moment')
+Vue.use(require('vue-moment'), {
+    moment
+})
 export default {
   components: {
     createCourseContent,
@@ -33,6 +38,7 @@ export default {
     contentcourse (str) {
       let data = str
       data.course_id = this.$route.params.id
+      data.content_ts = Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       this.$store.dispatch('ADD_COURSE_CONTENT', data)
     }
   }
