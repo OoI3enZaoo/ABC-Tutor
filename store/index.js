@@ -28,7 +28,8 @@ export const state = () => ({
   courseContent: [],
   popularCourseHome: [],
   popularCourseIndex: [],
-  courseUserPurchased: []
+  courseUserPurchased: [],
+  myVote: []
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -86,6 +87,11 @@ export const getters = {
     return userId => state.user.filter(item => {
       return userId == item.user_id
     })
+  },
+  MY_VOTE (state) {
+    return courseId => state.myVote.filter(item =>{
+      return courseId == item
+    })
   }
 }
 export const mutations = {
@@ -119,7 +125,8 @@ export const mutations = {
   updateuserid: (state, data) => state.profile.user_id = (new Date().getTime()),
   addPopularCourseHome: (state, data) => state.popularCourseHome.push(...data),
   addPopularCourseIndex: (state, data) => state.popularCourseIndex.push(...data),
-  addCourseUserPurchased: (state, data) => state.courseUserPurchased.push(...data)
+  addCourseUserPurchased: (state, data) => state.courseUserPurchased.push(...data),
+  addMyVote: (state, data) => state.myVote.push(data)
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
@@ -307,6 +314,7 @@ export const actions = {
     }
   },
   ADD_REVIEW ({commit}, payload) {
-    axios.post('http://localhost:4000/api/insertreview', payload)
+    commit('addMyVote', payload.course_id)
+    axios.post('http://172.104.167.197:1150/api/insertreview', payload)
   }
 }
