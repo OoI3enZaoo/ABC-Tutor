@@ -121,6 +121,12 @@ export default {
   async asyncData ({store}) {
     await store.dispatch('PULL_POPULAR_COURSE_INDEX')
   },
+  created () {
+    this.$store.dispatch('ADD_COURSE_ANNOUNCE')
+    this.$store.dispatch('ADD_COURSE_ANNOUNCE_COMMENT')
+    this.$store.dispatch('ADD_COURSE_QA')
+    this.$store.dispatch('ADD_COURSE_QA_COMMENT')
+  },
   computed: {
     branchs () {
       return this.$store.state.branchs

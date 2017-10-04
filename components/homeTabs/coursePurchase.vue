@@ -27,7 +27,7 @@
                          <v-card-text>
                            <span>{{data.subject}} ({{data.code}})</span><br>
                            <p class="grey--text">{{data.fname}} {{data.lname}}</p>
-                           <template v-if="!$store.getters.MY_VOTE(data.course_id)[0]">
+                           <template v-if="!$store.getters.CHECK_REVIEW(data.course_id)[0]">
                               <span>ให้คะแนนคอร์สนี้</span><br>
                                  <div
                                   v-for="(str,starindex) in point[courseIndex]"
@@ -167,7 +167,7 @@ export default {
     },
     sendReview (courseid, point,index) {
       console.log(courseid)
-      const data = {
+      let data = {
         course_id: courseid,
         user_id: this.$store.state.profile.user_id,
         review_text: this.reviewText,
@@ -175,7 +175,17 @@ export default {
         review_vote: point
       }
       this.$store.dispatch('ADD_REVIEW', data)
-      console.log('id: ' + courseid + ' point: ' + point)
+      let socket = {
+        course_id: courseid,
+        review_vote: point
+      }
+      this.$store.commit('updateCourseVote', socket)
+      this.$socket.emit('voting', socket)
+      data.user_img = this.$store.state.profile.user_img
+      data.fname = this.$store.state.profile.fname
+      data.lname = this.$store.state.profile.lname
+      this.$store.commit('addCourseReview', [data])
+      this.$socket.emit('course_review', data)
       this.reviewText = null
       this.dialog[index].status = false
     }

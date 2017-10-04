@@ -188,9 +188,26 @@
           this.snackbarText  = 'คอร์ส ' + data.subject + ' (' + data.code +')' + ' ถูกสร้างขึ้นแล้ว'
           this.snackbar = true
         }
-        // if (this.$store.state.profile == data.)
       }
-      console.log('user: ' + JSON.stringify(this.user))
+      this.$options.sockets.course_user_purchased = (data) => {
+
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('course_user_purchased: ')
+          this.$store.commit('addCourseUserPurchasedSocket', [data])
+        }
+      }
+      this.$options.sockets.voting = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('voting: ' + JSON.stringify(data))
+          this.$store.commit('updateCourseVote', data)
+        }
+      }
+      this.$options.sockets.course_review = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('course_review: ' +JSON.stringify(data))
+          this.$store.commit('addCourseReviewSocket', [data])
+        }
+      }
     },
     data () {
       return {

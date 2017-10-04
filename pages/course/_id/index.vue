@@ -37,54 +37,73 @@
             </v-flex>
           </v-layout>
           <br><hr><br>
-          <h6 class="headline">การตอบรับของผู้เรียน</h6>
-          <v-layout>
-            <v-flex xs2 text-xs-center>
-              <div class="mt-2">
-                <h3><b>5.0</b></h3>
-                <template v-for="a in 5">
-                  <v-icon>star</v-icon>
-                </template><br>
-                <span class="grey--text">ผลโหวตโดยเฉลี่ย</span>
-              </div>
-            </v-flex>
-            <v-flex xs2>
-                <v-progress-linear value="100" height="10" success> </v-progress-linear>
-                <v-progress-linear value="80" height="10" success> </v-progress-linear>
-                <v-progress-linear value="70" height="10" success> </v-progress-linear>
-                <v-progress-linear value="40" height="10" success> </v-progress-linear>
-                <v-progress-linear value="10" height="10" success> </v-progress-linear>
-            </v-flex>
-            <v-flex xs3>
-              <div class="mt-2">
-                  <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon> <br>
-                  <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><br>
-                  <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><br>
-                  <v-icon>star</v-icon><v-icon>star</v-icon><br>
-                  <v-icon>star</v-icon><br>
-                </div>
-            </v-flex>
-          </v-layout>
-          <br><hr><br>
-          <h6 class="headline">การรีวิว</h6>
+            <h6 class="headline">การตอบรับของผู้เรียน</h6>
+            <template v-if="courseVote">
             <v-layout>
-              <v-flex xs1>
-                <v-avatar>
-                  <img src="http://s3.amazonaws.com/s3.timetoast.com/public/uploads/photos/2065220/billgates.png" alt="avatar">
-                </v-avatar>
+              <v-flex xs3 text-xs-center>
+                <div class="mt-2">
+                  <h3><b>{{courseVoteAVG}}</b></h3>
+                  <template v-for="a in 5">
+                    <v-icon>star</v-icon>
+                  </template><br>
+                  <span class="grey--text">ผลโหวตโดยเฉลี่ย</span><br>
+                  <span class="grey--text">จากคนโหวตทั้งหมด <span class="black--text">{{courseVote.length}}</span> คน</span>
+                </div>
               </v-flex>
-              <v-flex xs1>
-                  <span class="grey--text">5 นาทีที่แล้ว</span><br>
-                  <span>Bill Gates</span>
+              <v-flex xs2>
+                  <v-progress-linear :value="courseVote.five/courseVote.length*100" height="10" success> </v-progress-linear>
+                  <v-progress-linear :value="courseVote.four/courseVote.length*100" height="10" success> </v-progress-linear>
+                  <v-progress-linear :value="courseVote.three/courseVote.length*100" height="10" success> </v-progress-linear>
+                  <v-progress-linear :value="courseVote.two/courseVote.length*100" height="10" success> </v-progress-linear>
+                  <v-progress-linear :value="courseVote.one/courseVote.length*100" height="10" success> </v-progress-linear>
               </v-flex>
-              <v-flex xs4>
-                <template v-for="a in 5">
-                  <v-icon>star</v-icon>
-                </template><br>
-                <span>ชอบมากครับ ที่ผมมีทุกวันนี้ได้เพราะคุณคนเดียวเลย เยี่ยมจริงๆ</span>
+              <v-flex xs3>
+                <div class="mt-2">
+                    <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon> {{courseVote.five}} คน<br>
+                    <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon> {{courseVote.four}} คน<br>
+                    <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon> {{courseVote.three}} คน<br>
+                    <v-icon>star</v-icon><v-icon>star</v-icon> {{courseVote.two}} คน<br>
+                    <v-icon>star</v-icon> {{courseVote.one}} คน<br>
+                  </div>
               </v-flex>
             </v-layout>
+          </template>
+          <template v-else>
+            <p>คอร์สนี้ยังไม่มีการถูกโหวต</p>
+          </template>
+          <br><hr><br>
+          <h6 class="headline">การรีวิว</h6>
+          <template v-if="courseReview.length !== 0">
+            <div style="overflow:scroll; height:300px; overflow-x:hidden;">
+                <template v-for="data in courseReview">
+                  <v-layout :key="data.review_id">
+                    <v-flex xs1>
+                      <v-avatar>
+                        <img :src="data.user_img" alt="avatar">
+                      </v-avatar>
+                    </v-flex>
+                    <v-flex xs2>
+                        <span class="grey--text">
+                          {{ data.review_ts | moment("from", "now", true) }} ที่ผ่านมา
+                        </span><br>
+                        <span>{{data.fname}} {{data.lname}}</span>
+                    </v-flex>
+                    <v-flex xs4>
+                      <template v-for="a in data.review_vote">
+                        <v-icon>star</v-icon>
+                      </template><br>
+                      <span>{{data.review_text}}</span>
+                    </v-flex>
+                  </v-layout>
+                  <br>
+                </template>
+              </div>
+          </template>
+          <template v-else>
+              <p>คอร์สนี้ยังไม่มีการถูกรีวิว</p>
+          </template>
         </v-flex>
+
         <v-flex xs12 sm3>
           <v-card fixed>
             <v-card-media :src="course.cover" height="150"></v-card-media>
@@ -112,7 +131,7 @@
           <v-list>
             <div style="max-height:480px; overflow:scroll; overflow-x:hidden;">
               <template v-for="data in courseUserPurchased" >
-                <v-list-tile @click="" avatar nuxt :to="'/user/' + data.user_id" tag="span">
+                <v-list-tile @click="" avatar nuxt :to="'/user/' + data.user_id" tag="span" >
                   <v-list-tile-avatar>
                     <img :src="data.user_img" alt="avatar">
                   </v-list-tile-avatar>
@@ -121,7 +140,7 @@
                       {{data.fname}} {{data.lname}}
                     </v-list-tile-title>
                     <v-list-tile-sub-title>
-                      {{data.purchase_ts}}
+                      {{ data.purchase_ts | moment("from", "now", true) }} ที่ผ่านมา
                     </v-list-tile-sub-title>
                   </v-list-tile-content>
                 </v-list-tile>
@@ -146,6 +165,8 @@ export default {
   async fetch ({store, route}) {
     await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
     await store.dispatch('PULL_USER_PURCHASED', route.params.id)
+    await store.dispatch('PULL_COURSE_VOTE', route.params.id)
+    await store.dispatch('PULL_COURSE_REVIEW', route.params.id)
   },
   components: {
     parallax
@@ -154,13 +175,19 @@ export default {
     purchasedCourse() {
       // if (this.$store.state.isLogin == true) {
         console.log('course_id: ' + this.course.course_id)
-        const data = {
+        let data = {
           course_id: this.course.course_id,
           branch_id: this.course.branch_id,
           user_id: this.$store.state.profile.user_id,
           purchase_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
         }
         this.$store.dispatch('ADD_COURSE_PURCHASED', data)
+        data.fname = this.$store.state.profile.fname
+        data.lname = this.$store.state.profile.lname
+        data.user_img = this.$store.state.profile.user_img
+        this.$store.commit('addCourseUserPurchased', [data])
+        this.$socket.emit('course_user_purchased', data)
+
         // this.$router.push('/')
       // }
     },
@@ -187,6 +214,15 @@ export default {
     },
     courseUserPurchased () {
       return this.$store.getters.COURSE_USER_PURCHASED(this.$route.params.id)
+    },
+    courseVote () {
+      return this.$store.getters.COURSE_VOTE_FROM_COURSE_ID(this.$route.params.id)[0]
+    },
+    courseVoteAVG () {
+      return this.$store.getters.COURSE_VOTE_FROM_COURSE_ID(this.$route.params.id)[0].avg.toFixed(1)
+    },
+    courseReview () {
+      return this.$store.getters.COURSE_REVIEW_FROM_COURSE_ID(this.$route.params.id)
     }
   }
 }

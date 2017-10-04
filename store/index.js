@@ -29,7 +29,9 @@ export const state = () => ({
   popularCourseHome: [],
   popularCourseIndex: [],
   courseUserPurchased: [],
-  myVote: []
+  courseVote: [],
+  courseReview: [],
+  checkReview: []
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -88,11 +90,21 @@ export const getters = {
       return userId == item.user_id
     })
   },
-  MY_VOTE (state) {
-    return courseId => state.myVote.filter(item =>{
+  CHECK_REVIEW (state) {
+    return courseId => state.checkReview.filter(item =>{
       return courseId == item
     })
-  }
+  },
+  COURSE_VOTE_FROM_COURSE_ID (state) {
+    return courseId => state.courseVote.filter(item =>{
+      return courseId == item.course_id
+    })
+  },
+  COURSE_REVIEW_FROM_COURSE_ID (state) {
+    return courseId => state.courseReview.filter(item =>{
+      return courseId == item.course_id
+    })
+  },
 }
 export const mutations = {
   addBranchs (state, data) {
@@ -121,22 +133,53 @@ export const mutations = {
   updateProfile: (state, data) => state.profile = data,
   addCheckPullCourse: (state, data) => state.checkPullCourse.push(data),
   addCourseCreate: (state, data) => state.courseCreate.push(data),
-  addCourseContent: (state, data) => state.courseContent.push(data),
+  addCourseContent: (state, data) => state.courseContent.unshift(data),
   updateuserid: (state, data) => state.profile.user_id = (new Date().getTime()),
   addPopularCourseHome: (state, data) => state.popularCourseHome.push(...data),
   addPopularCourseIndex: (state, data) => state.popularCourseIndex.push(...data),
-  addCourseUserPurchased: (state, data) => state.courseUserPurchased.push(...data),
-  addMyVote: (state, data) => state.myVote.push(data)
+  addCourseUserPurchased: (state, data) => state.courseUserPurchased.unshift(...data),
+  addCourseUserPurchasedSocket: (state, data) => {
+    state.courseUserPurchased.find(res => res.course_id == data.course_id ? '' : state.courseUserPurchased.unshift(...data))
+  },
+  addCheckReview: (state, data) => state.checkReview.push(data),
+  addCourseVote: (state, data) => state.courseVote.push(...data),
+  addCourseReview: (state, data) => state.courseReview.unshift(...data),
+  addCourseReviewSocket: (state, data) => {
+    state.courseReview.find(res => res.course_id == data.course_id ? '' : state.courseReview.unshift(...data))
+  },
+  updateCourseVote: (state, data) => {
+    state.courseVote.find(res => {
+      if(res.course_id == data.course_id) {
+        res.length += 1
+        res.avg = (res.avg + data.review_vote)/2
+        if (data.review_vote == 1) {
+          res.one += 1
+        }
+        else if (data.review_vote == 2) {
+          res.two += 1
+        }
+        else if (data.review_vote == 3) {
+          res.three += 1
+        }
+        else if (data.review_vote == 4) {
+          res.four += 1
+        }
+        else if (data.review_vote == 5) {
+          res.five += 1
+        }
+      }
+    })
+  }
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
     if (state.branchs.length == 0) {
       await dispatch('PULL_BRANCHS')
     }
-    // commit('updateuserid')
+    commit('updateuserid')
   },
   async PULL_BRANCHS ({commit}) {
-    await axios.get('http://172.104.167.197:1150/api')
+    await axios.get('http://172.104.167.197:4000/api')
       .then(res => {
         let result = res.data
         commit('addBranchs', result)
@@ -151,7 +194,7 @@ export const actions = {
       }
     }
     if (isCheck == false) {
-        await axios.get('http://172.104.167.197:1150/api/getcourse/' + branch_id)
+        await axios.get('http://172.104.167.197:4000/api/getcourse/' + branch_id)
       .then(res => {
         let result = res.data
         commit('addCheckPullCourse', branch_id)
@@ -170,7 +213,7 @@ export const actions = {
      }
     }
     if(isCheck == false) {
-      await axios.get('http://172.104.167.197:1150/api/course/' + courseId)
+      await axios.get('http://172.104.167.197:4000/api/course/' + courseId)
       .then (res => {
         let result = res.data
         commit('addCourses', result)
@@ -180,11 +223,11 @@ export const actions = {
   async PUSH_COURSE ({commit}, data) {
     commit('addCourses', [data])
     commit('addCourseCreate', data.course_id)
-    await axios.post('http://172.104.167.197:1150/api/insertcourse', data)
+    await axios.post('http://172.104.167.197:4000/api/insertcourse', data)
   },
   ADD_COURSE_PURCHASED ({commit}, payload) {
     commit('addCoursePurchased', payload.course_id)
-    axios.post('http://172.104.167.197:1150/api/insertuserpurchase', payload)
+    axios.post('http://localhost:4000/api/insertuserpurchase', payload)
   },
   ADD_COURSE_FAVORITE ({commit}, payload) {
     commit('addCourseFavorite', payload)
@@ -194,7 +237,7 @@ export const actions = {
   },
   UPDATE_PROFILE ({commit}, payload) {
     commit('updateProfile', payload)
-    axios.post('http://172.104.167.197:1150/api/updateuser', payload)
+    axios.post('http://172.104.167.197:4000/api/updateuser', payload)
   },
   PULL_COURSE_DATA ({commit}, payload) {
     console.log('payload: ' + payload)
@@ -202,12 +245,12 @@ export const actions = {
   ADD_COURSE_CONTENT ({commit}, payload) {
     commit('addCourseContent', payload)
     console.log('payload: ' + JSON.stringify(payload))
-    axios.post('http://172.104.167.197:1150/api/insertcoursecontent', payload)
+    axios.post('http://172.104.167.197:4000/api/insertcoursecontent', payload)
   },
   async PULL_POPULAR_COURSE_HOME ({commit, state}) {
     if (state.popularCourseHome.length == 0) {
       await state.branchs.map(data => {
-         axios.get('http://172.104.167.197:1150/api/popularcourse/' + data.branch_id)
+         axios.get('http://172.104.167.197:4000/api/popularcourse/' + data.branch_id)
         .then (res => {
           let result = res.data
           result.map(str => {
@@ -246,7 +289,7 @@ export const actions = {
   },
   async PULL_POPULAR_COURSE_INDEX ({commit, state}) {
     if (state.popularCourseIndex.length == 0) {
-      await axios.get('http://172.104.167.197:1150/api/popularcourse')
+      await axios.get('http://172.104.167.197:4000/api/popularcourse')
       .then (res => {
         let result = res.data
         result.map(str => {
@@ -289,7 +332,7 @@ export const actions = {
       }
     }
     if (isCheck == false) {
-      await axios.get('http://172.104.167.197:1150/api/userpurchased/' + course_id)
+      await axios.get('http://172.104.167.197:4000/api/userpurchased/' + course_id)
       .then (res => {
         let result = res.data
         commit('addCourseUserPurchased', result)
@@ -306,15 +349,118 @@ export const actions = {
       }
     }
     if (isCheck == false) {
-      await axios.get('http://172.104.167.197:1150/api/user/' + user_id)
+      await axios.get('http://172.104.167.197:4000/api/user/' + user_id)
       .then(res => {
         let result = res.data
         commit('addUser', result)
       })
     }
   },
-  ADD_REVIEW ({commit}, payload) {
-    commit('addMyVote', payload.course_id)
-    axios.post('http://172.104.167.197:1150/api/insertreview', payload)
+  ADD_REVIEW ({commit, state}, payload) {
+    commit('addCheckReview', payload.course_id)
+    axios.post('http://172.104.167.197:4000/api/insertreview', payload)
+  },
+  async PULL_COURSE_VOTE ({commit, state}, courseId) {
+    console.log('PULL_COURSE_AVG')
+    let isCheck = false
+    for (let i = 0; i < state.courseVote.length; i++) {
+      if (state.courseVote[i].course_id == courseId) {
+        await (isCheck = true)
+        break
+      }
+    }
+    if (isCheck == false) {
+      axios.get('http://172.104.167.197:4000/api/get_avg_voting_by_courseid/' + courseId)
+      .then (res => {
+        let result = res.data
+        if (result[0].course_id != null) {
+          commit('addCourseVote', result)
+          console.log('not null')
+        }
+      })
+    }
+  },
+  async PULL_COURSE_REVIEW ({commit, state}, courseId) {
+    console.log('PULL_COURSE_REIVEW')
+    let isCheck = false
+    for (let i = 0; i < state.courseReview.length; i++) {
+      if (state.courseReview[i].course_id == courseId) {
+        await (isCheck = true)
+        break
+      }
+    }
+    if (isCheck == false) {
+      axios.get('http://172.104.167.197:4000/api/get_review_course_order_ts/' + courseId)
+      .then (res => {
+        let result = res.data
+        if (result.length != 0) {
+          commit('addCourseReview', result)
+        }
+      })
+    }
+  },
+  async PULL_COURSE_CONTENT ({commit, state}, course_id) {
+    let content_id
+    let isCheck = false
+    state.courseContent.map(res => res.course_id == course_id ? isCheck = true : '')
+    if (isCheck == false) {
+      console.log('load from api')
+      await axios.get('http://localhost:4000/api/get_course_content/' + course_id)
+      .then (res => {
+        content_id = res.data
+        console.log('content_id:' + JSON.stringify(content_id))
+      })
+      content_id.map(con => {
+        axios.get('http://localhost:4000/api/get_course_content_file/' + con.content_id)
+        .then(res => {
+          console.log('map')
+          let result = res.data
+          let file = []
+          console.log('content_file: ' + JSON.stringify(result))
+          result.map(cf => file.push(cf.content_name))
+          con.files = file
+          commit('addCourseContent', con)
+        })
+      })
+    }
   }
+  // ADD_COURSE_ANNOUNCE ({commit}) {
+  //   let data = {
+  //     annou_id: 123456,
+  //     course_id: 123456,
+  //     annou_text: '555',
+  //     annou_ts: '2017-10-04 00:00:00'
+  //   }
+  //   axios.post('http://localhost:4000/api/insertcourse_announce', data)
+  // },
+  // ADD_COURSE_ANNOUNCE_COMMENT ({commit}) {
+  //   let data = {
+  //     annou_id: 123456,
+  //     user_id: 12123,
+  //     annou_com_text: '555',
+  //     annou_com_ts: '2017-10-04 00:00:00'
+  //   }
+  //   axios.post('http://localhost:4000/api/insertcourse_announce_comment', data)
+  // },
+  // ADD_COURSE_QA ({commit}) {
+  //   let data = {
+  //     q_id: 123456,
+  //     course_id: 12123,
+  //     user_id: 12123,
+  //     q_text: '555',
+  //     q_ts: '2017-10-04 00:00:00'
+  //   }
+  //   axios.post('http://localhost:4000/api/insertcourse_q', data)
+  //
+  // },
+  // ADD_COURSE_QA_COMMENT ({commit}) {
+  //   let data = {
+  //     q_id: 123456,
+  //     user_id: 12123,
+  //     q_text: '555',
+  //     q_ts: '2017-10-04 00:00:00'
+  //   }
+  //     axios.post('http://localhost:4000/api/insertcourse_q_comment', data)
+  // }
+
 }
