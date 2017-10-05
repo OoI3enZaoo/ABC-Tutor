@@ -25,7 +25,10 @@ export const state = () => ({
   courseFavorite: [],
   courseCreate: [],
   checkPullCourse: [],
-  courseContent: [],
+  courseDetail: {
+    courseContent: [],
+    courseQA: []
+  },
   popularCourseHome: [],
   popularCourseIndex: [],
   courseUserPurchased: [],
@@ -71,7 +74,12 @@ export const getters = {
     })
   },
   COURSE_CONTENT (state) {
-    return courseId => state.courseContent.filter(item => {
+    return courseId => state.courseDetail.courseContent.filter(item => {
+      return courseId == item.course_id
+    })
+  },
+  COURSE_QA (state) {
+    return courseId => state.courseDetail.courseQA.filter(item => {
       return courseId == item.course_id
     })
   },
@@ -105,13 +113,17 @@ export const getters = {
       return courseId == item.course_id
     })
   },
+  COURSE_QA_COMMENT (state) {
+    return QID => state.courseDetail.courseQA.filter(item => {
+      return QID == item.q_id
+    })
+  }
 }
 export const mutations = {
   addBranchs (state, data) {
     state.branchs.push(...data)
   },
   addCourses (state, data) {
-    console.log('data: ' + JSON.stringify(data))
     state.course.unshift(...data)
   },
   setIsLogin (state, data) {
@@ -133,8 +145,8 @@ export const mutations = {
   updateProfile: (state, data) => state.profile = data,
   addCheckPullCourse: (state, data) => state.checkPullCourse.push(data),
   addCourseCreate: (state, data) => state.courseCreate.push(data),
-  addCourseContent: (state, data) => state.courseContent.unshift(data),
-  updateuserid: (state, data) => state.profile.user_id = (new Date().getTime()),
+  addCourseContent: (state, data) => state.courseDetail.courseContent.unshift(data),
+  updateuserid: (state, data) => state.profile.user_id = Math.floor((Math.random() * 100) + 1),
   addPopularCourseHome: (state, data) => state.popularCourseHome.push(...data),
   addPopularCourseIndex: (state, data) => state.popularCourseIndex.push(...data),
   addCourseUserPurchased: (state, data) => state.courseUserPurchased.unshift(...data),
@@ -169,6 +181,10 @@ export const mutations = {
         }
       }
     })
+  },
+  addCourseQA: (state, data) => state.courseDetail.courseQA.unshift(...data),
+  addCourseQAComment: (state, data) => {
+    state.courseDetail.courseQA.map(res => res.q_id == data.q_id ? res.reply.push(data) : '')
   }
 }
 export const actions = {
@@ -198,7 +214,11 @@ export const actions = {
       .then(res => {
         let result = res.data
         commit('addCheckPullCourse', branch_id)
-        commit('addCourses', result)
+        result.map(rs => {
+          let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
+          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube}])
+          rs.avg != null ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
+        })
       })
     }
   },
@@ -254,34 +274,11 @@ export const actions = {
         .then (res => {
           let result = res.data
           result.map(str => {
-            let user = {
-              user_id: str.user_id,
-              fname: str.fname,
-              lname: str.lname,
-              user_img: str.user_img,
-              sex: str.sex,
-              birthday: str.birthday,
-              email: str.email,
-              facebook: str.facebook,
-              twitter: str.twitter,
-              youtube: str.youtube
-            }
-            let course = {
-              course_id: str.course_id,
-              user_id: str.user_id,
-              branch_id: str.branch_id,
-              subject: str.subject,
-              code: str.code,
-              price: str.price,
-              des: str.des,
-              cover: str.cover,
-              ts: str.ts,
-              coupon: str.coupon,
-              lastUpdate: str.lastUpdate
-            }
+            let {user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube ,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate, five, four, three, two, one, avg, length} = str
             console.log('PULL_POPULAR_COURSE_HOME')
-            commit('addUser', [user])
-            commit('addPopularCourseHome', [course])
+            commit('addUser', [{user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube}])
+            commit('addPopularCourseHome', [{fname,lname,user_id,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate}])
+            str.avg != null ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
           })
         })
       })
@@ -293,33 +290,11 @@ export const actions = {
       .then (res => {
         let result = res.data
         result.map(str => {
-          let user = {
-            user_id: str.user_id,
-            fname: str.fname,
-            lname: str.lname,
-            user_img: str.user_img,
-            sex: str.sex,
-            birthday: str.birthday,
-            email: str.email,
-            facebook: str.facebook,
-            twitter: str.twitter,
-            youtube: str.youtube
-          }
-          let course = {
-            course_id: str.course_id,
-            user_id: str.user_id,
-            branch_id: str.branch_id,
-            subject: str.subject,
-            code: str.code,
-            price: str.price,
-            des: str.des,
-            cover: str.cover,
-            ts: str.ts,
-            coupon: str.coupon,
-            lastUpdate: str.lastUpdate
-          }
-          commit('addUser', [user])
-          commit('addPopularCourseIndex', [course])
+          let {user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube ,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate, five, four, three, two, one, avg, length} = str
+          console.log('PULL_POPULAR_COURSE_HOME')
+          commit('addUser', [{user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube}])
+          commit('addPopularCourseIndex', [{fname,lname,user_id,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate}])
+          str.avg != null ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
         })
       })
     }
@@ -360,26 +335,6 @@ export const actions = {
     commit('addCheckReview', payload.course_id)
     axios.post('http://172.104.167.197:4000/api/insertreview', payload)
   },
-  async PULL_COURSE_VOTE ({commit, state}, courseId) {
-    console.log('PULL_COURSE_AVG')
-    let isCheck = false
-    for (let i = 0; i < state.courseVote.length; i++) {
-      if (state.courseVote[i].course_id == courseId) {
-        await (isCheck = true)
-        break
-      }
-    }
-    if (isCheck == false) {
-      axios.get('http://172.104.167.197:4000/api/get_avg_voting_by_courseid/' + courseId)
-      .then (res => {
-        let result = res.data
-        if (result[0].course_id != null) {
-          commit('addCourseVote', result)
-          console.log('not null')
-        }
-      })
-    }
-  },
   async PULL_COURSE_REVIEW ({commit, state}, courseId) {
     console.log('PULL_COURSE_REIVEW')
     let isCheck = false
@@ -402,7 +357,7 @@ export const actions = {
   async PULL_COURSE_CONTENT ({commit, state}, course_id) {
     let content_id
     let isCheck = false
-    state.courseContent.map(res => res.course_id == course_id ? isCheck = true : '')
+    state.courseDetail.courseContent.find(res => res.course_id == course_id ? isCheck = true : '')
     if (isCheck == false) {
       console.log('load from api')
       await axios.get('http://172.104.167.197:4000/api/get_course_content/' + course_id)
@@ -442,25 +397,34 @@ export const actions = {
   //   }
   //   axios.post('http://172.104.167.197:4000/api/insertcourse_announce_comment', data)
   // },
-  // ADD_COURSE_QA ({commit}) {
-  //   let data = {
-  //     q_id: 123456,
-  //     course_id: 12123,
-  //     user_id: 12123,
-  //     q_text: '555',
-  //     q_ts: '2017-10-04 00:00:00'
-  //   }
-  //   axios.post('http://172.104.167.197:4000/api/insertcourse_q', data)
-  //
-  // },
-  // ADD_COURSE_QA_COMMENT ({commit}) {
-  //   let data = {
-  //     q_id: 123456,
-  //     user_id: 12123,
-  //     q_text: '555',
-  //     q_ts: '2017-10-04 00:00:00'
-  //   }
-  //     axios.post('http://172.104.167.197:4000/api/insertcourse_q_comment', data)
-  // }
+  ,
+  async PULL_COURSE_QA ({commit, state}, course_id) {
+    let qa
+    let isCheck = false
+    state.courseDetail.courseQA.find(res => res.course_id == course_id ? isCheck = true : '')
+    if (isCheck == false) {
+      await axios.get('http://172.104.167.197:4000/api/get_course_q/' + course_id)
+      .then(res => {
+        qa = res.data
+        console.log('qa: ' + JSON.stringify(qa))
+      })
+      qa.map(q => {
+        axios.get('http://172.104.167.197:4000/api/get_course_q_comment/' + q.q_id)
+        .then(res => {
+          console.log('res.data: ' + res.data)
+          let {fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts} = q
+          console.log({q_id,course_id,user_id,q_title,q_des,q_ts,reply:res.data})
+          commit('addCourseQA', [{fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts,reply:res.data}])
+        })
+      })
+    }
+  },
+  ADD_COURSE_QA ({commit}, payload) {
+    axios.post('http://172.104.167.197:4000/api/insertcourse_q', payload)
+  },
+  ADD_COURSE_QA_COMMENT ({commit}, payload) {
+    console.log('ADD_COURSE_QA_COMMENT: ' + JSON.stringify(payload))
+      axios.post('http://172.104.167.197:4000/api/insertcourse_q_comment', payload)
+  }
 
 }

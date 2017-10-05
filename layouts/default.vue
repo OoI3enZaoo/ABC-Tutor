@@ -153,6 +153,7 @@
 </template>
 
 <script>
+
   import avatar from '../components/toolbar/avatar.vue'
   import notification from '../components/toolbar/notification.vue'
   import logo from '../components/logo.vue'
@@ -192,7 +193,6 @@
         }
       }
       this.$options.sockets.course_user_purchased = (data) => {
-
         if (this.$store.state.profile.user_id != data.user_id) {
           console.log('course_user_purchased: ')
           this.$store.commit('addCourseUserPurchasedSocket', [data])
@@ -208,6 +208,19 @@
         if (this.$store.state.profile.user_id != data.user_id) {
           console.log('course_review: ' +JSON.stringify(data))
           this.$store.commit('addCourseReviewSocket', [data])
+        }
+      }
+      this.$options.sockets.qa = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('qa: ' +JSON.stringify(data))
+          this.$store.commit('addCourseQA', [data])
+        }
+      }
+      this.$options.sockets.qa_comment = (data) => {
+        console.log('qa_comment')
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('qa_comment: ' +JSON.stringify(data))
+          this.$store.commit('addCourseQAComment', data)
         }
       }
     },

@@ -20,10 +20,7 @@
               <v-card-text>
                 <p style="display:inline;">{{data.subject}} ({{data.code}})</p><br>
                 <span class="grey--text">{{data.fname}} {{data.lname}}</span><br>
-                <template v-for="a in 5">
-                    <v-icon>star</v-icon>
-                </template>
-                5.0 <p class="grey--text" style="display:inline;">25,555</p>
+                  <RatingInCard :courseId="data.course_id"></RatingInCard>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -117,15 +114,10 @@
 import parallax from '../components/parallax.vue'
 import branch from '../components/branch.vue'
 import popularCourse from '../components/popularCourse.vue'
+import RatingInCard from '../components/RatingInCard.vue'
 export default {
   async asyncData ({store}) {
     await store.dispatch('PULL_POPULAR_COURSE_INDEX')
-  },
-  created () {
-    this.$store.dispatch('ADD_COURSE_ANNOUNCE')
-    this.$store.dispatch('ADD_COURSE_ANNOUNCE_COMMENT')
-    this.$store.dispatch('ADD_COURSE_QA')
-    this.$store.dispatch('ADD_COURSE_QA_COMMENT')
   },
   computed: {
     branchs () {
@@ -141,7 +133,8 @@ export default {
   components: {
     parallax,
     branch,
-    popularCourse
+    popularCourse,
+    RatingInCard
   }
 }
 </script>

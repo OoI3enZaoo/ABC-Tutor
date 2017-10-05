@@ -67,6 +67,7 @@ export default {
   async asyncData ({ store, route }) {
     // await store.dispatch('PULL_COURSE_DATA', route.params.id)
     await store.dispatch('PULL_COURSE_CONTENT', route.params.id)
+    await store.dispatch('PULL_COURSE_QA', route.params.id)
   },
   components: {
     parallax, overall, announcement, live, qa, videoCourse, chat

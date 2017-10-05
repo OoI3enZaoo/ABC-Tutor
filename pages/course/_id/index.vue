@@ -16,13 +16,13 @@
           <br>
           <h6 class="headline">เกี่ยวกับผู้สอน</h6>
           <v-layout>
-            <v-flex xs2>
+            <v-flex xs4 sm4 md4 lg1>
               <v-avatar tile size="80px">
                 <img :src="course.user_img" alt="John">
               </v-avatar>
             </v-flex>
-            <v-flex xs3>
-              <nuxt-link to="/user" tag="span" style="cursor:pointer;"><p style="display:inline;"class="blue--text">{{course.fname}} {{course.lname}}</p></nuxt-link><br>
+            <v-flex xs8 sm8 md8 lg2>
+              <nuxt-link :to="'/user/' + course.user_id" tag="span" style="cursor:pointer;"><p style="display:inline;"class="blue--text">{{course.fname}} {{course.lname}}</p></nuxt-link><br>
               <v-layout>
                 <v-flex xs2>
                   <v-btn icon><v-icon>fa-facebook-square</v-icon></v-btn>
@@ -39,25 +39,27 @@
           <br><hr><br>
             <h6 class="headline">การตอบรับของผู้เรียน</h6>
             <template v-if="courseVote">
-            <v-layout>
-              <v-flex xs3 text-xs-center>
+            <v-layout row wrap>
+              <v-flex xs12 sm3 md3 text-xs-center>
                 <div class="mt-2">
                   <h3><b>{{courseVoteAVG}}</b></h3>
                   <template v-for="a in 5">
                     <v-icon>star</v-icon>
                   </template><br>
                   <span class="grey--text">ผลโหวตโดยเฉลี่ย</span><br>
-                  <span class="grey--text">จากคนโหวตทั้งหมด <span class="black--text">{{courseVote.length}}</span> คน</span>
+                  <span class="grey--text">จาก <span class="black--text">{{courseVote.length}}</span> คน</span>
                 </div>
               </v-flex>
-              <v-flex xs2>
+              <v-flex xs12 sm3 md3>
+                <div class="hidden-xs-only">
                   <v-progress-linear :value="courseVote.five/courseVote.length*100" height="10" success> </v-progress-linear>
                   <v-progress-linear :value="courseVote.four/courseVote.length*100" height="10" success> </v-progress-linear>
                   <v-progress-linear :value="courseVote.three/courseVote.length*100" height="10" success> </v-progress-linear>
                   <v-progress-linear :value="courseVote.two/courseVote.length*100" height="10" success> </v-progress-linear>
                   <v-progress-linear :value="courseVote.one/courseVote.length*100" height="10" success> </v-progress-linear>
+                </div>
               </v-flex>
-              <v-flex xs3>
+              <v-flex xs12 sm6 md6 text-md-left text-xs-center>
                 <div class="mt-2">
                     <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon> {{courseVote.five}} คน<br>
                     <v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon><v-icon>star</v-icon> {{courseVote.four}} คน<br>
@@ -77,18 +79,18 @@
             <div style="overflow:scroll; height:300px; overflow-x:hidden;">
                 <template v-for="data in courseReview">
                   <v-layout :key="data.review_id">
-                    <v-flex xs1>
+                    <v-flex xs2 sm2 md2 lg1>
                       <v-avatar>
                         <img :src="data.user_img" alt="avatar">
                       </v-avatar>
                     </v-flex>
-                    <v-flex xs2>
+                    <v-flex xs5 sm5 md5 lg2>
                         <span class="grey--text">
-                          {{ data.review_ts | moment("from", "now", true) }} ที่ผ่านมา
+                          {{ data.review_ts | moment("from", "now", true) }} ก่อน
                         </span><br>
                         <span>{{data.fname}} {{data.lname}}</span>
                     </v-flex>
-                    <v-flex xs4>
+                    <v-flex xs5 sm5 md5 lg4>
                       <template v-for="a in data.review_vote">
                         <v-icon>star</v-icon>
                       </template><br>
@@ -104,7 +106,7 @@
           </template>
         </v-flex>
 
-        <v-flex xs12 sm3>
+        <v-flex xs12 sm12 md3>
           <v-card fixed>
             <v-card-media :src="course.cover" height="150"></v-card-media>
             <v-card-text>
@@ -165,7 +167,6 @@ export default {
   async fetch ({store, route}) {
     await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
     await store.dispatch('PULL_USER_PURCHASED', route.params.id)
-    await store.dispatch('PULL_COURSE_VOTE', route.params.id)
     await store.dispatch('PULL_COURSE_REVIEW', route.params.id)
   },
   components: {

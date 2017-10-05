@@ -4,7 +4,6 @@
 
 <template v-if="!dataOfQuestion">
   <v-container grid-list-lg>
-    <v-switch color="primary" v-model="isTutor" label="เป็นติวเตอร์"></v-switch>
       <v-layout row wrap>
         <v-flex xs12 sm11>
           <v-text-field
@@ -20,23 +19,23 @@
       </v-layout>
 
     <br><br>
-    <v-card v-for="(a,index) in $store.state.qa" :key="index">
+    <v-card v-for="(data,index) in courseQA" :key="index">
           <v-list two-line>
-            <v-list-tile avatar @click="" @click.native="dataOfQuestion=true">
+            <v-list-tile avatar @click="" @click.native="QADetail(data)">
               <v-list-tile-avatar>
-                <img src="https://image.flaticon.com/icons/png/512/206/206853.png">
+                <img :src="data.user_img">
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-sub-title>
-                    <span>สมศรีไง</span>
+                    <span>{{data.fname}} {{data.lname}}</span>
                 </v-list-tile-sub-title>
                 <v-list-tile-title>
-                    <span>{{a.title}}</span>
+                    <span>{{data.q_title}}</span>
                 </v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                  <v-list-tile-action-text>{{a.tstamp}}</v-list-tile-action-text>
-                  <v-list-tile-action-text class="mr-4 black--text">5</v-list-tile-action-text>
+                  <v-list-tile-action-text>{{data.q_ts | moment('from','now',true)}} ที่แล้ว</v-list-tile-action-text>
+                  <v-list-tile-action-text class="mr-4 black--text">{{data.reply.length}}</v-list-tile-action-text>
                   <v-list-tile-action-text>ตอบกลับ</v-list-tile-action-text>
               </v-list-tile-action>
             </v-list-tile>
@@ -47,62 +46,55 @@
     <template v-else>
       <v-container grid-list-lg>
         <v-btn flat primary @click.native="dataOfQuestion = !dataOfQuestion">กลับไปสู่คำถามทั้งหมด</v-btn>
+
               <v-card>
                 <v-card-text>
-
                   <v-list>
                     <v-list-tile avatar>
                       <v-list-tile-avatar >
-                        <img src="https://scontent.fbkk1-3.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=ce1fb663302049cbb304c38276bc1638&oe=5A4E0989" alt="avatar" >
+                        <img :src="qa.user_img" alt="avatar" >
                       </v-list-tile-avatar>
                       <v-list-tile-content>
-                        <v-list-tile-title><b>คำถามคำถามคำถามคำถามคำถามคำถามคำถามคำถามคำถามคำถาม</b></v-list-tile-title>
+                        <v-list-tile-title><b>{{qa.q_title}}</b></v-list-tile-title>
                         <v-list-tile-sub-title>
-                          <span class="blue--text"><nuxt-link to="" class="blue--text">Theerapat Vijitpoo</nuxt-link></span> &nbsp;&nbsp; 14 นาทีที่แล้ว
+                          <span class="blue--text"><nuxt-link :to="'/user/' + qa.user_id" class="blue--text">{{qa.fname}} {{qa.lname}}</nuxt-link></span> &nbsp;&nbsp; {{qa.q_ts | moment('from','now',true)}} ที่แล้ว
                         </v-list-tile-sub-title>
                       </v-list-tile-content>
                     </v-list-tile>
                     <blockquote>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        <p v-html="qa.q_des"></p>
                     </blockquote>
                   </v-list>
-                    <v-list>
-                      <v-list-tile avatar>
-                        <v-list-tile-avatar>
-                          <img src="http://images.boomsbeat.com/data/images/full/595/bill-gates-jpg.jpg" alt="avatar" >
-                        </v-list-tile-avatar>
-                        <v-list-tile-content>
-                            <v-list-tile-title>
-                              <span class="blue--text"><nuxt-link to="" class="blue--text">Bill Gates</nuxt-link></span>  <span class="grey--text">&nbsp;&nbsp; 14 นาทีที่แล้ว</span>
-                            </v-list-tile-title>
-                            <v-list-tile-sub-title>สวัสดีครับๆๆๆ</v-list-tile-sub-title>
-                        </v-list-tile-content>
-                      </v-list-tile>
-                    </v-list>
-                    <v-list>
-                      <v-list-tile avatar>
-                        <v-list-tile-avatar>
-                          <img src="http://images.boomsbeat.com/data/images/full/595/bill-gates-jpg.jpg" alt="avatar" >
-                        </v-list-tile-avatar>
-                        <v-list-tile-content>
-                            <v-list-tile-title>
-                              <span class="blue--text"><nuxt-link to="" class="blue--text">Bill Gates</nuxt-link></span>  <span class="grey--text">&nbsp;&nbsp; 14 นาทีที่แล้ว</span>
-                            </v-list-tile-title>
-                            <v-list-tile-sub-title>สวัสดีครับๆๆๆ</v-list-tile-sub-title>
-                        </v-list-tile-content>
-                      </v-list-tile>
-                    </v-list>
+                  <template v-if="qa.reply.length != 0">
+                    <template v-for="data in $store.getters.COURSE_QA_COMMENT(qa.q_id)[0].reply">
+                      <v-list>
+                        <v-list-tile avatar>
+                          <v-list-tile-avatar>
+                            <img :src="data.user_img" alt="avatar" >
+                          </v-list-tile-avatar>
+                          <v-list-tile-content>
+                              <v-list-tile-title>
+                                <span class="blue--text"><nuxt-link :to="'/user/' + data.user_id" class="blue--text">{{data.fname}} {{data.lname}}</nuxt-link></span>  <span class="grey--text">&nbsp;&nbsp; {{data.q_ts | moment('from','now',true)}} ที่แล้ว</span>
+                              </v-list-tile-title>
+                              <v-list-tile-sub-title>{{data.q_com_text}}</v-list-tile-sub-title>
+                          </v-list-tile-content>
+                        </v-list-tile>
+                      </v-list>
+                    </template>
+                </template>
+                <template v-else>
+                </template>
                     <v-layout row wrap>
-                      <v-flex xs1 text-xs-right>
+                      <v-flex xs2 md1 text-xs-right>
                         <v-avatar>
-                          <img src="https://scontent.fbkk1-3.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=ce1fb663302049cbb304c38276bc1638&oe=5A4E0989" alt="avatar" >
+                          <img :src="$store.state.profile.user_img" alt="avatar" >
                         </v-avatar>
                       </v-flex>
-                      <v-flex xs10>
-                        <v-text-field solo label="พิมพ์คำตอบ" class="elevation-0" style="border:1px solid grey"></v-text-field>
+                      <v-flex xs10 md9>
+                        <v-text-field v-model="replyText" solo label="พิมพ์คำตอบ" class="elevation-0" style="border:1px solid grey"></v-text-field>
                       </v-flex>
-                      <v-flex xs1>
-                        <v-btn primary block>ส่งคำตอบ</v-btn>
+                      <v-flex xs12 md1>
+                        <v-btn primary block v-on:keyup.enter="SendReply" @click.native="SendReply">ส่งคำตอบ</v-btn>
                       </v-flex>
                     </v-layout>
                 </v-card-text>
@@ -114,35 +106,72 @@
 <script>
 import { mapGetters } from 'vuex'
 import create from '../addon/createQuestion.vue'
+import Vue from 'vue'
+const moment = require('moment')
+Vue.use(require('vue-moment'), {
+    moment
+})
 export default {
   created () {
-    console.log('check isLogin: ' + this.isLogin)
+    console.log('courseId: ' + this.courseId)
   },
   components: {
     create
   },
   data () {
     return {
-      isTutor: false,
-      dataOfQuestion: false
+      dataOfQuestion: false,
+      replyText: '',
+      qa: {}
     }
   },
   methods: {
     dataFromQuill (val) {
-      const data = {
-        room: 1212335,
-        userId: 'xxxben',
-        title: val.title,
-        description: val.description,
-        tstamp: new Date()
+      let data = {
+        q_id: new Date().getTime(),
+        course_id: this.$route.params.id,
+        user_id: this.$store.state.profile.user_id,
+        q_title: val.title,
+        q_des: val.description,
+        q_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       }
+      this.$store.dispatch('ADD_COURSE_QA', data)
+      data.fname = this.$store.state.profile.fname
+      data.lname = this.$store.state.profile.lname
+      data.user_img = this.$store.state.profile.user_img,
+      data.reply = []
+      this.$store.commit('addCourseQA', [data])
       this.$socket.emit('qa', data)
+    },
+    QADetail (data) {
+      this.dataOfQuestion = true
+      console.log('QADetail: ' + this.dataOfQuestion)
+      this.qa = data
+
+    },
+    SendReply () {
+      console.log('SendReply');
+      let data = {
+        q_id: this.qa.q_id,
+        user_id: this.$store.state.profile.user_id,
+        q_com_text: this.replyText,
+        q_com_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+      }
+      this.$store.dispatch('ADD_COURSE_QA_COMMENT', data)
+      data.fname = this.$store.state.profile.fname
+      data.lname = this.$store.state.profile.lname
+      data.user_img = this.$store.state.profile.user_img,
+      data.reply = []
+      this.replyText = ''
+      data.course_id = this.$route.params.id
+      this.$store.commit('addCourseQAComment', data)
+      this.$socket.emit('qa_comment', data)
     }
   },
   computed: {
-    ...mapGetters([
-      'qa'
-    ])
+    courseQA () {
+      return this.$store.getters.COURSE_QA(this.$route.params.id)
+    }
   }
 }
 </script>

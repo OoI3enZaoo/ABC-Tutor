@@ -35,6 +35,7 @@
                           <span>{{data.subject}} ({{data.code}})</span><br>
                           <p class="grey--text">Theerapat Vijitpoo</p>
                           <p>เนื้อหาสอบบทที่ 1-5 เนื้อหาสำหรับการสอบกลางภาค</p>
+                          {{data.course_id}}
                         </v-card-text>
                       </v-flex>
                       <v-flex lg3 xs12 text-xs-right>
@@ -42,8 +43,7 @@
                           <span class="grey--text">สร้างเมื่อ 18/8/2560 23:06</span><br>
                               <div class="mt-5">
                                   <h6><b>{{data.price}}.-</b></h6>
-                                  <template v-for="a in 5"><v-icon>star</v-icon></template>&nbsp; <span>5.0</span><br>
-                                  <span class="grey--text">จากผลโหวตทั้งหมด 33,888 คน</span>
+                                  <RatingInCard :courseId="data.course_id"></RatingInCard>
                               </div>
                           </v-card-text>
                       </v-flex>
@@ -59,6 +59,7 @@
 </template>
 <script>
 import parallax from '../../../components/parallax.vue'
+import RatingInCard from '../../../components/RatingInCard.vue'
 export default {
   async asyncData ({ store, route}) {
     // if (store.getters.ALL_COURSE_FROM_ID(route.params.branchId).length == 0) {
@@ -78,10 +79,17 @@ export default {
     },
     courseLength () {
       return this.$store.getters.ALL_COURSE_FROM_ID(this.$route.params.branchId).length
-    }
+    },
+    courseVote () {
+      return this.$store.getters.COURSE_VOTE_FROM_COURSE_ID(this.$route.params.id)[0]
+    },
+    courseVoteAVG () {
+      return this.$store.getters.COURSE_VOTE_FROM_COURSE_ID(this.$route.params.id)[0].avg.toFixed(1)
+    },
   },
   components: {
-    parallax
+    parallax,
+    RatingInCard
   },
   data () {
     return {

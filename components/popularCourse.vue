@@ -15,10 +15,7 @@
                   <v-card-text>
                     <p>{{data.subject}} ({{data.code}})</p>
                     <span class="grey--text">{{data.fname}} {{data.lname}}</span><br>
-                    <template v-for="a in 5">
-                      <v-icon>star</v-icon>
-                    </template>
-                    <span>5.0 </span> <span class="grey--text">(33,888)</span>
+                      <RatingInCard :courseId= "data.course_id"></RatingInCard>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
@@ -33,7 +30,11 @@
   </div>
 </template>
 <script>
+import RatingInCard from './RatingInCard.vue'
 export default {
-  props: ['branchs', 'branchid', 'course']
+  props: ['branchs', 'branchid', 'course'],
+  components: {
+    RatingInCard
+  }
 }
 </script>
