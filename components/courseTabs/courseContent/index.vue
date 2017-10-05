@@ -40,6 +40,8 @@ export default {
       data.course_id = this.$route.params.id
       data.content_ts = Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       this.$store.dispatch('ADD_COURSE_CONTENT', data)
+      data.user_id = this.$store.state.profile.user_id
+      this.$socket.emit('courseContent', data)
     }
   }
 }

@@ -187,7 +187,7 @@ export default {
         data.user_img = this.$store.state.profile.user_img
         this.$store.commit('addCourseUserPurchased', [data])
         this.$socket.emit('course_user_purchased', data)
-
+        this.$socket.emit('subscribe', data.course_id)
         // this.$router.push('/')
       // }
     },

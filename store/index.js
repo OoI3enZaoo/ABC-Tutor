@@ -227,7 +227,7 @@ export const actions = {
   },
   ADD_COURSE_PURCHASED ({commit}, payload) {
     commit('addCoursePurchased', payload.course_id)
-    axios.post('http://localhost:4000/api/insertuserpurchase', payload)
+    axios.post('http://172.104.167.197:4000/api/insertuserpurchase', payload)
   },
   ADD_COURSE_FAVORITE ({commit}, payload) {
     commit('addCourseFavorite', payload)
@@ -405,13 +405,13 @@ export const actions = {
     state.courseContent.map(res => res.course_id == course_id ? isCheck = true : '')
     if (isCheck == false) {
       console.log('load from api')
-      await axios.get('http://localhost:4000/api/get_course_content/' + course_id)
+      await axios.get('http://172.104.167.197:4000/api/get_course_content/' + course_id)
       .then (res => {
         content_id = res.data
         console.log('content_id:' + JSON.stringify(content_id))
       })
       content_id.map(con => {
-        axios.get('http://localhost:4000/api/get_course_content_file/' + con.content_id)
+        axios.get('http://172.104.167.197:4000/api/get_course_content_file/' + con.content_id)
         .then(res => {
           console.log('map')
           let result = res.data
@@ -431,7 +431,7 @@ export const actions = {
   //     annou_text: '555',
   //     annou_ts: '2017-10-04 00:00:00'
   //   }
-  //   axios.post('http://localhost:4000/api/insertcourse_announce', data)
+  //   axios.post('http://172.104.167.197:4000/api/insertcourse_announce', data)
   // },
   // ADD_COURSE_ANNOUNCE_COMMENT ({commit}) {
   //   let data = {
@@ -440,7 +440,7 @@ export const actions = {
   //     annou_com_text: '555',
   //     annou_com_ts: '2017-10-04 00:00:00'
   //   }
-  //   axios.post('http://localhost:4000/api/insertcourse_announce_comment', data)
+  //   axios.post('http://172.104.167.197:4000/api/insertcourse_announce_comment', data)
   // },
   // ADD_COURSE_QA ({commit}) {
   //   let data = {
@@ -450,7 +450,7 @@ export const actions = {
   //     q_text: '555',
   //     q_ts: '2017-10-04 00:00:00'
   //   }
-  //   axios.post('http://localhost:4000/api/insertcourse_q', data)
+  //   axios.post('http://172.104.167.197:4000/api/insertcourse_q', data)
   //
   // },
   // ADD_COURSE_QA_COMMENT ({commit}) {
@@ -460,7 +460,7 @@ export const actions = {
   //     q_text: '555',
   //     q_ts: '2017-10-04 00:00:00'
   //   }
-  //     axios.post('http://localhost:4000/api/insertcourse_q_comment', data)
+  //     axios.post('http://172.104.167.197:4000/api/insertcourse_q_comment', data)
   // }
 
 }

@@ -177,10 +177,12 @@
       //   console.log('addChat: ' + JSON.stringify(data))
       //   this.$store.commit('addChat', data)
       // }
-      // this.$options.sockets.course = (data) => {
-      //   console.log('addChat: ' + JSON.stringify(data))
-      //   this.$store.commit('addCourse', data)
-      // }
+      this.$options.sockets.courseContent = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          this.$store.commit('addCourseContent', data)
+          console.log(data)
+        }
+      }
       this.$options.sockets.PUSH_COURSE = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
           console.log('PUSH_COURSE: ' + data.user_id)
