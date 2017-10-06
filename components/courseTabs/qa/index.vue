@@ -91,10 +91,10 @@
                         </v-avatar>
                       </v-flex>
                       <v-flex xs10 md9>
-                        <v-text-field v-model="replyText" solo label="พิมพ์คำตอบ" class="elevation-0" style="border:1px solid grey"></v-text-field>
+                        <v-text-field v-model="replyText"  @keyup.enter="SendReply" solo label="พิมพ์คำตอบ" class="elevation-0" style="border:1px solid grey"></v-text-field>
                       </v-flex>
                       <v-flex xs12 md1>
-                        <v-btn primary block v-on:keyup.enter="SendReply" @click.native="SendReply">ส่งคำตอบ</v-btn>
+                        <v-btn primary block @click.native="SendReply">ส่งคำตอบ</v-btn>
                       </v-flex>
                     </v-layout>
                 </v-card-text>
@@ -151,21 +151,23 @@ export default {
     },
     SendReply () {
       console.log('SendReply');
-      let data = {
-        q_id: this.qa.q_id,
-        user_id: this.$store.state.profile.user_id,
-        q_com_text: this.replyText,
-        q_com_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+      if (this.replyText != '') {
+        let data = {
+          q_id: this.qa.q_id,
+          user_id: this.$store.state.profile.user_id,
+          q_com_text: this.replyText,
+          q_com_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+        }
+        this.$store.dispatch('ADD_COURSE_QA_COMMENT', data)
+        data.fname = this.$store.state.profile.fname
+        data.lname = this.$store.state.profile.lname
+        data.user_img = this.$store.state.profile.user_img,
+        data.reply = []
+        data.course_id = this.$route.params.id
+        this.$store.commit('addCourseQAComment', data)
+        this.$socket.emit('qa_comment', data)
+        this.replyText = ''
       }
-      this.$store.dispatch('ADD_COURSE_QA_COMMENT', data)
-      data.fname = this.$store.state.profile.fname
-      data.lname = this.$store.state.profile.lname
-      data.user_img = this.$store.state.profile.user_img,
-      data.reply = []
-      this.replyText = ''
-      data.course_id = this.$route.params.id
-      this.$store.commit('addCourseQAComment', data)
-      this.$socket.emit('qa_comment', data)
     }
   },
   computed: {

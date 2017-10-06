@@ -27,7 +27,8 @@ export const state = () => ({
   checkPullCourse: [],
   courseDetail: {
     courseContent: [],
-    courseQA: []
+    courseQA: [],
+    courseChat: []
   },
   popularCourseHome: [],
   popularCourseIndex: [],
@@ -117,6 +118,11 @@ export const getters = {
     return QID => state.courseDetail.courseQA.filter(item => {
       return QID == item.q_id
     })
+  },
+  COURSE_CHAT (state) {
+    return courseId => state.courseDetail.courseChat.filter(item => {
+      return courseId = item.course_id
+    })
   }
 }
 export const mutations = {
@@ -185,7 +191,8 @@ export const mutations = {
   addCourseQA: (state, data) => state.courseDetail.courseQA.unshift(...data),
   addCourseQAComment: (state, data) => {
     state.courseDetail.courseQA.map(res => res.q_id == data.q_id ? res.reply.push(data) : '')
-  }
+  },
+  addCourseChat: (state, data) => state.courseDetail.courseChat.push(...data)
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
@@ -425,6 +432,17 @@ export const actions = {
   ADD_COURSE_QA_COMMENT ({commit}, payload) {
     console.log('ADD_COURSE_QA_COMMENT: ' + JSON.stringify(payload))
       axios.post('http://172.104.167.197:4000/api/insertcourse_q_comment', payload)
+  },
+  ADD_COURSE_CHAT ({commit}, payload) {
+    console.log('ADD_COURSE_CHAT' + JSON.stringify(payload))
+    axios.post('http://172.104.167.197:4000/api/insertchat/', payload)
+  },
+  async PULL_COURSE_CHAT ({commit}, course_id) {
+    await axios.get('http://localhost:4000/api/get_course_chat/' + course_id)
+    .then (res => {
+      let result = res.data
+      console.log(result)
+      commit('addCourseChat', result)
+    })
   }
-
 }

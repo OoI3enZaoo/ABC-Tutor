@@ -223,6 +223,13 @@
           this.$store.commit('addCourseQAComment', data)
         }
       }
+      this.$options.sockets.chat = (data) => {
+        console.log('chat')
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('chat: ' +JSON.stringify(data))
+          this.$store.commit('addCourseChat', [data])
+        }
+      }
     },
     data () {
       return {

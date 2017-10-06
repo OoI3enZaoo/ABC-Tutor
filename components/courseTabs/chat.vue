@@ -9,21 +9,21 @@
               <v-list two-line>
                 <v-subheader>สนทนา</v-subheader>
                 <div id="container" style="overflow:scroll; overflow-x:hidden; height:500px;" class="grey lighten-4">
-                    <template v-for="data in message" >
+                    <template v-for="data in Messages">
                         <v-list-tile avatar >
                           <v-list-tile-avatar>
-                            <img :src="data.userdata.img" alt="avatar">
+                            <img :src="data.user_img" alt="avatar">
                           </v-list-tile-avatar>
                           <v-list-tile-content>
-                              <v-list-tile-title>{{data.userdata.name}} &nbsp;&nbsp; <span class="grey--text">{{data.date}}</span> </v-list-tile-title>
-                              <v-list-tile-sub-title>{{data.message}}</v-list-tile-sub-title>
+                              <v-list-tile-title>{{data.fname}} {{data.lname}} &nbsp;&nbsp; <span class="grey--text">{{data.date}}</span> </v-list-tile-title>
+                              <v-list-tile-sub-title>{{data.chat_text}}</v-list-tile-sub-title>
                           </v-list-tile-content>
                         </v-list-tile>
                       </template>
                 </div>
 
               </v-list>
-            <v-text-field solo label="พิมช้อความ"  @keyup.enter="sendMessage($event.target.value)"></v-text-field>
+            <v-text-field solo label="พิมช้อความ"  v-model="chatText" @keyup.enter="sendMessage"></v-text-field>
           </v-card>
         </v-flex>
         <v-flex lg2 md3 sm4>
@@ -58,43 +58,80 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
+const moment = require('moment')
+Vue.use(require('vue-moment'), {
+    moment
+})
 export default {
+  created () {
+    this.online_id = this.$route.params.id +1
+    let data = {
+      course_id: this.online_id,
+      fname: this.$store.state.profile.fname,
+      lname: this.$store.state.profile.lname,
+      user_img: this.$store.state.profile.user_img
+    }
+    this.$socket.emit('online', data)
+  },
   mounted () {
-    setInterval(() => {
-      this.scrollToEnd()
-    }, 1)
-    this.$options.sockets.private_message = (data) => {
-      console.log(JSON.stringify(data))
-      this.message.push(data)
+    this.scrollToEnd()
+    this.$options.sockets.online = (data) => {
+      console.log('online: ' + JSON.stringiyfy(data))
+    }
+    this.$options.sockets.offline = (data) => {
+      console.log('offline: ' + JSON.stringiyfy(data))
     }
   },
   data () {
     return {
       roomId: 1212335,
+      online_id: '',
       userData: {
         name: 'ben',
         img: 'https://scontent.fbkk1-3.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=aed0ea5bba94084d3114d146c6c7a907&oe=5A267C89'
       },
-      message: []
+      message: [],
+      chatText: ''
     }
   },
   methods: {
-    sendMessage (message) {
-      console.log('message: ' + message)
-      const data = {
-        room: this.roomId,
-        message: message,
-        userdata: this.userData,
-        date: new Date()
+    sendMessage () {
+      console.log('message: ' + this.chatText)
+      let data = {
+        course_id: this.$route.params.id,
+        user_id: this.$store.state.profile.user_id,
+        chat_text: this.chatText,
+        chat_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       }
-      this.$socket.emit('private_message', data)
+      this.$store.dispatch('ADD_COURSE_CHAT', data)
+      data.fname = this.$store.state.profile.fname
+      data.lname = this.$store.state.profile.lname
+      data.user_img = this.$store.state.profile.user_img
+      this.$store.commit('addCourseChat', [data])
       this.$socket.emit('chat', data)
+      this.scrollToEnd()
     },
     scrollToEnd () {
-      var container = this.$el.querySelector('#container')
-      container.scrollTop = container.scrollHeight
+      setTimeout(()=> {
+        var container = this.$el.querySelector('#container')
+        container.scrollTop = container.scrollHeight
+      },100)
     }
+  },
+  computed: {
+    Messages () {
+      return this.$store.getters.COURSE_CHAT(this.$route.params.id)
+    }
+  },
+  beforeDestroy () {
+    let data = {
+      course_id: this.online_id,
+      fname: this.$store.state.profile.fname,
+      lname: this.$store.state.profile.lname,
+      user_img: this.$store.state.profile.user_img
+    }
+    this.$socket.emit('offline', data)
   }
-
 }
 </script>

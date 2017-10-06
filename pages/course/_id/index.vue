@@ -167,7 +167,7 @@ export default {
   async fetch ({store, route}) {
     await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
     await store.dispatch('PULL_USER_PURCHASED', route.params.id)
-    await store.dispatch('PULL_COURSE_REVIEW', route.params.id)
+    await store.dispatch('PULL_COURSE_REVIEW', route.params.id)    
   },
   components: {
     parallax
