@@ -4,8 +4,8 @@
 <!-- {{$store.state.currentCourse}} -->
 
 <!-- {{$store.getters.ALL_COURSE_FROM_ID(this.$route.params.branchId).length}} -->
-    <parallax height="200" src= "https://archive.org/download/abstract-colored-circle-red-material-designlines-background/abstract-colored-circle-red-material-designlines-background.jpg">
-      <div class="mt-4">
+    <parallax height="200" :src= "$store.state.background">
+      <div class="mt-5" style="display:inline;">
         <div v-if="$store.state.isLogin === true">
           <h5 style="display:inline;"><v-btn icon nuxt to="/"><v-icon large dark>home</v-icon></v-btn>&nbsp;&nbsp;/&nbsp;&nbsp;<nuxt-link to="/course" class="white--text">คอร์สทั้งหมด</nuxt-link><span>&nbsp;&nbsp;/&nbsp;&nbsp;{{branch[0].text}}</span></h5><br>
         </div>

@@ -32,11 +32,11 @@ module.exports = {
   	'quill/dist/quill.bubble.css',
   	'quill/dist/quill.core.css'
   ],
-  loading: { color: '#F44336' },
+  loading: { color: '#2196F3' },
   manifest: {
       name: 'ABC-Tutor',
       description: 'ABC-Tutor System',
-      theme_color: '#F44336'
+      theme_color: '#2196F3'
     },
     modules: [
       '@nuxtjs/pwa',
@@ -47,10 +47,7 @@ module.exports = {
   */
   build: {
     vendor: ['vuetify', 'axios', 'vue-quill-editor/ssr', 'vue-socket.io'],
-    extractCSS: true,
-    /*
-    ** Run ESLINT on save
-    */
+    extractCSS: true
     // extend (config, ctx) {
     //   if (ctx.dev && ctx.isClient) {
     //     config.module.rules.push({

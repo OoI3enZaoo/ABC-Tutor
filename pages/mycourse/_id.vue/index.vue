@@ -69,6 +69,7 @@ export default {
     await store.dispatch('PULL_COURSE_CONTENT', route.params.id)
     await store.dispatch('PULL_COURSE_QA', route.params.id)
     await store.dispatch('PULL_COURSE_CHAT', route.params.id)
+    await store.dispatch('PULL_USER_ONLINE', route.params.id)
   },
   components: {
     parallax, overall, announcement, live, qa, videoCourse, chat

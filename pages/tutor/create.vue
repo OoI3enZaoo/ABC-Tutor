@@ -174,6 +174,8 @@ export default {
         //   lname: this.$store.state.profile.lname,
         //   user_img: this.$store.state.profile.user_img
         // }
+        this.data.fname = this.$store.state.profile.fname
+        this.data.lname = this.$store.state.profile.lname
         this.$socket.emit('PUSH_COURSE', socket)
         //this.$socket.emit('PUSH_INSTRUCTOR', instructor)
         this.$store.dispatch('PUSH_COURSE', this.data)

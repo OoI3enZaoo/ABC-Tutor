@@ -179,6 +179,7 @@ export default {
         course_id: courseid,
         review_vote: point
       }
+      this.$store.dispatch('ADD_VOTING', socket)
       this.$store.commit('updateCourseVote', socket)
       this.$socket.emit('voting', socket)
       data.user_img = this.$store.state.profile.user_img

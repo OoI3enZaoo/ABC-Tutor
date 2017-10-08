@@ -1,6 +1,7 @@
 import axios from 'axios'
 // import { db } from '../firebase'
 export const state = () => ({
+  background: require('../static/background.jpg'),
   branchs: [],
   isLogin: false,
   projectName: 'ABC-Tutor',
@@ -28,14 +29,17 @@ export const state = () => ({
   courseDetail: {
     courseContent: [],
     courseQA: [],
-    courseChat: []
+    courseChat: [],
+    courseAnno: [],
+    userOnline: []
   },
   popularCourseHome: [],
   popularCourseIndex: [],
   courseUserPurchased: [],
   courseVote: [],
   courseReview: [],
-  checkReview: []
+  checkReview: [],
+  notification: []
 })
 export const getters = {
   BRANCH_FROM_ID (state) {
@@ -123,6 +127,16 @@ export const getters = {
     return courseId => state.courseDetail.courseChat.filter(item => {
       return courseId = item.course_id
     })
+  },
+  COURSE_ANNO (state) {
+    return courseId => state.courseDetail.courseAnno.filter(item => {
+      return courseId == item.course_id
+    })
+  },
+  COURSE_USER (state) {
+    return courseId => state.courseDetail.userOnline.filter(item => {
+      return courseId == item.course_id
+    })
   }
 }
 export const mutations = {
@@ -166,33 +180,83 @@ export const mutations = {
     state.courseReview.find(res => res.course_id == data.course_id ? '' : state.courseReview.unshift(...data))
   },
   updateCourseVote: (state, data) => {
-    state.courseVote.find(res => {
-      if(res.course_id == data.course_id) {
-        res.length += 1
-        res.avg = (res.avg + data.review_vote)/2
+      let have = false
+      state.courseVote.find(res => {
+        if (res.course_id == data.course_id) {
+          console.log(res)
+          res.length += 1
+          res.avg = (res.avg + data.review_vote)/2
+          if (data.review_vote == 1) {
+            res.one += 1
+          }
+          else if (data.review_vote == 2) {
+            res.two += 1
+          }
+          else if (data.review_vote == 3) {
+            res.three += 1
+          }
+          else if (data.review_vote == 4) {
+            res.four += 1
+          }
+          else if (data.review_vote == 5) {
+            res.five += 1
+          }
+          console.log(res)
+          have = true
+        }
+      })
+      if (have == false) {
+        console.log('course_id: ' + JSON.stringify(data))
+        let newData = {
+          course_id: data.course_id,
+          five: 0,
+          four: 0,
+          three: 0,
+          two: 0,
+          one: 0,
+          avg: data.review_vote,
+          length: 0
+        }
         if (data.review_vote == 1) {
-          res.one += 1
+          newData.one += 1
         }
         else if (data.review_vote == 2) {
-          res.two += 1
+          newData.two += 1
         }
         else if (data.review_vote == 3) {
-          res.three += 1
+          newData.three += 1
         }
         else if (data.review_vote == 4) {
-          res.four += 1
+          newData.four += 1
         }
         else if (data.review_vote == 5) {
-          res.five += 1
+          newData.five += 1
         }
+        newData.length += 1
+        console.log('have == false: ' + JSON.stringify(newData))
+        state.courseVote.push(newData)
+
       }
-    })
   },
   addCourseQA: (state, data) => state.courseDetail.courseQA.unshift(...data),
   addCourseQAComment: (state, data) => {
     state.courseDetail.courseQA.map(res => res.q_id == data.q_id ? res.reply.push(data) : '')
   },
-  addCourseChat: (state, data) => state.courseDetail.courseChat.push(...data)
+  addCourseChat: (state, data) => state.courseDetail.courseChat.push(...data),
+  addCourseAnno: (state, data) => state.courseDetail.courseAnno.unshift(...data),
+  addCourseAnnoComment: (state, data) => {
+    state.courseDetail.courseAnno.map(res => res.annou_id == data.annou_id ? res.reply.push(data) : '')
+  },
+  addNotification: (state, data) => state.notification.unshift(data),
+  addUserOnline: (state, data) => state.courseDetail.userOnline.unshift(...data),
+  removeUserOnline: (state, data) => {
+    let a = state.courseDetail.userOnline.indexOf(data)
+    let b = state.courseDetail.userOnline.splice(a, 1)
+  },
+  removeAllUser: (state) => {
+    console.log('removeAllUser')
+    state.courseDetail.userOnline = []
+  }
 }
 export const actions = {
   async nuxtServerInit ({commit, state, dispatch, route}) {
@@ -210,12 +274,7 @@ export const actions = {
   },
   async PULL_COURSE_FROM_BRANCH_ID ({state, commit}, branch_id) {
     let isCheck = false
-    for (let i = 0; i < state.checkPullCourse.length; i++) {
-      if (state.checkPullCourse[i] == branch_id) {
-        await (isCheck = true)
-        break
-      }
-    }
+    state.checkPullCourse.find(f => f == branch_id ? isCheck = true : '')
     if (isCheck == false) {
         await axios.get('http://172.104.167.197:4000/api/getcourse/' + branch_id)
       .then(res => {
@@ -224,26 +283,28 @@ export const actions = {
         result.map(rs => {
           let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
           commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube}])
-          rs.avg != null ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
+          let inStore = false
+          state.courseVote.find(f => f.course_id == rs.course_id  ? inStore = true : '')
+          rs.avg != null && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
         })
       })
     }
   },
-  async PULL_COURSE_FROM_COURSE_ID ({commit, state}, courseId) {
+  async PULL_COURSE_FROM_COURSE_ID ({commit, state, dispatch}, courseId) {
     let isCheck = false
-    if (state.course.length > 0) {
-      for (let i = 0; i < state.course.length; i++) {
-       if (state.course[i].course_id == courseId) {
-         await (isCheck = true)
-         break;
-       }
-     }
-    }
+    state.course.find(f => f.course_id == courseId ? isCheck = true : '')
     if(isCheck == false) {
+      dispatch('PULL_COURSE_REVIEW', courseId)
       await axios.get('http://172.104.167.197:4000/api/course/' + courseId)
       .then (res => {
         let result = res.data
-        commit('addCourses', result)
+        result.map(rs => {
+          let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
+          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube}])
+          let inStore = false
+          state.courseVote.find(f => f.course_id == rs.course_id  ? inStore = true : '')
+          rs.avg != null && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
+        })
       })
     }
   },
@@ -285,7 +346,9 @@ export const actions = {
             console.log('PULL_POPULAR_COURSE_HOME')
             commit('addUser', [{user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube}])
             commit('addPopularCourseHome', [{fname,lname,user_id,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate}])
-            str.avg != null ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
+            let inStore = false
+            state.courseVote.find(f => f.course_id == str.course_id  ? inStore = true : '')
+            str.avg != null && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
           })
         })
       })
@@ -301,7 +364,9 @@ export const actions = {
           console.log('PULL_POPULAR_COURSE_HOME')
           commit('addUser', [{user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube}])
           commit('addPopularCourseIndex', [{fname,lname,user_id,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate}])
-          str.avg != null ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
+          let inStore = false
+          state.courseVote.find(f => f.course_id == str.course_id  ? inStore = true : '')
+          str.avg != null && inStore == false  ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
         })
       })
     }
@@ -341,6 +406,9 @@ export const actions = {
   ADD_REVIEW ({commit, state}, payload) {
     commit('addCheckReview', payload.course_id)
     axios.post('http://172.104.167.197:4000/api/insertreview', payload)
+  },
+  ADD_VOTING ({commit, state}, payload) {
+    // axios.post('http://172.104.167.197:4000/api/insertvote', payload)
   },
   async PULL_COURSE_REVIEW ({commit, state}, courseId) {
     console.log('PULL_COURSE_REIVEW')
@@ -385,26 +453,7 @@ export const actions = {
         })
       })
     }
-  }
-  // ADD_COURSE_ANNOUNCE ({commit}) {
-  //   let data = {
-  //     annou_id: 123456,
-  //     course_id: 123456,
-  //     annou_text: '555',
-  //     annou_ts: '2017-10-04 00:00:00'
-  //   }
-  //   axios.post('http://172.104.167.197:4000/api/insertcourse_announce', data)
-  // },
-  // ADD_COURSE_ANNOUNCE_COMMENT ({commit}) {
-  //   let data = {
-  //     annou_id: 123456,
-  //     user_id: 12123,
-  //     annou_com_text: '555',
-  //     annou_com_ts: '2017-10-04 00:00:00'
-  //   }
-  //   axios.post('http://172.104.167.197:4000/api/insertcourse_announce_comment', data)
-  // },
-  ,
+  },
   async PULL_COURSE_QA ({commit, state}, course_id) {
     let qa
     let isCheck = false
@@ -438,11 +487,44 @@ export const actions = {
     axios.post('http://172.104.167.197:4000/api/insertchat/', payload)
   },
   async PULL_COURSE_CHAT ({commit}, course_id) {
-    await axios.get('http://localhost:4000/api/get_course_chat/' + course_id)
+    await axios.get('http://172.104.167.197:4000/api/get_course_chat/' + course_id)
     .then (res => {
       let result = res.data
       console.log(result)
       commit('addCourseChat', result)
     })
+  },
+  ADD_COURSE_ANNO ({commit}, payload) {
+    axios.post('http://172.104.167.197:4000/api/insertcourse_announce/', payload)
+  },
+  ADD_COURSE_ANNO_COMMENT ({commit}, payload) {
+    axios.post('http://172.104.167.197:4000/api/insertcourse_announce_comment/', payload)
+  },
+  async PULL_USER_ONLINE ({state, commit}, course_id) {
+    let new_course_id = course_id +  11111
+    let result
+      await axios.get('http://172.104.167.197:4000/api/get_userinroom/' + course_id)
+      .then (res => {
+        result = res.data
+        result.map(m => m.course_id =  m.course_id + '' + 11111)
+        console.log('a:' + JSON.stringify(result))
+      })
+      console.log('b:' + JSON.stringify(result))
+      commit('addUserOnline', result)
+      let me = {
+        course_id: new_course_id,
+        user_id: state.profile.user_id,
+        fname: state.profile.fname,
+        lname: state.profile.lname,
+        user_img: state.profile.user_img
+      }
+      commit('addUserOnline', [me])
+  },
+  USER_ONLINE ({commit}, payload) {
+    console.log('user_online: ' + JSON.stringify(payload))
+    //axios.post('http://172.104.167.197:4000/api/insertusertoroom/', payload)
+  },
+  USER_OFFLINE ({commit}, payload) {
+    //axios.post('http://172.104.167.197:4000/api/deleteuserfromroom/', payload)
   }
 }

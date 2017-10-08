@@ -1,9 +1,9 @@
 <template>
   <div>
     <parallax height = "500" type="link" src="http://www.gengotutors.com/img/slides/skype-language-tutor-homepage-background.jpg" position="center">
-      <h1 class="white--text">เรียนกับอาจารย์ไม่รู้เรื่อง ?</h1>
+      <h1 class="white--text text-xs-center">เรียนกับอาจารย์ไม่รู้เรื่อง ?</h1>
       <h4 class="white--text">มาเริ่มต้นกับเราที่ ABC-Tutor</h4>
-      <v-btn round primary large>สม้ครสมาชิก</v-btn>
+      <v-btn round primary large style="padding: 60px 70px 60x 70px;" nuxt to ="/login">สม้ครสมาชิก</v-btn>
     </parallax>
  <div>
   <br><br>
@@ -24,7 +24,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <h6 class="red--text"><b>{{data.price}}.-</b></h6>
+                <h6 class="primary--text"><b>{{data.price}}.-</b></h6>
               </v-card-actions>
             </v-card>
             </nuxt-link>

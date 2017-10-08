@@ -162,10 +162,6 @@
       this.$socket.emit('subscribe', 1212335)
     },
     mounted () {
-      // this.$options.sockets.announcement = (data) => {
-      //   console.log('announcement: ' + JSON.stringify(data))
-      //   this.$store.commit('addAnnouncement', data)
-      // }
       // this.$options.sockets.qa = (data) => {
       //   console.log('qa: ' + JSON.stringify(data))
       //   this.$store.commit('addQA', data)
@@ -186,8 +182,9 @@
       }
       this.$options.sockets.PUSH_COURSE = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('PUSH_COURSE: ' + data.user_id)
+          console.log('PUSH_COURSE: ' + JSON.stringify(data))
           this.$store.commit('addCourses', [data])
+          this.$socket.commit('addNotification', data)
           this.snackbarText  = 'คอร์ส ' + data.subject + ' (' + data.code +')' + ' ถูกสร้างขึ้นแล้ว'
           this.snackbar = true
         }
@@ -228,6 +225,30 @@
         if (this.$store.state.profile.user_id != data.user_id) {
           console.log('chat: ' +JSON.stringify(data))
           this.$store.commit('addCourseChat', [data])
+        }
+      }
+      this.$options.sockets.announcement = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('announcement: ' + JSON.stringify(data))
+          this.$store.commit('addCourseAnno', [data])
+        }
+      }
+      this.$options.sockets.announcement_comment = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('addCourseAnnoComment: ' + JSON.stringify(data))
+          this.$store.commit('addCourseAnnoComment', data)
+        }
+      },
+      this.$options.sockets.online = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('addUserOnline: ' + JSON.stringify(data))
+          this.$store.commit('addUserOnline', [data])
+        }
+      },
+      this.$options.sockets.offline = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('removeUserOnline: ' + JSON.stringify(data))
+          this.$store.commit('removeUserOnline', data)
         }
       }
     },

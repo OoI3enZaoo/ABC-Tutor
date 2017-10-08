@@ -12,48 +12,55 @@
                   <create title="สร้างคำประกาศ" type="2" style="margin-left:60px;" @result="dataFromQuill"></create>
               </template>
             </v-flex>
-            <template v-for="a in 2">
-                <v-flex xs12>
-                  <v-card>
-                    <v-card-text>
-                      <v-layout>
-                        <v-flex xs5 sm2>
-                          <img src="https://image.flaticon.com/icons/png/512/206/206853.png" height="80">
-                        </v-flex>
-                        <v-flex xs7 sm4>
-                          <span class="blue--text">Theerapat Vijtipoo</span><br>
-                          <span class="grey--text">ประกาศเมื่อ 25 นาทีที่แล้ว</span>
-                        </v-flex>
-                      </v-layout>
-                      <br>
-                      <p><b>เทคนิคสำคัญในการทำข้อสอบวิชาคอมพิวเตอร์เบื้องต้น</b></p>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                      <v-layout>
-                        <v-flex xs2 sm1>
-                          <img src="http://www.pngmart.com/files/3/Bill-Gates-PNG-Transparent-Image.png" height="50">
-                        </v-flex>
-                        <v-flex xs10 sm11>
-                            <v-text-field class="elevation-1"
-                            solo
-                            label='พิมข้อความของคุณที่นี่..'
-                            single-line
-                            ></v-text-field>
-                        </v-flex>
-                      </v-layout>
-                      <br>
-                      <v-layout v-for="(a,index) in 2" :key="index">
-                        <v-flex xs2 sm1>
-                          <img src="http://www.pngall.com/wp-content/uploads/2016/04/Mark-Zuckerberg-Free-Download-PNG.png" height="50">
-                        </v-flex>
-                        <v-flex xs10 sm3>
-                            <span class="blue--text">สมชาย</span> &nbsp;<span class="grey--text">5 นาทีที่แล้ว</span><br>
-                            <span>ขอบคุณค่ะ</span>
-                        </v-flex>
-                        <br><br><br>
-                      </v-layout>
-                    </v-card-text>
-                  </v-card>
-                </v-flex>
+            <template v-for="(data,i) in courseAnno">
+                  <v-flex xs12 :key="i">
+                    <v-card>
+                      <v-card-text>
+                        <v-layout>
+                          <v-flex xs5 sm2>
+                            <v-avatar :side="80">
+                              <img :src="data.user_img" alt="avatar" >
+                            </v-avatar>
+                          </v-flex>
+                          <v-flex xs7 sm4>
+                            <span class="blue--text">{{data.fname}} {{data.lname}}</span><br>
+                            <span class="grey--text">ประกาศเมื่อ {{data.annou_ts | moment('from','now',true)}} ก่อน</span>
+                          </v-flex>
+                        </v-layout>
+                        <br>
+                        <p v-html="data.annou_text"></p>
+                        <v-layout>
+                          <v-flex xs2 sm1>
+                            <v-avatar>
+                              <img :src="$store.state.profile.user_img" alt="avatar" >
+                            </v-avatar>
+                          </v-flex>
+                          <v-flex xs10 sm11>
+                              <v-text-field
+                                class="elevation-1"
+                                solo
+                                label='พิมข้อความของคุณที่นี่..'
+                                single-line
+                                @keyup.enter="SendReply($event.target.value,data)"
+                              ></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                        <br>
+                        <v-layout v-for="(reply,index) in data.reply" :key="index">
+                            <v-flex xs2 sm1>
+                              <v-avatar>
+                                <img :src="reply.user_img" alt="avatar" >
+                              </v-avatar>
+                            </v-flex>
+                            <v-flex xs10 sm3>
+                                <span class="blue--text">{{reply.fname}} {{reply.lname}}</span> &nbsp;<span class="grey--text">{{data.annou_com_ts | moment('from','now',true)}}</span><br>
+                                <span>{{reply.annou_com_text}}</span>
+                            </v-flex>
+                            <br><br><br>
+                        </v-layout>
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
               </template>
           </v-layout>
           <br><br><br><br>
@@ -61,11 +68,17 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
+const moment = require('moment')
+Vue.use(require('vue-moment'), {
+    moment
+})
 import create from './addon/createQuestion.vue'
 export default {
   data () {
     return {
-      isTutor: false
+      isTutor: false,
+      replyText: ''
     }
   },
   components: {
@@ -73,11 +86,42 @@ export default {
   },
   methods: {
     dataFromQuill (val) {
-      const data = {
-        room: 1212335,
-        description: val.description
+      let data = {
+        annou_id: new Date().getTime(),
+        course_id: this.$route.params.id,
+        annou_text: val.description,
+        annou_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       }
+      this.$store.dispatch('ADD_COURSE_ANNO', data)
+      data.reply = []
+      data.user_id = this.$store.state.profile.user_id
+      data.fname = this.$store.state.profile.fname
+      data.lname = this.$store.state.profile.lname
+      data.user_img = this.$store.state.profile.user_img
+      this.$store.commit('addCourseAnno', [data])
       this.$socket.emit('announcement', data)
+    },
+    SendReply (message, val) {
+        let data = {
+          annou_id: val.annou_id,
+          user_id: this.$store.state.profile.user_id,
+          annou_com_text: message,
+          annou_com_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+        }
+        this.$store.dispatch('ADD_COURSE_ANNO_COMMENT', data)
+        data.user_id = this.$store.state.profile.user_id
+        data.fname = this.$store.state.profile.fname
+        data.lname = this.$store.state.profile.lname
+        data.user_img = this.$store.state.profile.user_img
+        data.course_id = this.$route.params.id
+        this.$store.commit('addCourseAnnoComment', data)
+        this.$socket.emit('announcement_comment', data)
+        console.log('message: ' + JSON.stringify(data))
+    }
+  },
+  computed: {
+    courseAnno () {
+      return this.$store.getters.COURSE_ANNO(this.$route.params.id)
     }
   }
 }

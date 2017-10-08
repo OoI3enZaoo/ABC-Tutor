@@ -17,7 +17,7 @@
                 <br>
                 <hr class="grey lighten-4">
                 <br>
-                <v-btn block  class="blue white--text">เข้าสู่ระบบด้วย Facebook</v-btn>
+                <v-btn block  class="indigo darken-2 white--text">เข้าสู่ระบบด้วย Facebook</v-btn>
                 <v-btn block  class="white mt-3">เข้าสู่ระบบด้วย Google</v-btn>
               </v-card-text>
             </v-card>

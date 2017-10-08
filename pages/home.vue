@@ -1,7 +1,7 @@
 <template>
   <div>
-      <parallax height="200" src= "https://archive.org/download/abstract-colored-circle-red-material-designlines-background/abstract-colored-circle-red-material-designlines-background.jpg"  >
-      <h4 class="mt-5">หน้าจัดการคอร์ส</h4>
+      <parallax height="200" :src= "$store.state.background">
+      <h4 class="mt-5 white--text" style="display:inline; ">หน้าจัดการคอร์ส</h4>
       </parallax>
       <v-tabs light>
         <hr>

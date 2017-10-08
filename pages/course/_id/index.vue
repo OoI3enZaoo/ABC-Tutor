@@ -1,6 +1,6 @@
 <template>
   <div>
-    <parallax height = "200"  src="https://www.guttersupply.com/file_area/public/categories/ImageUrl_1241190124_7226.jpg">
+    <parallax height = "200"  :src="$store.state.background">
         <h5 class="white--text mt-4">{{course.subject}} ({{course.code}})</h5>
         <!-- <h6 class="white--text">ผู้ที่ต้องการสอบกลางภาควิชาคอมพิวเตอร์เบื้องต้น (SP521)</h6> -->
         <h6 class="white--text">สร้างโดย <span class="blue--text">{{course.fname}} {{course.lname}}</span> อัพเดทข้อมูลล่าสุดเมื่อ {{course.lastUpdate}}</h6>
@@ -16,7 +16,7 @@
           <br>
           <h6 class="headline">เกี่ยวกับผู้สอน</h6>
           <v-layout>
-            <v-flex xs4 sm4 md4 lg1>
+            <v-flex xs4 sm4 md4 lg2>
               <v-avatar tile size="80px">
                 <img :src="course.user_img" alt="John">
               </v-avatar>
@@ -167,7 +167,7 @@ export default {
   async fetch ({store, route}) {
     await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
     await store.dispatch('PULL_USER_PURCHASED', route.params.id)
-    await store.dispatch('PULL_COURSE_REVIEW', route.params.id)    
+    await store.dispatch('PULL_COURSE_REVIEW', route.params.id)
   },
   components: {
     parallax

@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{$store.state.courseDetail.userOnline}}
     <v-container>
       <p class="headline">แชท</p>
       <br>
@@ -31,16 +32,15 @@
                   <div style="height:610px; overflow:scroll; overflow-x:hidden;">
                       <v-list>
                         <v-subheader>ออนไลน์</v-subheader>
-                        <template v-for="a in 5">
+                        <template v-for="data in uesrOnline">
                             <v-list-tile avatar @click="" >
                               <v-list-tile-avatar>
-                                  <img src="http://mostfamousperson.net/BillGates.png" alt="avatar">
+                                  <img :src="data.user_img">
                               </v-list-tile-avatar>
                               <v-list-tile-content>
                                 <v-list-tile-sub-title>
-                                  <span>Bill Gates</span>
+                                  <span>{{data.fname}} {{data.lname}}</span>
                                 </v-list-tile-sub-title>
-
                               </v-list-tile-content>
                             </v-list-tile>
                             <v-divider inset></v-divider>
@@ -48,8 +48,6 @@
                       </v-list>
                   </div>
             </v-card>
-
-
         </v-flex>
       </v-layout>
 
@@ -65,22 +63,27 @@ Vue.use(require('vue-moment'), {
 })
 export default {
   created () {
-    this.online_id = this.$route.params.id +1
+    this.roomId = this.$route.params.id
     let data = {
-      course_id: this.online_id,
+      course_id: this.roomId,
+      user_id: this.$store.state.profile.user_id,
       fname: this.$store.state.profile.fname,
       lname: this.$store.state.profile.lname,
       user_img: this.$store.state.profile.user_img
     }
-    this.$socket.emit('online', data)
+    let {course_id,user_id} = data
+    this.$store.dispatch('USER_ONLINE', {course_id,user_id})
+    let socket = data
+    socket.course_id += 11111
+    this.$socket.emit('online', socket)
   },
   mounted () {
     this.scrollToEnd()
     this.$options.sockets.online = (data) => {
-      console.log('online: ' + JSON.stringiyfy(data))
+      console.log('online: ' + JSON.stringify(data))
     }
     this.$options.sockets.offline = (data) => {
-      console.log('offline: ' + JSON.stringiyfy(data))
+      console.log('offline: ' + JSON.stringify(data))
     }
   },
   data () {
@@ -97,41 +100,71 @@ export default {
   },
   methods: {
     sendMessage () {
-      console.log('message: ' + this.chatText)
-      let data = {
-        course_id: this.$route.params.id,
-        user_id: this.$store.state.profile.user_id,
-        chat_text: this.chatText,
-        chat_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+      if(this.chatText != '') {
+        console.log('message: ' + this.chatText)
+        let data = {
+          course_id: this.$route.params.id,
+          user_id: this.$store.state.profile.user_id,
+          chat_text: this.chatText,
+          chat_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+        }
+        this.$store.dispatch('ADD_COURSE_CHAT', data)
+        data.fname = this.$store.state.profile.fname
+        data.lname = this.$store.state.profile.lname
+        data.user_img = this.$store.state.profile.user_img
+        this.$store.commit('addCourseChat', [data])
+        this.$socket.emit('chat', data)
+        this.chatText = ''
+        this.scrollToEnd()
       }
-      this.$store.dispatch('ADD_COURSE_CHAT', data)
-      data.fname = this.$store.state.profile.fname
-      data.lname = this.$store.state.profile.lname
-      data.user_img = this.$store.state.profile.user_img
-      this.$store.commit('addCourseChat', [data])
-      this.$socket.emit('chat', data)
-      this.scrollToEnd()
     },
     scrollToEnd () {
-      setTimeout(()=> {
+      setTimeout(() => {
         var container = this.$el.querySelector('#container')
         container.scrollTop = container.scrollHeight
-      },100)
+        this.chatText = ''
+      }, 100)
     }
   },
   computed: {
     Messages () {
       return this.$store.getters.COURSE_CHAT(this.$route.params.id)
+    },
+    uesrOnline () {
+      return this.$store.getters.COURSE_USER(this.$route.params.id + 11111)
     }
   },
   beforeDestroy () {
     let data = {
-      course_id: this.online_id,
+      course_id: this.roomId,
+      user_id: this.$store.state.profile.user_id,
       fname: this.$store.state.profile.fname,
       lname: this.$store.state.profile.lname,
       user_img: this.$store.state.profile.user_img
     }
-    this.$socket.emit('offline', data)
+    let {course_id, user_id} = data
+    this.$store.dispatch('USER_OFFLINE', {course_id, user_id})
+    this.$store.commit('removeAllUser')
+    let socket = data
+    socket.course_id += 11111
+    this.$socket.emit('offline', socket)
+    console.log('beforeDestroy:' + JSON.stringify(socket))
+  },
+  destroyed () {
+    let data = {
+      course_id: this.roomId,
+      user_id: this.$store.state.profile.user_id,
+      fname: this.$store.state.profile.fname,
+      lname: this.$store.state.profile.lname,
+      user_img: this.$store.state.profile.user_img
+    }
+    let {course_id, user_id} = data
+    this.$store.dispatch('USER_OFFLINE', {course_id, user_id})
+    this.$store.commit('removeAllUser')
+    let socket = data
+    socket.course_id += 11111
+    this.$socket.emit('offline', socket)
+    console.log('beforeDestroy:' + JSON.stringify(socket))
   }
 }
 </script>
