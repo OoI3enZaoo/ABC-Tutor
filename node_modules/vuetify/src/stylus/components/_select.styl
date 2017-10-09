@@ -2,8 +2,6 @@
 
 .input-group--select
   // TODO: revisit this
-  overflow: hidden
-
   .input-group--select__autocomplete
     display: block
     padding-bottom: 1px
@@ -14,20 +12,23 @@
   .input-group__append-icon
     transition: .3s $transition.linear-out-slow-in
 
+    &.input-group__icon-clearable
+      transition: none
+
   &.input-group--focused
     .input-group--select__autocomplete
       display: inline-block
       height: 30px
       opacity: 1
 
-    .input-group__append-icon
+    .input-group__append-icon:not(.input-group__icon-clearable)
       transform: rotate(-180deg)
 
-  .input-group__input, input
+  .input-group__input
     cursor: pointer
 
   &.input-group--disabled
-    cursor: not-allowed
+    cursor: default
     pointer-events: none
 
 .input-group--select
@@ -44,7 +45,7 @@
       padding-right: 4px
 
       &--active
-        color: $theme.primary
+        color: inherit
 
   .menu
     display: inline
@@ -69,12 +70,25 @@
 
     .input-group__selections,
     input
-      height: 24px
+      height: 48px
 
     // Handle weird transition issue
-    .input-group__selections__comma
+    .input-group__selections__comma, input
       top: 0
       left: 0
+      padding-left: 16px
+
+    .input-group__selections
+      width: calc(100% - 55px)
+
+      .btn
+        border-radius: 0
+        margin: 0
+        height: 48px
+        width: 100%
+
+        .btn__content
+          justify-content: start
 
     .input-group__input
       transition: .3s $transition.swing
@@ -89,14 +103,14 @@
 
     label
       left: 16px !important
-      top: 8px !important
+      top: 9px !important
 
     .input-group__details
       &:after
         display: none
 
     .input-group__input
-      padding: 12px 16px
+      padding: 0
 
       &:before
         content: ''
@@ -106,6 +120,9 @@
         height: 1px
         top: 0
         transition: .3s $transition.swing
+
+    .input-group__append-icon
+      width: 55px
 
   &--segmented .input-group__input,
   &--editable .input-group__input:hover,

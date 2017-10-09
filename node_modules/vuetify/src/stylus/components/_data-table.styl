@@ -24,7 +24,6 @@ datatable($material)
       .input-group--select
         .input-group__selections__comma
           color: rgba($material.fg-color, $material.secondary-text-percent) !important
-          font-size: 12px
 
         .input-group__append-icon
           color: rgba($material.fg-color, $material.secondary-text-percent) !important
@@ -95,5 +94,20 @@ theme(datatable, "datatable")
     padding: 0 !important
 
     .progress-linear
-      top: -3px
-      margin: 0 0 -3px
+      top: -2px
+      margin: 0 0 -2px
+
+.datatable__expand
+  &-row
+    border: none !important
+
+  &-col
+    padding: 0 !important
+    height: 0px !important
+
+  &-content
+    transition: height $primary-transition
+
+    > .card
+      border-radius: 0
+      box-shadow: none

@@ -113,8 +113,11 @@
         </template>
 
         <main>
+          <v-content>
           <nuxt/>
+          </v-content>
         </main>
+
 <br>
 
   <v-snackbar
@@ -128,7 +131,7 @@
     <v-btn flat class="white--text" @click.native="snackbar = false">ปิด</v-btn>
   </v-snackbar>
 
-<v-card class="white--text grey darken-4" style="position:relative; bottom:0; left:0; right:0; height: 50px;">
+<v-card class="white--text grey darken-4" style="bottom:0; left:0; right:0; height: 140px;">
       <v-card-text class="pl-5 pr-5">
         <v-card-actions>
               <v-btn flat dark round @click.native="$router.push('/tutor/create')">สร้างคอร์ส</v-btn>

@@ -6,10 +6,9 @@
       :nudge-width="200"
       v-model="menu"
     >
-    <v-badge left color="blue" slot="activator" v-model="show">
-      <div class="mt-2">
-        <v-icon large primary>notifications</v-icon>
-      </div>
+    <v-badge left color="blue" slot="activator" v-model="show" class="mt-2 ml-4 mr-2">
+      <span slot="badge">8</span>
+      <v-icon large primary>notifications</v-icon>
     </v-badge>
       <v-card>
         <v-list>

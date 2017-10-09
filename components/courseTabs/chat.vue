@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{$store.state.courseDetail.userOnline}}
+    <!-- {{$store.state.courseDetail.userOnline}} -->
     <v-container>
       <p class="headline">แชท</p>
       <br>

@@ -1,13 +1,16 @@
 <template>
   <div>
+    <!-- {{$store.state.courseFavorite}} -->
     <template v-if="courseFavorite.length == 0">
       <noDataCard :png="coursePng" text="คุณยังไม่ได้บันทึกอะไรไว้เลย" textbtn="ค้นหาคอร์ส" link="/course"></noDataCard>
     </template>
     <template v-else>
-      <v-container>
-        <template v-for="data in courseFavorite">
-             <favoriteCard :id="data.course_id" :subject="data.subject" :code="data.code" :price="data.price" :cover = "data.cover" :fname="data.fname" :lname="data.lname"></favoriteCard>
-        </template>
+      <v-container grid-list-lg>
+        <v-layout row wrap>
+          <template v-for="data in courseFavorite">
+               <favoriteCard :id="data.course_id" :subject="data.subject" :code="data.code" :price="data.price" :cover = "data.cover" :fname="data.fname" :lname="data.lname"></favoriteCard>
+          </template>
+        </v-layout>
       </v-container>
     </template>
 

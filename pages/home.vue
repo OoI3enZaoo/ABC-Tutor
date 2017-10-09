@@ -31,6 +31,7 @@
             <courseCreate></courseCreate>
          </v-tabs-content>
        </v-tabs>
+
   </div>
 </template>
 <script>
@@ -39,6 +40,12 @@ import coursePurchased from '.././components/homeTabs/coursePurchase.vue'
 import courseFavorite from '.././components/homeTabs/courseFavorite.vue'
 import courseCreate from '.././components/homeTabs/courseCreate.vue'
 export default {
+  async asyncData ({store}) {
+    await store.dispatch('FETCH_COURSE_REVIEW')
+    await store.dispatch('FETCH_COURSE_PURCHASED')
+    await store.dispatch('FETCH_COURSE_CREATED')
+    await store.dispatch('FETCH_COURSE_FAVORITE')
+  },
   components: {
     parallax,
     coursePurchased,

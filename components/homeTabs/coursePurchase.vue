@@ -1,6 +1,7 @@
 <template>
   <div>
-    <template v-if="coursePur.length == 0">
+    <!-- checkReview >>> {{$store.state.checkReview}} -->
+    <template v-if="coursePur == 0">
       <noDataCard :png="coursePng" text="คุณยังไม่มีคอร์สใด ๆ เลย" textbtn="ค้นหาคอร์ส" link="/course"></noDataCard>
     </template>
     <template v-else>
@@ -17,7 +18,6 @@
         </div>
         <br>
         <template v-for="(data,courseIndex) in coursePur">
-
                  <v-card :key="courseIndex">
                      <v-layout row wrap>
                        <v-flex lg3 xs12>

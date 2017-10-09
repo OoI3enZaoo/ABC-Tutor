@@ -1,3 +1,4 @@
+import Loadable from './loadable'
 import Themeable from './themeable'
 import Validatable from './validatable'
 import VIcon from '../components/VIcon'
@@ -7,7 +8,7 @@ export default {
     VIcon
   },
 
-  mixins: [Themeable, Validatable],
+  mixins: [Loadable, Themeable, Validatable],
 
   data () {
     return {
@@ -21,7 +22,6 @@ export default {
   props: {
     appendIcon: String,
     appendIconCb: Function,
-    asyncLoading: Boolean,
     disabled: Boolean,
     hint: String,
     hideDetails: Boolean,
@@ -48,7 +48,7 @@ export default {
     inputGroupClasses () {
       return Object.assign({
         'input-group': true,
-        'input-group--async-loading': this.asyncLoading,
+        'input-group--async-loading': this.loading !== false,
         'input-group--focused': this.isFocused,
         'input-group--dirty': this.isDirty,
         'input-group--tab-focused': this.tabFocused,
@@ -91,7 +91,7 @@ export default {
       ) {
         messages = [this.genHint()]
       } else if (this.validations.length) {
-        messages = [this.genError(this.validations[0])]
+        messages = this.validations.map(v => this.genError(v))
       }
 
       return this.$createElement('transition-group', {
@@ -120,7 +120,7 @@ export default {
       )
     },
     genIcon (type, defaultCallback = null) {
-      const shouldClear = this.clearable && this.isDirty
+      const shouldClear = type === 'append' && this.clearable && this.isDirty
       const icon = shouldClear ? 'clear' : this[`${type}Icon`]
       const callback = shouldClear
         ? this.clearableCallback
@@ -132,7 +132,8 @@ export default {
         },
         'class': {
           [`input-group__${type}-icon`]: true,
-          'input-group__icon-cb': !!callback
+          'input-group__icon-cb': !!callback,
+          'input-group__icon-clearable': shouldClear
         },
         props: {
           disabled: this.disabled
@@ -193,14 +194,8 @@ export default {
         wrapperChildren.push(this.genIcon('append', defaultAppendCallback))
       }
 
-      if (this.asyncLoading) {
-        detailsChildren.push(this.$createElement('v-progress-linear', {
-          props: {
-            indeterminate: true,
-            height: 2
-          }
-        }))
-      }
+      const progress = this.genProgress()
+      progress && detailsChildren.push(progress)
 
       children.push(
         this.$createElement('div', {

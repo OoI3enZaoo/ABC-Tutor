@@ -1,6 +1,6 @@
 <template>
   <div>
-
+<!-- {{$store.state.courseCreate}} -->
       <template v-if ="courseCreate.length == 0">
         <noDataCard :png="coursePng" text="คุณยังไม่มีคอร์สใด ๆ ที่เป็นเจ้าของเลย" textbtn="สร้างคอร์ส" link="/tutor/create"></noDataCard>
       </template>
@@ -23,7 +23,7 @@
             <v-layout row wrap v-for="(data, index) in courseCreate" :key="index">
               <v-flex xs12>
                 <v-card>
-                  <nuxt-link :to="'/mycourse/'" tag="span">
+                  <nuxt-link :to="'/mycourse/' + data.course_id" tag="span">
                       <v-layout>
                         <v-flex xs3>
                             <v-card-media :src="data.cover" height="200"></v-card-media>
