@@ -240,10 +240,10 @@ export default {
       commit('addUserOnline', [me])
   },
   USER_ONLINE ({commit}, payload) {
-    axios.post('http://172.104.167.197:4000/api/insertusertoroom/', payload)
+    // axios.post('http://172.104.167.197:4000/api/insertusertoroom/', payload)
   },
   USER_OFFLINE ({commit}, payload) {
-    axios.post('http://172.104.167.197:4000/api/deleteuserfromroom/', payload)
+    // axios.post('http://172.104.167.197:4000/api/deleteuserfromroom/', payload)
   },
   FETCH_COURSE_REVIEW ({commit, state}) {
     console.log('FETCH_COURSE_REVIEW')

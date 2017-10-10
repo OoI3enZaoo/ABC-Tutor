@@ -74,15 +74,7 @@
              <v-toolbar-title  >
                <logo></logo>
              </v-toolbar-title>
-                <v-text-field
-                  solo
-                  class=' ml-3 pr-5 elevation-0'
-                  label='ชื่อวิชาหรือรหัสวิชา..'
-                  single-line
-                  v-model="search"
-                    style="border: 1px solid grey"
 
-                ></v-text-field>
                 <v-spacer></v-spacer>
              <v-toolbar-items class='hidden-xs-only'>
                  <template v-for='data in menuAfterLoginItem'>
@@ -113,13 +105,24 @@
         </template>
 
         <main>
-          <v-content>
+          <v-content v-scroll="onScroll">
           <nuxt/>
           </v-content>
         </main>
 
 <br>
-
+<v-btn
+   color="blue"
+   dark
+   bottom
+   right
+   fab
+   fixed
+   v-show="isButtonShow"
+   @click.native="UpToTop"
+ >
+   <v-icon>keyboard_arrow_up</v-icon>
+ </v-btn>
   <v-snackbar
     :timeout="6000"
     right
@@ -193,6 +196,7 @@
         }
       }
       this.$options.sockets.course_user_purchased = (data) => {
+        console.log('course_user_purchased: ' + JSON.stringify(data))
         if (this.$store.state.profile.user_id != data.user_id) {
           console.log('course_user_purchased: ')
           this.$store.commit('addCourseUserPurchasedSocket', [data])
@@ -296,7 +300,9 @@
             primary: true
           }
         ],
-        search: null
+        search: null,
+        offsetTop: 0,
+        isButtonShow: false
       }
     },
     components: {
@@ -314,12 +320,21 @@
       }
     },
     watch: {
-      search: function (val) {
-        if (val !== '') {
-          this.$router.push('/search/' + val)
+      offsetTop: function (val) {
+        if (val > 300) {
+          this.isButtonShow = true
         } else {
-          this.$router.push('/')
+          this.isButtonShow = false
         }
+      }
+    },
+    methods: {
+      onScroll (e) {
+        this.offsetTop = window.pageYOffset || document.documentElement.scrollTop
+      },
+      UpToTop () {
+        window.pageYOffset = 0
+        document.documentElement.scrollTop = 0
       }
     }
   }
