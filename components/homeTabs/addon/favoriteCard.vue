@@ -1,5 +1,5 @@
 <template>
-      <v-flex xs3>        
+      <v-flex xs3>
         <nuxt-link :to="'/course/' + id " tag="span" style="cursor:pointer;">
           <v-card>
             <v-card-media :src="cover" height="150"></v-card-media>
@@ -9,7 +9,8 @@
               <template v-for="a in 5">
                 <v-icon>star</v-icon>
               </template>
-              <span>5.0 </span> <span class="grey--text">(33,888)</span>
+              <span>5.0 </span>
+              <!-- <span class="grey--text">(33,888)</span> -->
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>

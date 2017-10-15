@@ -94,5 +94,10 @@ export default {
     return courseId => state.courseDetail.userOnline.filter(item => {
       return courseId == item.course_id
     })
+  },
+  NOTIFICATION (state) {
+    return typeId => state.notification.filter(item => {
+      return typeId == item.noti_type
+    })
   }
 }

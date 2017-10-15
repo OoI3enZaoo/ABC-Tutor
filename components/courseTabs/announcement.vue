@@ -92,14 +92,7 @@ export default {
         annou_text: val.description,
         annou_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       }
-      this.$store.dispatch('ADD_COURSE_ANNO', data)
-      data.reply = []
-      data.user_id = this.$store.state.profile.user_id
-      data.fname = this.$store.state.profile.fname
-      data.lname = this.$store.state.profile.lname
-      data.user_img = this.$store.state.profile.user_img
-      this.$store.commit('addCourseAnno', [data])
-      this.$socket.emit('announcement', data)
+      this.$store.dispatch('ADD_COURSE_ANNO', data)      
     },
     SendReply (message, val) {
         let data = {

@@ -8,7 +8,7 @@
       <template v-for="data in branchs">
         <popularCourse :branchs="data.text" :course="$store.getters.COURSE_POPULAR_HOME(data.branch_id)" :branchid="data.branch_id"></popularCourse>
       </template>
-      
+
   </div>
 </template>
 <script>

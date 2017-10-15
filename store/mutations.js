@@ -1,4 +1,7 @@
 export default {
+  addProfile (state, data) {
+    state.profile = data
+  },
   addBranchs (state, data) {
     state.branchs.push(...data)
   },
@@ -24,7 +27,7 @@ export default {
   updateProfile: (state, data) => state.profile = data,
   addCheckPullCourse: (state, data) => state.checkPullCourse.push(data),
   addCourseCreate: (state, data) => state.courseCreate.push(...data),
-  // addCourseContent: (state, data) => state.courseDetail.courseContent.unshift(data),
+  addCourseContent: (state, data) => state.courseDetail.courseContent.unshift(data),
   updateuserid: (state, data) => state.profile.user_id = Math.floor((Math.random() * 20) + 1),
   // updateuserid: (state, data) => state.profile.user_id = 2,
   addPopularCourseHome: (state, data) => state.popularCourseHome.push(...data),
@@ -102,7 +105,7 @@ export default {
   addCourseAnnoComment: (state, data) => {
     state.courseDetail.courseAnno.map(res => res.annou_id == data.annou_id ? res.reply.push(data) : '')
   },
-  addNotification: (state, data) => state.notification.unshift(data),
+  addNotification: (state, data) => state.notification.unshift(...data),
   addUserOnline: (state, data) => state.courseDetail.userOnline.unshift(...data),
   removeUserOnline: (state, data) => {
     let a = state.courseDetail.userOnline.indexOf(data)
@@ -114,5 +117,6 @@ export default {
   isCheckReview: (state, data) => state.isCheckReview = data,
   isCoursePurchased: (state, data) => state.isCoursePurchased = data,
   isCourseCreated: (state, data) => state.isCourseCreated = data,
-  isCourseFavorite: (state, data) => state.isCourseFavorite = data
+  isCourseFavorite: (state, data) => state.isCourseFavorite = data,
+  addUserData: (state, data) => state.profile = data
 }

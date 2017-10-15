@@ -5,6 +5,7 @@ import actions from './actions'
 export default () => {
   return new Vuex.Store({
     state: {
+      connect: false,
       background: require('../static/background.jpg'),
       branchs: [],
       isLogin: false,
@@ -20,8 +21,7 @@ export default () => {
         email: 'Blend.Theerapat@gmail.com',
         facebook: 'BA.BLEND',
         twiiter: '',
-        youtube: '',
-        career: 'Web Developer'
+        youtube: ''
       },
       course: [],
       user: [],

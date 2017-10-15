@@ -1,10 +1,11 @@
 import axios from 'axios'
+import Vue from 'vue'
 export default {
   async nuxtServerInit ({commit, state, dispatch, route}) {
     if (state.branchs.length == 0) {
       await dispatch('PULL_BRANCHS')
     }
-    commit('updateuserid')
+    //commit('updateuserid')
   },
   async PULL_BRANCHS ({commit}) {
     await axios.get('http://172.104.167.197:4000/api')
@@ -70,8 +71,25 @@ export default {
   },
   PULL_COURSE_DATA ({commit}, payload) {
   },
-  ADD_COURSE_CONTENT ({commit}, payload) {
+  ADD_COURSE_CONTENT ({commit, state, dispatch}, payload) {
+    let filesData = payload.data
+    delete payload["data"]
     axios.post('http://172.104.167.197:4000/api/insertcoursecontent', payload)
+    .then (res => {
+      let result = res.data
+      payload.content_id = result.content_id
+      commit('addCourseContent', payload)
+      payload.user_id = state.profile.user_id
+      new Vue().$socket.emit('courseContent', payload)
+      axios.post('http://172.104.167.197:4000/api/upload/' + result.content_id, filesData)
+      .then((response) => {
+        console.log('successMsg');
+      })
+      .catch((error) => {
+        console.log('error');
+      })
+
+    })
   },
   async PULL_POPULAR_COURSE_HOME ({commit, state}) {
     if (state.popularCourseHome.length == 0) {
@@ -199,8 +217,18 @@ export default {
       })
     }
   },
-  ADD_COURSE_QA ({commit}, payload) {
+  ADD_COURSE_QA ({commit, state}, payload) {
     axios.post('http://172.104.167.197:4000/api/insertcourse_q', payload)
+    .then (res => {
+      let result = res.data
+      payload.q_id = result.q_id
+      payload.fname = state.profile.fname
+      payload.lname = state.profile.lname
+      payload.user_img = state.profile.user_img,
+      payload.reply = []
+      commit('addCourseQA', [payload])
+      new Vue().$socket.emit('qa', payload)
+    })
   },
   ADD_COURSE_QA_COMMENT ({commit}, payload) {
       axios.post('http://172.104.167.197:4000/api/insertcourse_q_comment', payload)
@@ -217,6 +245,17 @@ export default {
   },
   ADD_COURSE_ANNO ({commit}, payload) {
     axios.post('http://172.104.167.197:4000/api/insertcourse_announce/', payload)
+    .then (res=> {
+      let result = res.data
+      payload.annou_id = result.annou_id
+      payload.reply = []
+      payload.user_id = this.$store.state.profile.user_id
+      payload.fname = this.$store.state.profile.fname
+      payload.lname = this.$store.state.profile.lname
+      payload.user_img = this.$store.state.profile.user_img
+      commit('addCourseAnno', [payload])
+      new Vue().$socket.emit('announcement', payload)
+    })
   },
   ADD_COURSE_ANNO_COMMENT ({commit}, payload) {
     axios.post('http://172.104.167.197:4000/api/insertcourse_announce_comment/', payload)
@@ -261,8 +300,8 @@ export default {
     if (state.isCoursePurchased !== true ) {
       axios.get('http://172.104.167.197:4000/api/get_all_userpurchased/' + state.profile.user_id)
       .then (res => {
-        console.log('FETCH_COURSE_PURCHASED2')
         let result = res.data
+        console.log('FETCH_COURSE_PURCHASED2: ' + JSON.stringify(result))
         commit('isCoursePurchased', true)
           result.map(rs => {
             let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
@@ -324,5 +363,19 @@ export default {
           })
       })
     }
+  },
+  FETCH_COURSE_NOTIFICATION ({commit, state}) {
+    axios.get('http://172.104.167.197:4000/api/get_notification/'+ state.profile.user_id +'/1')
+    .then (res => {
+      let result = res.data
+      commit('addNotification', result)
+      console.log(result)
+    })
+    axios.get('http://172.104.167.197:4000/api/get_notification/'+ state.profile.user_id +'/2')
+    .then (res => {
+      let result = res.data
+      commit('addNotification', result)
+      console.log(result)
+    })
   }
 }

@@ -73,10 +73,6 @@ import axios from 'axios';
 component: {axios}
 export default {
     props: {
-        postURL: {
-            type: String,
-            required: true
-        },
         minItems: {
             type: Number,
             default: 1
@@ -159,26 +155,20 @@ export default {
         onSubmit() {
 
           // this.$emit('createcourse','data')
-          this.$emit('createcourse', this.itemsNames)
+
             this.isLoaderVisible = true;
             if ((typeof this.postMeta === 'string' && this.postMeta !== '') ||
                 (typeof this.postMeta === 'object' && Object.keys(this.postMeta).length > 0)) {
                 this.formData.append('postMeta', this.postMeta);
             }
-
             if (this.method === 'put' || this.method === 'post' ) {
-                axios({method: this.method, url: this.postURL, data: this.formData})
-                    .then((response) => {
-                        this.isLoaderVisible = false;
-                        // Show success message
-                        this.successMsg = response + "." + this.successMessagePath;
-                        // this.removeItems();
-                    })
-                    .catch((error) => {
-                        this.isLoaderVisible = false;
-                        this.errorMsg = error + "." + this.errorMessagePath;
-                        // this.removeItems();
-                    });
+              let data = {
+                method: this.method,
+                data: this.formData,
+                files: this.itemsNames
+              }
+              this.$emit('createcourse', data)
+              this.isLoaderVisible = false;
             } else {
                 this.errorMsg = "This HTTP method is not allowed. Please use either 'put' or 'post' methods.";
                 // this.removeItems();

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- checkReview >>> {{$store.state.checkReview}} -->
     <template v-if="coursePur == 0">
       <noDataCard :png="coursePng" text="คุณยังไม่มีคอร์สใด ๆ เลย" textbtn="ค้นหาคอร์ส" link="/course"></noDataCard>
     </template>
@@ -60,10 +59,9 @@
 
                                  </div>
                                </div>
-                               {{data.course_id}}  {{courseIndex}}
-                               <span v-text="numberPoint[courseIndex]"></span>
+                               {{data.course_id}}
+                               <span v-text="numberPoint[courseIndex].mypoint"></span>
                                <br>
-                                <span class="grey--text">จากผลโหวตทั้งหมด 33,888 คน</span>
                             </template>
 
 

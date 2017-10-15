@@ -18,10 +18,7 @@
 
             <br>
 
-             <MultipleFileUploader @createcourse="createcourse" :postURL="postUrl" successMessagePath="" errorMessagePath="">
-
-
-             </MultipleFileUploader>
+             <MultipleFileUploader @createcourse="createcourse"  successMessagePath="" errorMessagePath=""></MultipleFileUploader>
              <!-- <div class="text-xs-right">
                <v-btn primary :disabled="!isDataNotNull" @click.native="createQuestion(1)">สร้างหลักสูตร</v-btn>
              </div> -->
@@ -32,7 +29,7 @@
 </template>
 <script>
   // import MultipleFileUploader from 'vue2-multi-uploader'
-
+import axios from 'axios'
 import MultipleFileUploader from './MultipleFileUploader.vue'
   export default {
     components: {
@@ -63,13 +60,14 @@ import MultipleFileUploader from './MultipleFileUploader.vue'
     },
     methods: {
       createcourse (str) {
-        console.log('createcourse')
+        console.log('createcourse: ' + JSON.stringify(str))
         this.dialog = false
-        const data = {
+        let data = {
           content_id: this.content_id,
           content_title: this.content.title,
           content_des: this.content.description,
-          files: str
+          files: str.files,
+          data: str.data
         }
         this.$emit('contentcourse', data)
         this.content.title = ''
@@ -88,9 +86,6 @@ import MultipleFileUploader from './MultipleFileUploader.vue'
         } else {
           return this.content.description !== ''
         }
-      },
-      postUrl () {
-        return 'http://172.104.167.197:4000/api/upload/' + this.content_id
       }
     }
   }

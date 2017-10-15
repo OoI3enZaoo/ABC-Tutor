@@ -71,7 +71,7 @@
             <div class="hidden-sm-and-up">
               <v-toolbar-side-icon  @click.stop='slideNav=!slideNav'></v-toolbar-side-icon>
             </div>
-             <v-toolbar-title  >
+             <v-toolbar-title>
                <logo></logo>
              </v-toolbar-title>
 
@@ -296,7 +296,7 @@
           {
             name: 'สม้ครสมาชิก',
             icon: 'fa-user-plus',
-            link: '/login',
+            link: '/register',
             primary: true
           }
         ],

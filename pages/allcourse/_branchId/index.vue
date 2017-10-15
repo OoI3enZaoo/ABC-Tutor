@@ -23,7 +23,7 @@
       <br>
       <v-layout row wrap>
           <template v-for="(data,key) in course">
-             <v-flex xs12 :key="key">
+             <v-flex xs12 lg6 :key="key">
                <nuxt-link :to="'/course/' + data.course_id" tag="span" style="cursor:pointer;">
                   <v-card>
                     <v-layout row wrap>

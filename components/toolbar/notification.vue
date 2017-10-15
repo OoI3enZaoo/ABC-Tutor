@@ -34,39 +34,36 @@
           <v-tabs-items>
             <v-tabs-content id='tab-0'>
               <v-list two-line>
-                <v-list-tile-content>
-                  <v-list-tile @click="">
-                    <v-list-tile-avatar>
-                      <img src="http://tutormahadelivery.ueuo.com/images/6-advantages-of-online-tutoring.jpeg">
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                      <v-list-tile-title primary>คอมพิวเตอร์เบื้องต้น(SP444) </v-list-tile-title>
-                      <v-list-tile-sub-title>2 วันก่อน โดย Theerapat Vijitpoo</v-list-tile-sub-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </v-list-tile-content>
+                <div style="height:300px; overflow:scroll; overflow-x:hidden;">
+                  <template v-for="data in $store.getters.NOTIFICATION(1)">
+                    <v-list-tile @click="" nuxt :to="'/mycourse/' + data.course_id">
+                      <v-list-tile-avatar>
+                        <img :src="data.noti_cover">
+                      </v-list-tile-avatar>
+                      <v-list-tile-content>
+                        <v-list-tile-title primary>{{data.subject}}({{data.code}}) </v-list-tile-title>
+                        <v-list-tile-sub-title>{{data.noti_ts | moment('from','now',true)}}ก่อน โดย {{data.fname_sender}} {{data.lname_sender}}</v-list-tile-sub-title>
+                      </v-list-tile-content>
+                    </v-list-tile>
+                  </template>
+                </div>
               </v-list>
             </v-tabs-content>
             <v-tabs-content id='tab-1'>
               <v-list two-line>
-                  <v-list-tile @click="">
-                    <v-list-tile-avatar>
-                      <img src="http://northyorktutors.com/img/slider/tutoring.jpg">
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                      <v-list-tile-title primary>คอมพิวเตอร์เบื้องต้น(SP444) </v-list-tile-title>
-                      <v-list-tile-sub-title>มีการเพิ่มคำถามใหม่</v-list-tile-sub-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile @click="">
-                    <v-list-tile-avatar>
-                      <img src="http://northyorktutors.com/img/slider/tutoring.jpg">
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                      <v-list-tile-title primary>คอมพิวเตอร์เบื้องต้น(SP444) </v-list-tile-title>
-                      <v-list-tile-sub-title>มีการเพิ่มคำถามใหม่</v-list-tile-sub-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
+                <div style="height:300px; overflow:scroll; overflow-x:hidden;">
+                  <template v-for="data in $store.getters.NOTIFICATION(2)">
+                    <v-list-tile @click="" nuxt :to="'/mycourse/' + data.course_id">
+                      <v-list-tile-avatar>
+                        <img :src="data.noti_cover">
+                      </v-list-tile-avatar>
+                      <v-list-tile-content>
+                        <v-list-tile-title primary>{{data.subject}}({{data.code}}) </v-list-tile-title>
+                        <v-list-tile-sub-title>{{data.noti_ts | moment('from','now',true)}} ago โดย {{data.fname_sender}} {{data.lname_sender}}</v-list-tile-sub-title>
+                      </v-list-tile-content>
+                    </v-list-tile>
+                  </template>
+                </div>
               </v-list>
             </v-tabs-content>
           </v-tabs-items>

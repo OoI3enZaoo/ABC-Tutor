@@ -188,7 +188,7 @@ export default {
           let camera = str + 1
           // let message = this.getCanvas(camera).toDataURL('image/jpeg')
           let payload = {
-            room: 1212335,
+            course_id: this.$route.params.id,
             message: this.capture(camera)
           }
           console.log('loop: ' + typeof camera + ' camera: ' + camera)
@@ -268,7 +268,7 @@ export default {
       console.log('setInterval')
       this.interval = setInterval(() => {
         let data = {
-          room: 1212335,
+          course_id: this.$route.params.id,
           message: this.capture()
         }
         console.log(data)
@@ -279,7 +279,7 @@ export default {
       this.liveStatus = false
       this.stream.getVideoTracks()[0].stop()
       const data = {
-        room: 1212335
+        course_id: this.$route.params.id
       }
       this.$socket.emit('stoplive', data)
       console.log('clear Interval')
@@ -287,7 +287,7 @@ export default {
     },
     requestCamera (index) {
       const data = {
-        room: 1212335,
+        course_id: this.$route.params.id,
         name: 'Theerapat Vijitpoo',
         camera: index
       }
@@ -295,7 +295,7 @@ export default {
     },
     refuseCamera (index) {
       const data = {
-        room: 1212335,
+        course_id: this.$route.params.id,
         name: 'Theerapat Vijitpoo',
         camera: index
       }
@@ -303,7 +303,7 @@ export default {
     },
     allowCamera (index) {
       const data = {
-        room: 1212335,
+        course_id: this.$route.params.id,
         name: 'Theerapat Vijitpoo',
         camera: index
       }
@@ -316,14 +316,14 @@ export default {
       this.stream.getVideoTracks()[0].stop()
       console.log('Methods: stopCamera')
       const data = {
-        room: 1212335,
+        course_id: this.$route.params.id,
         camera: index
       }
       this.$socket.emit('stopCamera', data)
     },
     forceStopCamera (index) {
       const data = {
-        room: 1212335,
+        course_id: this.$route.params.id,
         camera: index
       }
       this.$socket.emit('forceStopCamera', data)

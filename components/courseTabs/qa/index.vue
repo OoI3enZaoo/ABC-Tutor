@@ -128,7 +128,6 @@ export default {
   methods: {
     dataFromQuill (val) {
       let data = {
-        q_id: new Date().getTime(),
         course_id: this.$route.params.id,
         user_id: this.$store.state.profile.user_id,
         q_title: val.title,
@@ -136,12 +135,6 @@ export default {
         q_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       }
       this.$store.dispatch('ADD_COURSE_QA', data)
-      data.fname = this.$store.state.profile.fname
-      data.lname = this.$store.state.profile.lname
-      data.user_img = this.$store.state.profile.user_img,
-      data.reply = []
-      this.$store.commit('addCourseQA', [data])
-      this.$socket.emit('qa', data)
     },
     QADetail (data) {
       this.dataOfQuestion = true
@@ -150,7 +143,7 @@ export default {
 
     },
     SendReply () {
-      console.log('SendReply');
+      console.log('SendReply')
       if (this.replyText != '') {
         let data = {
           q_id: this.qa.q_id,
