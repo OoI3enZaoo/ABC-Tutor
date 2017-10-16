@@ -2,10 +2,10 @@ import Vuex from 'vuex'
 import getters from './getters'
 import mutations from './mutations'
 import actions from './actions'
+import createPersistedState from 'vuex-persistedstate'
 export default () => {
   return new Vuex.Store({
     state: {
-      connect: false,
       background: require('../static/background.jpg'),
       branchs: [],
       isLogin: false,
@@ -49,6 +49,11 @@ export default () => {
       isCourseFavorite: false,
       notification: []
     },
+    plugins: [
+      createPersistedState({
+        paths: ['profile', 'isLogin', 'projectName', 'statusNotification', 'background', 'branchs']
+      })
+    ],
     getters,
     mutations,
     actions

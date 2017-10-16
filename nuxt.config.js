@@ -2,7 +2,7 @@ module.exports = {
   /*
   ** Headers of the page
   */
-  // mode: 'spa',
+  mode: 'spa',
   router: {
     middleware: ['https','checkLogin']
   },

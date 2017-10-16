@@ -1,12 +1,6 @@
 import axios from 'axios'
 import Vue from 'vue'
 export default {
-  async nuxtServerInit ({commit, state, dispatch, route}) {
-    if (state.branchs.length == 0) {
-      await dispatch('PULL_BRANCHS')
-    }
-    //commit('updateuserid')
-  },
   async PULL_BRANCHS ({commit}) {
     await axios.get('http://172.104.167.197:4000/api')
       .then(res => {
@@ -92,11 +86,13 @@ export default {
     })
   },
   async PULL_POPULAR_COURSE_HOME ({commit, state}) {
+    console.log('PULL_POPULAR_COURSE_HOME: ' + state.popularCourseHome.length)
     if (state.popularCourseHome.length == 0) {
       await state.branchs.map(data => {
          axios.get('http://172.104.167.197:4000/api/popularcourse/' + data.branch_id)
         .then (res => {
           let result = res.data
+          console.log(result)
           result.map(str => {
             let {user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube ,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate, five, four, three, two, one, avg, length} = str
             commit('addUser', [{user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube}])
@@ -243,16 +239,17 @@ export default {
       commit('addCourseChat', result)
     })
   },
-  ADD_COURSE_ANNO ({commit}, payload) {
+  ADD_COURSE_ANNO ({commit, state}, payload) {
     axios.post('http://172.104.167.197:4000/api/insertcourse_announce/', payload)
     .then (res=> {
       let result = res.data
+      console.log('ADD_COURSE_ANNO: ' + JSON.stringify(result))
       payload.annou_id = result.annou_id
       payload.reply = []
-      payload.user_id = this.$store.state.profile.user_id
-      payload.fname = this.$store.state.profile.fname
-      payload.lname = this.$store.state.profile.lname
-      payload.user_img = this.$store.state.profile.user_img
+      payload.user_id = state.profile.user_id
+      payload.fname = state.profile.fname
+      payload.lname = state.profile.lname
+      payload.user_img = state.profile.user_img
       commit('addCourseAnno', [payload])
       new Vue().$socket.emit('announcement', payload)
     })
@@ -296,16 +293,15 @@ export default {
     }
   },
   async FETCH_COURSE_PURCHASED ({commit, state}) {
-    console.log('FETCH_COURSE_PURCHASED')
     if (state.isCoursePurchased !== true ) {
       axios.get('http://172.104.167.197:4000/api/get_all_userpurchased/' + state.profile.user_id)
       .then (res => {
         let result = res.data
-        console.log('FETCH_COURSE_PURCHASED2: ' + JSON.stringify(result))
         commit('isCoursePurchased', true)
           result.map(rs => {
             let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
             commit('addCoursePurchased', [rs.course_id])
+            new Vue().$socket.emit('subscribe', rs.course_id)
             let courseinStore = false
             state.course.find(c => c.course_id == course_id ? courseinStore = true : '')
             if (courseinStore == false) {
@@ -329,6 +325,7 @@ export default {
           result.map(rs => {
             let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
             commit('addCourseCreate', [rs.course_id])
+            new Vue().$socket.emit('subscribe', rs.course_id)
             let courseinStore = false
             state.course.find(c => c.course_id == course_id ? courseinStore = true : '')
             if (courseinStore == false) {

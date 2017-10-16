@@ -96,16 +96,8 @@ export default {
   components: {
     noDataCard
   },
-  async created () {
-    this.$store.state.coursePurchased.map(data => {
-      this.coursePur.push(...this.$store.getters.COURSE_FROM_ID(data))
-      this.dialog.push({status: false})
-    })
-    this.$store.state.coursePurchased.map(data => {
-      this.point.push([{id:1,icon:'start_border'},{id:2,icon:'start_border'},{id:3,icon:'start_border'},{id:4,icon:'start_border'},{id:5,icon:'start_border'}])
-      this.numberPoint.push({id: 1, mypoint: 0})
-      console.log(this.point)
-    })
+  created () {
+    this.getData()
   },
   data () {
     return {
@@ -117,7 +109,30 @@ export default {
       dialog: []
     }
   },
+  computed: {
+    coursePurchased () {
+      return this.$store.state.coursePurchased
+    }
+  },
+  watch: {
+    coursePurchased: function (val) {
+      if (val.length !== 0) {
+        this.getData()
+      }
+    }
+  },
   methods: {
+    getData () {
+      this.$store.state.coursePurchased.map(data => {
+        this.coursePur.push(...this.$store.getters.COURSE_FROM_ID(data))
+        this.dialog.push({status: false})
+      })
+      this.$store.state.coursePurchased.map(data => {
+        this.point.push([{id:1,icon:'start_border'},{id:2,icon:'start_border'},{id:3,icon:'start_border'},{id:4,icon:'start_border'},{id:5,icon:'start_border'}])
+        this.numberPoint.push({id: 1, mypoint: 0})
+        console.log(this.point)
+      })
+    },
     mouseOver (index,dex) {
       // console.log('over: ' + index)
       if (dex == 0) {

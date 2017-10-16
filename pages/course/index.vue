@@ -15,7 +15,7 @@
 import popularCourse from '../../components/popularCourse.vue'
 import parallax from '../../components/parallax.vue'
 export default {
-  async asyncData ({store}) {
+  async fetch ({store}) {
     await store.dispatch('PULL_POPULAR_COURSE_HOME')
   },
   created () {
