@@ -47,7 +47,8 @@ export default () => {
       isCoursePurchased: false,
       isCourseCreated: false,
       isCourseFavorite: false,
-      notification: []
+      notification: [],
+      notificationCount: 0
     },
     plugins: [
       createPersistedState({

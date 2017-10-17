@@ -118,5 +118,7 @@ export default {
   isCoursePurchased: (state, data) => state.isCoursePurchased = data,
   isCourseCreated: (state, data) => state.isCourseCreated = data,
   isCourseFavorite: (state, data) => state.isCourseFavorite = data,
-  addUserData: (state, data) => state.profile = data
+  addUserData: (state, data) => state.profile = data,
+  setNotificationCount: (state, data) => state.notificationCount = 0,
+  addNotificationCount: (state) => state.notificationCount += 1
 }

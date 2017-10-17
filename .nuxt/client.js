@@ -161,7 +161,7 @@ function resolveComponents(router) {
 }
 
 function callMiddleware (Components, context, layout) {
-  let midd = ["https","checkLogin","loadNotification"]
+  let midd = ["https","checkLogin"]
   let unknownMiddleware = false
 
   // If layout is undefined, only call global middleware

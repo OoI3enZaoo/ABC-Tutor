@@ -4,7 +4,7 @@ module.exports = {
   */
   mode: 'spa',
   router: {
-    middleware: ['https','checkLogin', 'loadNotification']
+    middleware: ['https','checkLogin']
   },
   head: {
     title: 'ABC-Tutor',
@@ -22,6 +22,7 @@ module.exports = {
     ]
   },
   plugins: [
+    { src: '~/plugins/nuxt-client-init.js' },
     { src: '~/plugins/vuetify.js' },
     { src: '~/plugins/VueSocketio.js' },
     { src: '~/plugins/quill.js' }

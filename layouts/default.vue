@@ -188,9 +188,6 @@
         if (this.$store.state.profile.user_id != data.user_id) {
           console.log('PUSH_COURSE: ' + JSON.stringify(data))
           this.$store.commit('addCourses', [data])
-          this.$socket.commit('addNotification', data)
-          this.snackbarText  = 'คอร์ส ' + data.subject + ' (' + data.code +')' + ' ถูกสร้างขึ้นแล้ว'
-          this.snackbar = true
         }
       }
       this.$options.sockets.course_user_purchased = (data) => {
@@ -255,6 +252,31 @@
           console.log('removeUserOnline: ' + JSON.stringify(data))
           this.$store.commit('removeUserOnline', data)
         }
+      }
+      this.$options.sockets.noti_course = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          this.$store.commit('addNotification', [data])
+          this.$store.commit('addNotificationCount')
+        }
+        this.snackbarText  =  noti.des + ' ถูกสร้างขึ้นแล้ว โดย ' + data.fname + ' ' +  data.lname
+        this.snackbar = true
+      }
+      this.$options.sockets.noti_content = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          console.log('noti_content: ' + JSON.stringify(data))
+          this.$store.commit('addNotification', [data])
+          this.$store.commit('addNotificationCount')
+        }
+        this.snackbarText  = 'มีเนื้อหาของคอร์สใหม่ใน ' + data.subject
+        this.snackbar = true
+      }
+      this.$options.sockets.noti_annountment = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          this.$store.commit('addNotification', [data])
+          this.$store.commit('addNotificationCount')
+        }
+        this.snackbarText  = 'มีการประกาศใหม่จากติวเตอร์ใน' + data.subject
+        this.snackbar = true
       }
     },
     data () {

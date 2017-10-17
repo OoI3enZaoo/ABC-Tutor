@@ -47,7 +47,6 @@
                                       <v-card-text>
                                         <v-text-field v-model="reviewText" multi-line label="กรอกคำวิจารณ์"></v-text-field>
                                         </v-card-text>
-                                        {{data.course_id}}
                                       <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn class="green--text darken-1" flat="flat" @click.native="dialog[courseIndex].status = false">ยกเลิก</v-btn>
@@ -59,18 +58,16 @@
 
                                  </div>
                                </div>
-                               {{data.course_id}}
-                               <span v-text="numberPoint[courseIndex].mypoint"></span>
+                                 (<span v-text="numberPoint[courseIndex].mypoint"></span> คะแนน)
                                <br>
-                            </template>
-
+                              </template>
 
                          </v-card-text>
                        </v-flex>
 
                        <v-flex lg3 xs12 text-xs-right>
                          <v-card-text>
-                           <span class="grey--text">อัพเดทล่าสุด {{data.lastUpdate}}</span><br>
+                           <span class="grey--text">อัพเดทล่าสุด {{data.lastUpdate | moment('from','now',true)}} ที่ผ่านมา</span><br>
                            <br>
                              <v-btn class="mt-2" primary @click.native="linkTo(data.course_id)">ดูรายละเอียดคอร์ส</v-btn><br><br>
                            </v-card-text>
@@ -132,9 +129,9 @@ export default {
         this.numberPoint.push({id: 1, mypoint: 0})
         console.log(this.point)
       })
+      this.point.map((p,i) => this.mouseOver(i, 4))
     },
     mouseOver (index,dex) {
-      // console.log('over: ' + index)
       if (dex == 0) {
         this.point[index][dex].icon = 'star'
         this.numberPoint[index].mypoint = 1
@@ -165,11 +162,8 @@ export default {
         this.point[index][dex].icon = 'star'
         this.numberPoint[index].mypoint = 5
       }
-
     },
     mouseLeave (index,dex) {
-      // console.log('leave: ' + index)
-      // console.log(this.point)
       this.point[index][dex].icon = 'star_border'
     },
     linkTo (course_id) {

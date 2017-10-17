@@ -162,23 +162,29 @@ export default {
       create () {
         this.dialog = false
         this.data.branch_id = this.$store.getters.BRANCH_FROM_NAME(this.data.branch_id)[0].branch_id
-        this.data.ts = this.time
+        this.data.ts = Vue.moment().format('YYYY-MM-DD HH:mm:ss')
         this.data.user_id = this.$store.state.profile.user_id
         this.data.course_id = (new Date().getTime())
-        this.data.lastUpdate = this.time
-        // console.log(this.data)
-        let socket = this.data
-        socket.room = 1212335
-        // const instructor = {
-        //   fname: this.$store.state.profile.fname,
-        //   lname: this.$store.state.profile.lname,
-        //   user_img: this.$store.state.profile.user_img
-        // }
+        this.data.lastUpdate = Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+        this.$store.dispatch('PUSH_COURSE', this.data)
         this.data.fname = this.$store.state.profile.fname
         this.data.lname = this.$store.state.profile.lname
-        this.$socket.emit('PUSH_COURSE', socket)
-        //this.$socket.emit('PUSH_INSTRUCTOR', instructor)
-        this.$store.dispatch('PUSH_COURSE', this.data)
+        this.$store.commit('addCourses', [this.data])
+        this.$store.commit('addCourseCreate', [this.data.course_id])
+        this.$socket.emit('PUSH_COURSE', this.data)
+        let notification = {
+          course_id: this.data.course_id,
+          subject: this.data.subject,
+          code: this.data.code,
+          user_id: this.$store.state.profile.user_id,
+          user_img: this.$store.state.profile.user_img,
+          noti_des: this.data.subject + '('+ this.data.code+')',
+          noti_type: 1,
+          noti_ts: this.data.ts
+        }
+        this.$socket.emit('noti_course', notification)
+        let {course_id, user_id, noti_cover, noti_des, noti_type, noti_ts} = notification
+        this.$store.dispatch('ADD_NOTIFICATION', {course_id, user_id, noti_cover, noti_des, noti_type, noti_ts})
         this.$router.push('/mycourse/' + this.data.course_id)
       }
   },
@@ -217,9 +223,6 @@ export default {
     },
     isPriceSelect () {
       return this.data.price !== ''
-    },
-    time () {
-      return Vue.moment().format('YYYY-MM-DD HH:mm:ss')
     }
   }
 }

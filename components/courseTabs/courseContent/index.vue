@@ -30,6 +30,9 @@ export default {
   computed: {
     courseContent () {
       return this.$store.getters.COURSE_CONTENT(this.$route.params.id)
+    },
+    course () {
+      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
     }
   },
   methods: {
@@ -38,6 +41,22 @@ export default {
       data.course_id = this.$route.params.id
       data.content_ts = Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       this.$store.dispatch('ADD_COURSE_CONTENT', data)
+      let notification = {
+        course_id: this.course.course_id,
+        user_id: this.$store.state.profile.user_id,
+        fname: this.$store.state.profile.fname,
+        lname: this.$store.state.profile.lname,
+        subject: this.course.subject,
+        code: this.course.code,
+        user_img: this.$store.state.profile.user_img,
+        noti_cover: this.course.cover,
+        noti_des: 'มีเนื้อหาของคอร์สใหม่',
+        noti_type: 2,
+        noti_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+      }
+      this.$socket.emit('noti_content', notification)
+      let {course_id, user_id, noti_cover, noti_des, noti_type, noti_ts} = notification
+      this.$store.dispatch('ADD_NOTIFICATION', {course_id, user_id, noti_cover, noti_des, noti_type, noti_ts})
     }
   }
 }

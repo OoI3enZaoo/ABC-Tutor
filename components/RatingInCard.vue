@@ -10,7 +10,7 @@
           </template>
       </template>
        <span>{{data.avg.toFixed(1)}}</span><br>
-      <span class="grey--text">จากผลโหวตทั้งหมด {{data.length}} คน</span>
+      <span class="grey--text">คนโหวตทั้งหมด {{data.length}} คน</span>
     </template>
   </div>
 </template>

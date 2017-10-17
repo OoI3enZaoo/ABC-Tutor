@@ -92,7 +92,23 @@ export default {
         annou_text: val.description,
         annou_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       }
-      this.$store.dispatch('ADD_COURSE_ANNO', data)      
+      this.$store.dispatch('ADD_COURSE_ANNO', data)
+      let notification = {
+        course_id: this.course.course_id,
+        subject: this.course.subject,
+        code: this.course.code,
+        user_id: this.$store.state.profile.user_id,
+        fname: this.$store.state.profile.fname,
+        lname: this.$store.state.profile.lname,
+        user_img: this.$store.state.profile.user_img,
+        noti_des: 'มีการประกาศใหม่จากติวเตอร์',
+        noti_cover: this.course.cover,
+        noti_type: 2,
+        noti_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+      }
+      this.$socket.emit('noti_annountment', notification)
+      let {course_id, user_id, noti_cover, noti_des, noti_type, noti_ts} = notification
+      this.$store.dispatch('ADD_NOTIFICATION', {course_id, user_id, noti_cover, noti_des, noti_type, noti_ts})
     },
     SendReply (message, val) {
         let data = {
@@ -115,6 +131,9 @@ export default {
   computed: {
     courseAnno () {
       return this.$store.getters.COURSE_ANNO(this.$route.params.id)
+    },
+    course () {
+      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
     }
   }
 }

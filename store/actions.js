@@ -45,8 +45,6 @@ export default {
     }
   },
   async PUSH_COURSE ({commit}, data) {
-    commit('addCourses', [data])
-    commit('addCourseCreate', [data.course_id])
     await axios.post('http://172.104.167.197:4000/api/insertcourse', data)
   },
   ADD_COURSE_PURCHASED ({commit}, payload) {
@@ -362,32 +360,32 @@ export default {
       })
     }
   },
-  // FETCH_COURSE_NOTIFICATION ({commit, state}) {
-  //   axios.get('http://172.104.167.197:4000/api/get_notification/'+ state.profile.user_id +'/1')
-  //   .then (res => {
-  //     let result = res.data
-  //     commit('addNotification', result)
-  //     console.log(result)
-  //   })
-  //   axios.get('http://172.104.167.197:4000/api/get_notification/'+ state.profile.user_id +'/2')
-  //   .then (res => {
-  //     let result = res.data
-  //     commit('addNotification', result)
-  //     console.log(result)
-  //   })
-  // },
   FETCH_NOTIFICATION ({commit}, payload) {
-    axios.get('http://localhost:4000/api/get_notification_type1')
+    axios.get('http://172.104.167.197:4000/api/get_notification_type1')
     .then (res => {
       let result = res.data
       console.log('type1: ' + JSON.stringify(result))
       commit('addNotification', result)
     })
-    axios.get('http://localhost:4000/api/get_notification_type2/' + payload)
+    axios.get('http://172.104.167.197:4000/api/get_notification_type2/' + payload)
     .then (res => {
       let result = res.data
       console.log('type2: ' + JSON.stringify(result))
       commit('addNotification', result)
     })
+  },
+  // ADD_NOTIFICATION ({commit}, payload) {
+  //   axios.post('http://172.104.167.197:4000/api/insertnotification', payload)
+  // },
+  nuxtClientInit ({state, dispatch}) {
+    if (state.branchs.length == 0) {
+      dispatch('PULL_BRANCHS')
+    }
+    if (state.isLogin == true) {
+      dispatch('FETCH_COURSE_REVIEW')
+      dispatch('FETCH_COURSE_CREATED')
+      dispatch('FETCH_COURSE_FAVORITE')
+      dispatch('FETCH_COURSE_PURCHASED')
+    }
   }
 }

@@ -30,17 +30,16 @@
                       <v-flex lg3 xs12>
                         <v-card-media :src="data.cover" height="200"></v-card-media>
                       </v-flex>
-                      <v-flex lg6 xs12>
+                      <v-flex lg5 xs12>
                         <v-card-text>
                           <span>{{data.subject}} ({{data.code}})</span><br>
                           <p class="grey--text">Theerapat Vijitpoo</p>
                           <p>เนื้อหาสอบบทที่ 1-5 เนื้อหาสำหรับการสอบกลางภาค</p>
-                          {{data.course_id}}
                         </v-card-text>
                       </v-flex>
-                      <v-flex lg3 xs12 text-xs-right>
+                      <v-flex lg4 xs12 text-xs-right>
                         <v-card-text>
-                          <span class="grey--text">สร้างเมื่อ 18/8/2560 23:06</span><br>
+                          <span class="grey--text">สร้างเมื่อ {{data.ts}}</span><br>
                               <div class="mt-5">
                                   <h6><b>{{data.price}}.-</b></h6>
                                   <RatingInCard :courseId="data.course_id"></RatingInCard>
