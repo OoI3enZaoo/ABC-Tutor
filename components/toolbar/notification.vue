@@ -1,4 +1,5 @@
 <template>
+
   <div class="text-xs-right mt-2">
     <v-menu
       offset-y
@@ -6,10 +7,10 @@
       :nudge-width="200"
       v-model="menu"
     >
-    <v-badge left color="blue" slot="activator" v-model="show" class="mt-2 ml-4 mr-2">
+    <!-- <v-badge left color="blue" slot="activator" v-model="show" class="mt-2 ml-4 mr-2">
       <span slot="badge">8</span>
-      <v-icon large primary>notifications</v-icon>
-    </v-badge>
+    </v-badge> -->
+    <v-icon  style="padding-top:6px;" large primary slot="activator">notifications</v-icon>
       <v-card>
         <v-list>
           <v-list-tile avatar>
@@ -34,15 +35,15 @@
           <v-tabs-items>
             <v-tabs-content id='tab-0'>
               <v-list two-line>
-                <div style="height:300px; overflow:scroll; overflow-x:hidden;">
+                <div style="height:400px; overflow:scroll; overflow-x:hidden;">
                   <template v-for="data in $store.getters.NOTIFICATION(1)">
-                    <v-list-tile @click="" nuxt :to="'/mycourse/' + data.course_id">
+                    <v-list-tile @click="" nuxt :to="'/course/' + data.course_id">
                       <v-list-tile-avatar>
                         <img :src="data.noti_cover">
                       </v-list-tile-avatar>
                       <v-list-tile-content>
                         <v-list-tile-title primary>{{data.subject}}({{data.code}}) </v-list-tile-title>
-                        <v-list-tile-sub-title>{{data.noti_ts | moment('from','now',true)}}ก่อน โดย {{data.fname_sender}} {{data.lname_sender}}</v-list-tile-sub-title>
+                        <v-list-tile-sub-title>ถูกสร้าง {{data.noti_ts | moment('from','now',true)}} ก่อน โดย {{data.fname}} {{data.lname}}</v-list-tile-sub-title>
                       </v-list-tile-content>
                     </v-list-tile>
                   </template>
@@ -58,8 +59,8 @@
                         <img :src="data.noti_cover">
                       </v-list-tile-avatar>
                       <v-list-tile-content>
-                        <v-list-tile-title primary>{{data.subject}}({{data.code}}) </v-list-tile-title>
-                        <v-list-tile-sub-title>{{data.noti_ts | moment('from','now',true)}} ago โดย {{data.fname_sender}} {{data.lname_sender}}</v-list-tile-sub-title>
+                        <v-list-tile-title primary>{{data.noti_des}} </v-list-tile-title>
+                        <v-list-tile-sub-title>{{data.noti_ts | moment('from','now',true)}} ago โดย {{data.fname}} {{data.lname}}</v-list-tile-sub-title>
                       </v-list-tile-content>
                     </v-list-tile>
                   </template>

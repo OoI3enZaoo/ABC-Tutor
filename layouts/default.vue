@@ -157,9 +157,7 @@
   </v-app>
     </div>
 </template>
-
 <script>
-
   import avatar from '../components/toolbar/avatar.vue'
   import notification from '../components/toolbar/notification.vue'
   import logo from '../components/logo.vue'

@@ -1,6 +1,6 @@
 <template>
 <div class="base64-upload">
-  <!-- คลิ๊กที่รูปภาพเพื่อเลือกรูปหน้าปก -->
+  sdsd
   <img :src="src"
     :style="imageStyle"/>
   <input type="file"
@@ -50,6 +50,7 @@ export default {
 img {
   width: 100%;
   height: 100%;
+  margin-left:80px;
   text-align: center;
 }
 input {
@@ -59,7 +60,7 @@ input {
   margin-left:80px;
   text-align: center;
   top: 0;
-  left: 0;
+  right:0;
   opacity: 0;
 }
 </style>

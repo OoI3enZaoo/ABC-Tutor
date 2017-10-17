@@ -292,7 +292,7 @@ export default {
       })
     }
   },
-  async FETCH_COURSE_PURCHASED ({commit, state}) {
+  async FETCH_COURSE_PURCHASED ({commit, state, dispatch}) {
     if (state.isCoursePurchased !== true ) {
       axios.get('http://172.104.167.197:4000/api/get_all_userpurchased/' + state.profile.user_id)
       .then (res => {
@@ -311,6 +311,7 @@ export default {
               rs.avg != 0 && voteinStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
             }
           })
+          dispatch('FETCH_NOTIFICATION', state.coursePurchased)
       })
     }
   },
@@ -361,18 +362,32 @@ export default {
       })
     }
   },
-  FETCH_COURSE_NOTIFICATION ({commit, state}) {
-    axios.get('http://172.104.167.197:4000/api/get_notification/'+ state.profile.user_id +'/1')
+  // FETCH_COURSE_NOTIFICATION ({commit, state}) {
+  //   axios.get('http://172.104.167.197:4000/api/get_notification/'+ state.profile.user_id +'/1')
+  //   .then (res => {
+  //     let result = res.data
+  //     commit('addNotification', result)
+  //     console.log(result)
+  //   })
+  //   axios.get('http://172.104.167.197:4000/api/get_notification/'+ state.profile.user_id +'/2')
+  //   .then (res => {
+  //     let result = res.data
+  //     commit('addNotification', result)
+  //     console.log(result)
+  //   })
+  // },
+  FETCH_NOTIFICATION ({commit}, payload) {
+    axios.get('http://localhost:4000/api/get_notification_type1')
     .then (res => {
       let result = res.data
+      console.log('type1: ' + JSON.stringify(result))
       commit('addNotification', result)
-      console.log(result)
     })
-    axios.get('http://172.104.167.197:4000/api/get_notification/'+ state.profile.user_id +'/2')
+    axios.get('http://localhost:4000/api/get_notification_type2/' + payload)
     .then (res => {
       let result = res.data
+      console.log('type2: ' + JSON.stringify(result))
       commit('addNotification', result)
-      console.log(result)
     })
   }
 }

@@ -18,9 +18,6 @@ export default {
   async fetch ({store}) {
     await store.dispatch('PULL_POPULAR_COURSE_HOME')
   },
-  created () {
-  //  this.$store.dispatch('PULL_POPULAR_COURSE')
-  },
   computed: {
     branchs () {
       return this.$store.state.branchs
