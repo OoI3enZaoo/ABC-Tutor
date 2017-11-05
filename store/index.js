@@ -23,8 +23,14 @@ export default () => {
         twiiter: '',
         youtube: ''
       },
+      user: {
+        user_data: [],
+        user_owner: [],
+        user_student: [],
+        user_review: [],
+        user_purchase: []
+      },
       course: [],
-      user: [],
       createCourse: {},
       coursePurchased: [],
       courseFavorite: [],

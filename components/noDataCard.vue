@@ -12,7 +12,7 @@
                     </v-flex>
                     <v-flex xs12 md5 text-md-left text-xs-center mt-4>
                       <h5>{{text}}</h5>
-                        <v-btn primary nuxt :to="link">{{textbtn}}</v-btn>
+                        <v-btn v-if="textbtn !== undefined"primary nuxt :to="link">{{textbtn}}</v-btn>
                     </v-flex>
                   </v-layout>
               </div>
@@ -25,7 +25,9 @@
 </template>
 <script>
 export default {
-  props: ['png', 'text', 'textbtn', 'link']
-
+  props: ['png', 'text', 'textbtn', 'link'],
+  created () {
+    console.log('textbtn: ' + this.textbtn)
+  }
 }
 </script>

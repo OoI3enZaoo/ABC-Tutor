@@ -99,5 +99,30 @@ export default {
     return typeId => state.notification.filter(item => {
       return typeId == item.noti_type
     })
+  },
+  USER_DATA (state) {
+    return typeId => state.user.user_data.filter(item => {
+      return typeId == item.user_id
+    })
+  },
+  USER_OWNER (state) {
+    return typeId => state.user.user_owner.filter(item => {
+      return typeId == item.user_id
+    })
+  },
+  USER_STUDENT (state) {
+    return typeId => state.user.user_student.filter(item => {
+      return typeId == item.user_id
+    })
+  },
+  USER_REVIEW (state) {
+    return typeId => state.user.user_review.filter(item => {
+      return typeId == item.user_id
+    })
+  },
+  USER_PURCHASE (state) {
+    return typeId => state.user.user_purchase.filter(item => {
+      return typeId == item.user_id
+    })
   }
 }

@@ -6,6 +6,7 @@
       </div>
       <br>
       <template v-for="data in courseContent">
+        {{data}}
           <expansion :title="data.content_title" :time= "data.content_ts" :description="data.content_des" :files="data.files" :contentId="data.content_id"></expansion>
       <br>
       </template>

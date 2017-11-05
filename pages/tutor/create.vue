@@ -175,6 +175,8 @@ export default {
         let notification = {
           course_id: this.data.course_id,
           subject: this.data.subject,
+          fname: this.$store.state.profile.fname,
+          lname: this.$store.state.profile.lname,
           code: this.data.code,
           user_id: this.$store.state.profile.user_id,
           user_img: this.$store.state.profile.user_img,

@@ -1,6 +1,5 @@
 <template>
 <div class="base64-upload">
-  sdsd
   <img :src="src"
     :style="imageStyle"/>
   <input type="file"
@@ -50,14 +49,12 @@ export default {
 img {
   width: 100%;
   height: 100%;
-  margin-left:80px;
   text-align: center;
 }
 input {
   position: absolute;
   width: 100%;
   height: 100%;
-  margin-left:80px;
   text-align: center;
   top: 0;
   right:0;

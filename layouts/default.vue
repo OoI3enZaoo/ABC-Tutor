@@ -258,7 +258,7 @@
           this.$store.commit('addNotification', [data])
           this.$store.commit('addNotificationCount')
         }
-        this.snackbarText  =  noti.des + ' ถูกสร้างขึ้นแล้ว โดย ' + data.fname + ' ' +  data.lname
+        this.snackbarText  =  data.noti_des + ' ถูกสร้างขึ้นแล้ว โดย ' + data.fname + ' ' +  data.lname
         this.snackbar = true
       }
       this.$options.sockets.noti_content = (data) => {
@@ -294,6 +294,11 @@
             name: 'สำรวจ',
             icon: 'class',
             link: '/course'
+          },
+          {
+            name: 'ทดสอบ',
+            icon: 'home',
+            link: '/test'
           },
           {
             name: 'ออกจากระบบ',

@@ -120,5 +120,10 @@ export default {
   isCourseFavorite: (state, data) => state.isCourseFavorite = data,
   addUserData: (state, data) => state.profile = data,
   setNotificationCount: (state, data) => state.notificationCount = 0,
-  addNotificationCount: (state) => state.notificationCount += 1
+  addNotificationCount: (state) => state.notificationCount += 1,
+  addUser_data: (state, data) => state.user.user_data.push(...data),
+  addUser_owner: (state, data) => state.user.user_owner.push(...data),
+  addUser_student: (state, data) => state.user.user_student.push(...data),
+  addUser_review: (state, data) => state.user.user_review.push(...data),
+  addUser_purchase: (state, data) => state.user.user_purchase.push(...data)
 }

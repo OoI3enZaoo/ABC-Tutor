@@ -3,7 +3,6 @@
   <v-container grid-list-lg>
     <v-switch v-model="isTutor" color="primary" label="เป็นติวเตอร์"></v-switch>
 
-
     <template v-if="isTutor">
           <template v-if="!liveStatus">
              <v-card>
@@ -15,7 +14,23 @@
                    <v-flex xs6>
                      <p class="headline">คุณยังไม่ได้ทำการไลฟ์</p>
                      <nuxt-link to="/"><span class="blue--text">เรียนรู้เพิ่มเติม</span></nuxt-link>
-                     <v-btn primary @click.native="startStream">เริ่มต้นไลฟ์</v-btn>
+                     <v-dialog v-model="dialog" persistent max-width="500px">
+                           <v-btn color="primary" dark slot="activator">เริ่มไลฟ์</v-btn>
+                           <v-card>
+                             <v-card-title>
+                               <span class="headline">รายละเอียดของการไลฟ์</span>
+                             </v-card-title>
+                             <v-card-text>
+                               <v-text-field label="หัวข้อการไลฟ์" v-model="title"></v-text-field>
+                               <v-text-field label="รายละเอียด" v-model="description"></v-text-field>
+                             </v-card-text>
+                             <v-card-actions>
+                               <v-spacer></v-spacer>
+                               <v-btn color="primary" :disabled="!isValid" @click.native="[startStream(), dialog = false]">เริ่มไลฟ์</v-btn>
+                               <v-btn color="primary" outline @click.native="dialog = false">ยกเลิก</v-btn>
+                             </v-card-actions>
+                           </v-card>
+                         </v-dialog>
                    </v-flex>
                  </v-layout>
                </v-card-text>
@@ -28,8 +43,11 @@
                       <video ref="video"  :src="this.source" autoplay width ="100%" style="max-height:497px;"></video>
                     <v-card-text>
                       <v-layout>
-                        <v-flex xs6><h6 style="display:inline;">ติวคอมพิวเตอร์เบื้องต้น SP522 บทที่ 1-3</h6></v-flex>
-                        <v-flex xs6 text-xs-right><h6 style="display:inline;">155 ที่รับชมอยู่ในขณะนี้</h6></v-flex>
+                        <v-flex xs6>
+                          <h6 style="display:inline;">{{title}}</h6>
+                          <span>{{description}}</span>
+                        </v-flex>
+                        <v-flex xs6 text-xs-right><h6 style="display:inline;">0 ที่รับชมอยู่ในขณะนี้</h6></v-flex>
                       </v-layout>
                     </v-card-text>
                   </v-card>
@@ -92,8 +110,11 @@
                    <v-card-media :src="videoLive" height="500"></v-card-media>
                    <v-card-text>
                      <v-layout>
-                       <v-flex xs6><h6 style="display:inline;">ติวคอมพิวเตอร์เบื้องต้น SP522 บทที่ 1-3</h6></v-flex>
-                       <v-flex xs6 text-xs-right><h6 style="display:inline;">155 ที่รับชมอยู่ในขณะนี้</h6></v-flex>
+                       <v-flex xs6>
+                         <h6 style="display:inline;">{{title}}</h6>
+                         <span>{{description}}</span>
+                       </v-flex>
+                       <v-flex xs6 text-xs-right><h6 style="display:inline;">0 ที่รับชมอยู่ในขณะนี้</h6></v-flex>
                      </v-layout>
                    </v-card-text>
                  </v-card>
@@ -138,6 +159,13 @@
 </template>
 <script>
 import chat from './addon/chat.vue'
+import axios from 'axios'
+let recorder
+import Vue from 'vue'
+const moment = require('moment')
+Vue.use(require('vue-moment'), {
+    moment
+})
 export default {
   components: {
     chat
@@ -253,29 +281,108 @@ export default {
     },
     startStream (val) {
       this.liveStatus = true
-      this.requestMedia()
-      if (navigator.getUserMedia) {
-        navigator.getUserMedia({
-          video: true
-        }, stream => {
-          this.source = window.URL.createObjectURL(stream)
-          this.stream = stream
-          this.$emit('started', stream)
-        }, error => {
-          this.$emit('error', error)
-        })
-      }
-      console.log('setInterval')
-      this.interval = setInterval(() => {
-        let data = {
-          course_id: this.$route.params.id,
-          message: this.capture()
+      getScreenId( (error, sourceId, screen_constraints) => {
+    // error    == null || 'permission-denied' || 'not-installed' || 'installed-disabled' || 'not-chrome'
+    // sourceId == null || 'string' || 'firefox'
+    console.log('getScreenId');
+    if(sourceId && sourceId != 'firefox') {
+        screen_constraints = {
+            video: {
+                mandatory: {
+                    chromeMediaSource: 'screen',
+                    maxWidth: 1920,
+                    maxHeight: 1080,
+                    minAspectRatio: 1.77
+                }
+            }
+        };
+
+        if (error === 'permission-denied') return alert('Permission is denied.');
+        if (error === 'not-chrome') return alert('Please use chrome.');
+
+        if (!error && sourceId) {
+            screen_constraints.video.mandatory.chromeMediaSource = 'desktop';
+            screen_constraints.video.mandatory.chromeMediaSourceId = sourceId;
         }
-        console.log(data)
-        this.$socket.emit('live_tutor', data)
-      }, 2)
+    }
+
+    this.requestMedia()
+      if (navigator.getUserMedia) {
+      navigator.getUserMedia(screen_constraints, stream => {
+        navigator.getUserMedia({
+             audio: true, video: true
+          }, stream2 => {
+            stream.width = window.screen.width;
+      			stream.height = window.screen.height;
+      			stream.fullcanvas = true;
+      			stream2.width = 320;
+      			stream2.height = 240;
+      			stream2.top = stream.height - stream2.height;
+      			stream2.left = stream.width - stream2.width;
+
+            recorder = RecordRTC([stream, stream2], {
+                type: 'video',
+                recorderType: MediaStreamRecorder,
+                // mimeType: 'video/webm\;codecs=vp9',
+                mineType: {
+                  audio: 'audio/wav',  // audio/ogg or audio/webm or audio/wav
+                  video: 'video/webm', // video/webm or video/vp8
+                  gif:   'image/gif'
+                },
+                previewStream: mystream => {
+                   console.log(mystream)
+                  this.source = window.URL.createObjectURL(mystream)
+                  console.log(this.source)
+                  this.interval = setInterval(() => {
+                    let data = {
+                      course_id: this.$route.params.id,
+                      message: this.capture()
+                    }
+                    console.log(data)
+                    this.$socket.emit('live_tutor', data)
+                  }, 2000)
+
+                  let notification = {
+                    course_id: this.course.course_id,
+                    user_id: this.$store.state.profile.user_id,
+                    fname: this.$store.state.profile.fname,
+                    lname: this.$store.state.profile.lname,
+                    subject: this.course.subject,
+                    code: this.course.code,
+                    user_img: this.$store.state.profile.user_img,
+                    noti_cover: this.course.cover,
+                    noti_des: 'มีการไลฟ์ใหม่',
+                    noti_type: 2,
+                    noti_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
+                  }
+                  this.$socket.emit('noti_content', notification)
+
+                }
+            })
+            recorder.startRecording()
+        })
+      })
+  }
+})
     },
-    stopStream (val) {
+    async stopStream (val) {
+      console.log('stopStream');
+      let formData = new FormData();
+      let fileName = this.title + '.webm'
+    await recorder.stopRecording(function () {
+        console.log('recorder')
+        let blob = recorder.getBlob()
+        formData.append('video', blob, fileName)
+      })
+      let videoo = {
+        course_id: this.course.course_id,
+        content_title: this.title,
+        content_des: this.description,
+        content_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss'),
+        data: formData,
+        files: [fileName]
+      }
+      this.$store.dispatch('ADD_COURSE_CONTENT', videoo)
       this.liveStatus = false
       this.stream.getVideoTracks()[0].stop()
       const data = {
@@ -382,8 +489,11 @@ export default {
       videoLive: null,
       interval: null,
       stream: '',
+      stream2: '',
       source: '',
       canvas: null,
+      title: '',
+      description: '',
       liveMessage: [],
       userLive: [
         { cam: 0, userName: 'ben1', source: '', interval: null, ref: 'cam1', isMe: false },
@@ -396,7 +506,16 @@ export default {
         model: false,
         text: '555',
         time: 5000
-      }
+      },
+      dialog: false
+    }
+  },
+  computed: {
+    isValid () {
+      return this.title !== '' && this.description !== ''
+    },
+    course () {
+      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
     }
   }
 }

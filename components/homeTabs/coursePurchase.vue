@@ -83,7 +83,7 @@
   </div>
 </template>
 <script>
-import noDataCard from './addon/noDataCard.vue'
+import noDataCard from '../noDataCard.vue'
 import Vue from 'vue'
 const moment = require('moment')
 Vue.use(require('vue-moment'), {

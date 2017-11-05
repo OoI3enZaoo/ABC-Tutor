@@ -64,23 +64,25 @@ export default {
   PULL_COURSE_DATA ({commit}, payload) {
   },
   ADD_COURSE_CONTENT ({commit, state, dispatch}, payload) {
+    console.log('ADD_COURSE_CONTENT')
     let filesData = payload.data
     delete payload["data"]
     axios.post('http://172.104.167.197:4000/api/insertcoursecontent', payload)
     .then (res => {
       let result = res.data
       payload.content_id = result.content_id
+
       commit('addCourseContent', payload)
       payload.user_id = state.profile.user_id
       new Vue().$socket.emit('courseContent', payload)
       axios.post('http://172.104.167.197:4000/api/upload/' + result.content_id, filesData)
       .then((response) => {
         console.log('successMsg');
+        // console.log(filesData)
       })
       .catch((error) => {
         console.log('error');
       })
-
     })
   },
   async PULL_POPULAR_COURSE_HOME ({commit, state}) {
@@ -90,10 +92,9 @@ export default {
          axios.get('http://172.104.167.197:4000/api/popularcourse/' + data.branch_id)
         .then (res => {
           let result = res.data
-          console.log(result)
           result.map(str => {
             let {user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube ,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate, five, four, three, two, one, avg, length} = str
-            commit('addUser', [{user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube}])
+            // commit('addUser', [{user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube}])
             commit('addPopularCourseHome', [{fname,lname,user_id,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate}])
             let inStore = false
             state.courseVote.find(f => f.course_id == str.course_id  ? inStore = true : '')
@@ -110,7 +111,7 @@ export default {
         let result = res.data
         result.map(str => {
           let {user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube ,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate, five, four, three, two, one, avg, length} = str
-          commit('addUser', [{user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube}])
+          // commit('addUser', [{user_id,fname,lname,user_img,sex,birthday,email,facebook,twitter,youtube}])
           commit('addPopularCourseIndex', [{fname,lname,user_id,course_id,branch_id,subject,code,price,des,cover,ts,coupon,lastUpdate}])
           let inStore = false
           state.courseVote.find(f => f.course_id == str.course_id  ? inStore = true : '')
@@ -146,7 +147,7 @@ export default {
       await axios.get('http://172.104.167.197:4000/api/user/' + user_id)
       .then(res => {
         let result = res.data
-        commit('addUser', result)
+        // commit('addUser', result)
       })
     }
   },
@@ -237,11 +238,30 @@ export default {
       commit('addCourseChat', result)
     })
   },
+
+  async PULL_COURSE_ANNO ({commit, state}, course_id) {
+    let qa
+    let isCheck = false
+    state.courseDetail.courseAnno.find(res => res.course_id == course_id ? isCheck = true : '')
+    if (isCheck == false) {
+      await axios.get('http://172.104.167.197:4000/api/get_course_announce/' + course_id)
+      .then(res => {
+        qa = res.data
+      })
+      qa.map(q => {
+        axios.get('http://172.104.167.197:4000/api/get_course_announce_comment/' + q.annou_id)
+        .then(res => {
+          let {fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts} = q
+          commit('addCourseAnno', [{fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts,reply:res.data}])
+        })
+      })
+    }
+  },
+
   ADD_COURSE_ANNO ({commit, state}, payload) {
     axios.post('http://172.104.167.197:4000/api/insertcourse_announce/', payload)
     .then (res=> {
       let result = res.data
-      console.log('ADD_COURSE_ANNO: ' + JSON.stringify(result))
       payload.annou_id = result.annou_id
       payload.reply = []
       payload.user_id = state.profile.user_id
@@ -282,7 +302,7 @@ export default {
   FETCH_COURSE_REVIEW ({commit, state}) {
     console.log('FETCH_COURSE_REVIEW')
     if (state.isCheckReview !== true) {
-      axios.get('http://172.104.167.197:4000/api/get_review_course_user/' + state.profile.user_id)
+        axios.get('http://172.104.167.197:4000/api/get_review_course_user/' + state.profile.user_id)
       .then (res => {
         let result = res.data
         result.map(r => commit('addCheckReview', [r.course_id]))
@@ -364,13 +384,11 @@ export default {
     axios.get('http://172.104.167.197:4000/api/get_notification_type1')
     .then (res => {
       let result = res.data
-      console.log('type1: ' + JSON.stringify(result))
       commit('addNotification', result)
     })
     axios.get('http://172.104.167.197:4000/api/get_notification_type2/' + payload)
     .then (res => {
       let result = res.data
-      console.log('type2: ' + JSON.stringify(result))
       commit('addNotification', result)
     })
   },
@@ -387,5 +405,43 @@ export default {
       dispatch('FETCH_COURSE_FAVORITE')
       dispatch('FETCH_COURSE_PURCHASED')
     }
+  },
+  PULL_USER_DATA ({commit}, user_id) {
+    axios.get('http://172.104.167.197:4000/api/user/' + user_id)
+    .then (res => {
+      let result = res.data
+      commit('addUser_data', result)
+    })
+  },
+  PULL_USER_OWNER ({commit}, user_id) {
+    axios.get('http://172.104.167.197:4000/api/get_all_userowner/' + user_id)
+    .then (res => {
+      let result = res.data
+      commit('addUser_owner', result)
+    })
+  },
+  PULL_USER_STUDENT ({commit}, user_id) {
+    axios.get('http://172.104.167.197:4000/api/get_all_my_user/' + user_id)
+    .then (res => {
+      let result = res.data
+      result[0].user_id = user_id
+      commit('addUser_student', result)
+    })
+  },
+  PULL_USER_REVIEW ({commit}, user_id) {
+    axios.get('http://172.104.167.197:4000/api/get_all_my_review/' + user_id)
+    .then (res => {
+      let result = res.data
+      result[0].user_id = user_id
+      commit('addUser_review', result)
+    })
+  },
+  PULL_USER_PURCHASE ({commit}, user_id) {
+    axios.get('http://172.104.167.197:4000/api/get_all_userpurchased/' + user_id)
+    .then (res => {
+      let result = res.data
+      result.map(r => r.user_id = user_id)
+      commit('addUser_purchase', result)
+    })
   }
 }

@@ -18,7 +18,7 @@
 </template>
 <script>
 import favoriteCard from './addon/favoriteCard.vue'
-import noDataCard from './addon/noDataCard.vue'
+import noDataCard from '../noDataCard.vue'
 export default {
   components: {
     favoriteCard,

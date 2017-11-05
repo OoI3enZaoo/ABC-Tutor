@@ -40,6 +40,12 @@ import coursePurchased from '.././components/homeTabs/coursePurchase.vue'
 import courseFavorite from '.././components/homeTabs/courseFavorite.vue'
 import courseCreate from '.././components/homeTabs/courseCreate.vue'
 export default {
+  asyncData ({store}) {
+    store.dispatch('FETCH_COURSE_REVIEW')
+    store.dispatch('FETCH_COURSE_CREATED')
+    store.dispatch('FETCH_COURSE_FAVORITE')
+    store.dispatch('FETCH_COURSE_PURCHASED')
+  },
   components: {
     parallax,
     coursePurchased,

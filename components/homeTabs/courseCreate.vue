@@ -70,7 +70,7 @@
   </div>
 </template>
 <script>
-import noDataCard from './addon/noDataCard.vue'
+import noDataCard from '../noDataCard.vue'
 export default {
   components: {
     noDataCard
