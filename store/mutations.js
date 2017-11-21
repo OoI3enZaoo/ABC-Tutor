@@ -125,5 +125,6 @@ export default {
   addUser_owner: (state, data) => state.user.user_owner.push(...data),
   addUser_student: (state, data) => state.user.user_student.push(...data),
   addUser_review: (state, data) => state.user.user_review.push(...data),
-  addUser_purchase: (state, data) => state.user.user_purchase.push(...data)
+  addUser_purchase: (state, data) => state.user.user_purchase.push(...data),
+  updateCourse: (state, data) => state.course.map(c => c.course_id == data.course_id ? c = data : '')
 }

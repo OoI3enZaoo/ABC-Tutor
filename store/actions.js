@@ -121,6 +121,7 @@ export default {
     }
   },
   async PULL_USER_PURCHASED ({commit, state}, course_id) {
+    console.log('course_id: ' + course_id);
     let isCheck = false
     for (let i = 0; i < state.courseUserPurchased.length; i++ ) {
       if (state.courseUserPurchased[i].course_id == course_id) {
@@ -443,5 +444,9 @@ export default {
       result.map(r => r.user_id = user_id)
       commit('addUser_purchase', result)
     })
+  },
+  UPDATE_COURSE ({state, commit}, data) {
+    axios.post('http://' + state.currentIP + '/api/updatecourse/', data)
+    new Vue().$socket.emit('update_course', data)
   }
 }

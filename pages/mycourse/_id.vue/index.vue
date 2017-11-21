@@ -52,6 +52,11 @@
        <v-tabs-content id='tab-5'>
          <chat></chat>
        </v-tabs-content>
+
+       <!-- การจัดการ -->
+       <v-tabs-content id='tab-6'>
+         <manage></manage>
+       </v-tabs-content>
    </v-tabs>
   </div>
 </template>
@@ -63,6 +68,7 @@ import live from '../../../components/courseTabs/live'
 import qa from '../../../components/courseTabs/qa'
 import videoCourse from '../../../components/courseTabs/courseContent'
 import chat from '../../../components/courseTabs/chat.vue'
+import manage from '../../../components/courseTabs/manage.vue'
 export default {
   async asyncData ({ store, route }) {
     // await store.dispatch('PULL_COURSE_DATA', route.params.id)
@@ -73,7 +79,7 @@ export default {
     // await store.dispatch('PULL_USER_ONLINE', route.params.id)
   },
   components: {
-    parallax, overall, announcement, live, qa, videoCourse, chat
+    parallax, overall, announcement, live, qa, videoCourse, chat, manage
   },
   data () {
     return {
@@ -83,7 +89,8 @@ export default {
         { title: 'วีดีโอสด' },
         { title: 'ถามตอบ' },
         { title: 'ประกาศ' },
-        { title: 'แชท' }
+        { title: 'แชท' },
+        { title: 'หน้าจัดการ' }
       ]
     }
   },

@@ -277,6 +277,9 @@
         }
         this.snackbarText  = 'มีการประกาศใหม่จากติวเตอร์ใน' + data.subject
         this.snackbar = true
+      },
+      this.$options.sockets.update_course = (data) => {        
+        this.$store.commit('updateCourse', data)
       }
     },
     data () {
@@ -285,6 +288,11 @@
         snackbar: false,
         snackbarText: '',
         menuAfterLoginItem: [
+          {
+            name: 'หน้าหลัก',
+            icon: 'home',
+            link: '/'
+          },
           {
             name: 'สร้างคอร์ส',
             icon: 'note_add',
@@ -296,11 +304,6 @@
             link: '/course'
           },
           {
-            name: 'ทดสอบ',
-            icon: 'home',
-            link: '/test'
-          },
-          {
             name: 'ออกจากระบบ',
             icon: 'fa-sign-out',
             link: '/signout',
@@ -308,6 +311,11 @@
           }
         ],
         menuBeforeLoginItem: [
+          {
+            name: 'หน้าหลัก',
+            icon: 'home',
+            link: '/home'
+          },
           {
             name: 'สร้างคอร์ส',
             icon: 'note_add',

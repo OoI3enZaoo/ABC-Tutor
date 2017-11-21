@@ -129,26 +129,8 @@
             </v-card-text>
           </v-card>
           <br><br>
-          <p class="headline ml-4">ซื้อไปแล้ว {{courseUserPurchased.length}} คน</p>
-          <v-list>
-            <div style="max-height:480px; overflow:scroll; overflow-x:hidden;">
-              <template v-for="data in courseUserPurchased" >
-                <v-list-tile @click="" avatar nuxt :to="'/user/' + data.user_id" tag="span" >
-                  <v-list-tile-avatar>
-                    <img :src="data.user_img" alt="avatar">
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                    <v-list-tile-title>
-                      {{data.fname}} {{data.lname}}
-                    </v-list-tile-title>
-                    <v-list-tile-sub-title>
-                      {{ data.purchase_ts | moment("from", "now", true) }} ที่ผ่านมา
-                    </v-list-tile-sub-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-              </template>
-            </div>
-          </v-list>
+          <userPurchase></userPurchase>
+
         </v-flex>
       </v-layout>
     </v-container>
@@ -158,6 +140,7 @@
 
 <script>
 import parallax from '../../../components/parallax.vue'
+import userPurchase from '../../../components/userPurchase.vue'
 import Vue from 'vue'
 const moment = require('moment')
 Vue.use(require('vue-moment'), {
@@ -165,12 +148,12 @@ Vue.use(require('vue-moment'), {
 })
 export default {
   async fetch ({store, route}) {
-    await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
-    await store.dispatch('PULL_USER_PURCHASED', route.params.id)
+    await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)    
     await store.dispatch('PULL_COURSE_REVIEW', route.params.id)
   },
   components: {
-    parallax
+    parallax,
+    userPurchase
   },
   methods: {
     purchasedCourse() {
@@ -212,9 +195,6 @@ export default {
     },
     checkCourseCreate () {
       return this.$store.getters.COURSE_CREATE(this.$route.params.id)[0]
-    },
-    courseUserPurchased () {
-      return this.$store.getters.COURSE_USER_PURCHASED(this.$route.params.id)
     },
     courseVote () {
       return this.$store.getters.COURSE_VOTE_FROM_COURSE_ID(this.$route.params.id)[0]

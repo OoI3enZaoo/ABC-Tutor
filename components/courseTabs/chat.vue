@@ -79,12 +79,12 @@ export default {
   },
   mounted () {
     this.scrollToEnd()
-    this.$options.sockets.online = (data) => {
-      console.log('online: ' + JSON.stringify(data))
-    }
-    this.$options.sockets.offline = (data) => {
-      console.log('offline: ' + JSON.stringify(data))
-    }
+    // this.$options.sockets.online = (data) => {
+    //   console.log('online: ' + JSON.stringify(data))
+    // }
+    // this.$options.sockets.offline = (data) => {
+    //   console.log('offline: ' + JSON.stringify(data))
+    // }
   },
   data () {
     return {
@@ -101,7 +101,7 @@ export default {
   methods: {
     sendMessage () {
       if(this.chatText != '') {
-        console.log('message: ' + this.chatText)
+        // console.log('message: ' + this.chatText)
         let data = {
           course_id: this.$route.params.id,
           user_id: this.$store.state.profile.user_id,
@@ -133,38 +133,38 @@ export default {
     // uesrOnline () {
     //   return this.$store.getters.COURSE_USER(this.$route.params.id + 11111)
     // }
-  },
-  beforeDestroy () {
-    let data = {
-      course_id: this.roomId,
-      user_id: this.$store.state.profile.user_id,
-      fname: this.$store.state.profile.fname,
-      lname: this.$store.state.profile.lname,
-      user_img: this.$store.state.profile.user_img
-    }
-    let {course_id, user_id} = data
-    this.$store.dispatch('USER_OFFLINE', {course_id, user_id})
-    this.$store.commit('removeAllUser')
-    let socket = data
-    socket.course_id += 11111
-    this.$socket.emit('offline', socket)
-    console.log('beforeDestroy:' + JSON.stringify(socket))
-  },
-  destroyed () {
-    let data = {
-      course_id: this.roomId,
-      user_id: this.$store.state.profile.user_id,
-      fname: this.$store.state.profile.fname,
-      lname: this.$store.state.profile.lname,
-      user_img: this.$store.state.profile.user_img
-    }
-    let {course_id, user_id} = data
-    this.$store.dispatch('USER_OFFLINE', {course_id, user_id})
-    this.$store.commit('removeAllUser')
-    let socket = data
-    socket.course_id += 11111
-    this.$socket.emit('offline', socket)
-    console.log('beforeDestroy:' + JSON.stringify(socket))
   }
+  // beforeDestroy () {
+  //   let data = {
+  //     course_id: this.roomId,
+  //     user_id: this.$store.state.profile.user_id,
+  //     fname: this.$store.state.profile.fname,
+  //     lname: this.$store.state.profile.lname,
+  //     user_img: this.$store.state.profile.user_img
+  //   }
+  //   let {course_id, user_id} = data
+  //   this.$store.dispatch('USER_OFFLINE', {course_id, user_id})
+  //   this.$store.commit('removeAllUser')
+  //   let socket = data
+  //   socket.course_id += 11111
+  //   this.$socket.emit('offline', socket)
+  //   console.log('beforeDestroy:' + JSON.stringify(socket))
+  // },
+  // destroyed () {
+  //   let data = {
+  //     course_id: this.roomId,
+  //     user_id: this.$store.state.profile.user_id,
+  //     fname: this.$store.state.profile.fname,
+  //     lname: this.$store.state.profile.lname,
+  //     user_img: this.$store.state.profile.user_img
+  //   }
+  //   let {course_id, user_id} = data
+  //   this.$store.dispatch('USER_OFFLINE', {course_id, user_id})
+  //   this.$store.commit('removeAllUser')
+  //   let socket = data
+  //   socket.course_id += 11111
+  //   this.$socket.emit('offline', socket)
+  //   console.log('beforeDestroy:' + JSON.stringify(socket))
+  // }
 }
 </script>
