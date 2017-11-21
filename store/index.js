@@ -6,6 +6,7 @@ import createPersistedState from 'vuex-persistedstate'
 export default () => {
   return new Vuex.Store({
     state: {
+      currentIP: '172.104.167.197:4000',
       background: require('../static/background.jpg'),
       branchs: [],
       isLogin: false,
@@ -40,8 +41,8 @@ export default () => {
         courseContent: [],
         courseQA: [],
         courseChat: [],
-        courseAnno: [],
-        userOnline: []
+        courseAnno: []
+        // userOnline: []
       },
       popularCourseHome: [],
       popularCourseIndex: [],
@@ -54,7 +55,8 @@ export default () => {
       isCourseCreated: false,
       isCourseFavorite: false,
       notification: [],
-      notificationCount: 0
+      notificationCount: 0,
+      liveMessage: []
     },
     plugins: [
       createPersistedState({

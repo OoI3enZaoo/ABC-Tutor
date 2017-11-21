@@ -18,10 +18,10 @@ module.exports = {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
     ],
     script: [
-      { src: 'https://use.fontawesome.com/eed138f88e.js', ssr: true },
-      { src: 'https://cdn.webrtc-experiment.com/RecordRTC.js', ssr: true },
-      { src: 'https://webrtc.github.io/adapter/adapter-latest.js', ssr: true },
-      { src: 'https://cdn.WebRTC-Experiment.com/getScreenId.js', ssr: true }
+      { src: 'https://use.fontawesome.com/eed138f88e.js' },
+      { src: 'https://cdn.webrtc-experiment.com/RecordRTC.js' },
+      { src: 'https://webrtc.github.io/adapter/adapter-latest.js' },
+      { src: 'https://cdn.WebRTC-Experiment.com/getScreenId.js' }
     ]
   },
   plugins: [

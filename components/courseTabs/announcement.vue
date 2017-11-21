@@ -12,7 +12,59 @@
                   <create title="สร้างคำประกาศ" type="2" style="margin-left:60px;" @result="dataFromQuill"></create>
               </template>
             </v-flex>
-            <template v-for="(data,i) in courseAnno">
+
+<template v-for="(data, i) in courseAnno" style="margin-top:50px;">
+            <v-expansion-panel expand>
+                <v-expansion-panel-content>
+
+                      <div slot="header">
+                        <v-list two-line>
+                          <v-list-tile>
+                            <v-list-tile-avatar>
+                              <img :src="data.user_img" alt="">
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                              <v-list-tile-title><span class="blue--text">{{data.fname}} {{data.lname}}</span></v-list-tile-title>
+                              <v-list-tile-sub-title>
+                                <span class="grey--text">ประกาศเมื่อ {{data.annou_ts | moment('from','now',true)}} ก่อน</span>
+                                    <p v-html="data.annou_text"></p>
+                              </v-list-tile-sub-title>
+
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-list>
+                        <v-text-field
+                          class="elevation-1"
+                          solo
+                          label='พิมข้อความของคุณที่นี่..'
+                          single-line
+                          @keyup.enter="SendReply($event.target.value,data)"
+                        ></v-text-field>
+                      </div>
+                      <v-card>
+                        <v-card-text>
+                          <v-layout v-for="(reply,index) in data.reply" :key="index">
+                              <v-flex xs2 sm1>
+                                <v-avatar>
+                                  <img :src="reply.user_img" alt="avatar" >
+                                </v-avatar>
+                              </v-flex>
+                              <v-flex xs10 sm3>
+                                  <span class="blue--text">{{reply.fname}} {{reply.lname}}</span> &nbsp;<span class="grey--text">{{data.annou_com_ts | moment('from','now',true)}}</span><br>
+                                  <span>{{reply.annou_com_text}}</span>
+                              </v-flex>
+                              <br><br><br>
+                          </v-layout>
+                        </v-card-text>
+                      </v-card>
+                </v-expansion-panel-content>
+
+            </v-expansion-panel>
+
+          </template>
+<br><br>
+
+            <!-- <template v-for="(data,i) in courseAnno">
                   <v-flex xs12 :key="i">
                     <v-card>
                       <v-card-text>
@@ -61,7 +113,7 @@
                       </v-card-text>
                     </v-card>
                   </v-flex>
-              </template>
+              </template> -->
           </v-layout>
           <br><br><br><br>
     </v-container>

@@ -18,7 +18,8 @@
         </v-flex>
       </v-layout>
 
-    <br><br>
+    <br><br>        
+
     <v-card v-for="(data,index) in courseQA" :key="index">
           <v-list two-line>
             <v-list-tile avatar @click="" @click.native="QADetail(data)">

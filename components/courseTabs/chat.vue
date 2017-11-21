@@ -5,7 +5,7 @@
       <p class="headline">แชท</p>
       <br>
       <v-layout>
-        <v-flex lg10 md9 sm8 xs12>
+        <v-flex xs12>
           <v-card>
               <v-list two-line>
                 <v-subheader>สนทนา</v-subheader>
@@ -27,7 +27,7 @@
             <v-text-field solo label="พิมช้อความ"  v-model="chatText" @keyup.enter="sendMessage"></v-text-field>
           </v-card>
         </v-flex>
-        <v-flex lg2 md3 sm4>
+        <!-- <v-flex lg2 md3 sm4>
             <v-card class="hidden-xs-only">
                   <div style="height:610px; overflow:scroll; overflow-x:hidden;">
                       <v-list>
@@ -48,7 +48,7 @@
                       </v-list>
                   </div>
             </v-card>
-        </v-flex>
+        </v-flex> -->
       </v-layout>
 
     </v-container>
@@ -129,10 +129,10 @@ export default {
   computed: {
     Messages () {
       return this.$store.getters.COURSE_CHAT(this.$route.params.id)
-    },
-    uesrOnline () {
-      return this.$store.getters.COURSE_USER(this.$route.params.id + 11111)
     }
+    // uesrOnline () {
+    //   return this.$store.getters.COURSE_USER(this.$route.params.id + 11111)
+    // }
   },
   beforeDestroy () {
     let data = {

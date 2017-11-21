@@ -53,7 +53,7 @@
                   </v-card>
                 </v-flex>
                 <v-flex xs4>
-                    <chat :message = "liveMessage"></chat>
+                    <chat :message = "liveMessage" @getMessage="getMessage"></chat>
                 </v-flex>
                 <template v-for="(data, index) in userLive">
                     <v-flex xs3  :key="index">
@@ -120,7 +120,7 @@
                  </v-card>
                </v-flex>
                <v-flex xs4>
-                   <chat :message = "liveMessage"></chat>
+                   <chat :message = "liveMessage" @getMessage="getMessage"></chat>
                </v-flex>
                <template v-for="(data, index) in userLive">
                    <v-flex xs3  :key="index">
@@ -183,9 +183,21 @@ export default {
       if (this.liveStatus === true) {
         this.liveStatus = false
       }
+      this.userLive.map((ul, i) => {
+        if (ul.isMe == true) {
+          this.userLive[i].cam = 0
+          this.userLive[i].userName = null
+          this.stream.getVideoTracks()[0].stop()
+          clearInterval(this.userLive[i].interval)
+          console.log('stop my live')
+        }
+      })
+
     }
     this.$options.sockets.live_message = (data) => {
-      this.liveMessage.push(data)
+      if (data.user_id !== this.$store.state.profile.user_id) {
+        this.liveMessage.push(data)
+      }
     }
     this.$options.sockets.requestCamera = (data) => {
       this.userLive[data.camera].cam = 1
@@ -201,7 +213,7 @@ export default {
         this.requestMedia()
         if (navigator.getUserMedia) {
           navigator.getUserMedia({
-            video: true
+            audio: true, video: true
           }, stream => {
             this.userLive[data.camera].source = window.URL.createObjectURL(stream)
             this.stream = stream
@@ -332,7 +344,7 @@ export default {
                 previewStream: mystream => {
                    console.log(mystream)
                   this.source = window.URL.createObjectURL(mystream)
-                  console.log(this.source)
+                  this.stream = mystream
                   this.interval = setInterval(() => {
                     let data = {
                       course_id: this.$route.params.id,
@@ -340,7 +352,7 @@ export default {
                     }
                     console.log(data)
                     this.$socket.emit('live_tutor', data)
-                  }, 2000)
+                  }, 20)
 
                   let notification = {
                     course_id: this.course.course_id,
@@ -367,10 +379,11 @@ export default {
     },
     async stopStream (val) {
       console.log('stopStream');
+      this.liveStatus = false
+      this.stream.getVideoTracks()[0].stop()
       let formData = new FormData();
       let fileName = this.title + '.webm'
-    await recorder.stopRecording(function () {
-        console.log('recorder')
+    recorder.stopRecording(() => {
         let blob = recorder.getBlob()
         formData.append('video', blob, fileName)
       })
@@ -383,8 +396,8 @@ export default {
         files: [fileName]
       }
       this.$store.dispatch('ADD_COURSE_CONTENT', videoo)
-      this.liveStatus = false
-      this.stream.getVideoTracks()[0].stop()
+
+
       const data = {
         course_id: this.$route.params.id
       }
@@ -440,7 +453,7 @@ export default {
       return !!this.getMedia()
     },
     getMedia () {
-      return (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia)
+      return (navigator.getUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia)
     },
     requestMedia () {
       navigator.getUserMedia = this.getMedia()
@@ -479,6 +492,9 @@ export default {
       this.ctx.drawImage(video, 0, 0, this.canvas.width, this.canvas.height)
       console.log(canvas)
       return canvas
+    },
+    getMessage (data) {
+      this.liveMessage.push(data)
     }
   },
   data () {
