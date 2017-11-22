@@ -1,5 +1,4 @@
 <template>
-  <v-layout row justify-center>
     <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" :overlay="false">
       <v-btn primary dark slot="activator">{{title}}</v-btn>
       <v-card>
@@ -34,7 +33,6 @@
         </template>
       </v-card>
     </v-dialog>
-  </v-layout>
 </template>
 <script>
   import quill from '../../quill.vue'

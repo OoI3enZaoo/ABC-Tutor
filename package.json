@@ -1,7 +1,7 @@
 {
   "name": "ABC-Tutor",
-  "version": "1.0.0",
-  "description": "Nuxt.js + Vuetify.js project",
+  "version": "2.0.0",
+  "description": "ติวออนไลน์ หรือ ABC-Tutor โรงเรียนออนไลน์สำหรับคนที่ต้องการความก้าวหน้าในอาชีพหรือสำหรับคนที่อยากสอนหนังสือเปิดคอร์สติวเองก็สามารถทำได้ฟรี !!",
   "author": "",
   "scripts": {
     "dev": "nuxt",

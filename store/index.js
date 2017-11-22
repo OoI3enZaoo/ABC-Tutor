@@ -56,7 +56,18 @@ export default () => {
       isCourseFavorite: false,
       notification: [],
       notificationCount: 0,
-      liveMessage: []
+      liveMessage: [],
+      tutor: {
+        isTutor: false,
+        menuItems: [
+          { title: 'ภาพรวม' },
+          { title: 'วีดีโอ' },
+          { title: 'วีดีโอสด' },
+          { title: 'ถามตอบ' },
+          { title: 'ประกาศ' },
+          { title: 'แชท' }
+        ]
+      }
     },
     plugins: [
       createPersistedState({

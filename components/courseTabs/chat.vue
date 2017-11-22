@@ -61,7 +61,7 @@ const moment = require('moment')
 Vue.use(require('vue-moment'), {
     moment
 })
-export default {
+export default {  
   created () {
     this.roomId = this.$route.params.id
     let data = {

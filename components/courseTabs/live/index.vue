@@ -1,40 +1,45 @@
 <template>
 <div>
   <v-container grid-list-lg>
-    <v-switch v-model="isTutor" color="primary" label="เป็นติวเตอร์"></v-switch>
-
     <template v-if="isTutor">
           <template v-if="!liveStatus">
-             <v-card>
-               <v-card-text>
-                 <v-layout>
-                   <v-flex xs6 text-xs-right>
-                      <img src="https://www.israel365.com/wp-content/uploads/2015/06/video.png" alt="" width="100" height="100">
-                   </v-flex>
-                   <v-flex xs6>
-                     <p class="headline">คุณยังไม่ได้ทำการไลฟ์</p>
-                     <nuxt-link to="/"><span class="blue--text">เรียนรู้เพิ่มเติม</span></nuxt-link>
-                     <v-dialog v-model="dialog" persistent max-width="500px">
-                           <v-btn color="primary" dark slot="activator">เริ่มไลฟ์</v-btn>
-                           <v-card>
-                             <v-card-title>
-                               <span class="headline">รายละเอียดของการไลฟ์</span>
-                             </v-card-title>
-                             <v-card-text>
-                               <v-text-field label="หัวข้อการไลฟ์" v-model="title"></v-text-field>
-                               <v-text-field label="รายละเอียด" v-model="description"></v-text-field>
-                             </v-card-text>
-                             <v-card-actions>
-                               <v-spacer></v-spacer>
-                               <v-btn color="primary" :disabled="!isValid" @click.native="[startStream(), dialog = false]">เริ่มไลฟ์</v-btn>
-                               <v-btn color="primary" outline @click.native="dialog = false">ยกเลิก</v-btn>
-                             </v-card-actions>
-                           </v-card>
-                         </v-dialog>
-                   </v-flex>
-                 </v-layout>
-               </v-card-text>
-             </v-card>
+
+            <v-layout>
+              <v-flex xs12 text-xs-center>
+                <v-card height="400px">
+                  <v-card-text>
+                    <div>
+                        <v-layout row wrap style="padding-top:80px;">
+                          <v-flex xs12 md2 offset-md4 >
+                              <img :src="liveIcon" height="150">
+                          </v-flex>
+                          <v-flex xs12 md5 text-md-left text-xs-center mt-4>
+                            <h5>คุณยังไม่ได้ทำการไลฟ์ในขณะนี้</h5>
+                            <v-dialog v-model="dialog" persistent max-width="500px">
+                                  <v-btn color="primary" dark slot="activator">เริ่มไลฟ์</v-btn>
+                                  <v-card>
+                                    <v-card-title>
+                                      <span class="headline">รายละเอียดของการไลฟ์</span>
+                                    </v-card-title>
+                                    <v-card-text>
+                                      <v-text-field label="หัวข้อการไลฟ์" v-model="title"></v-text-field>
+                                      <v-text-field label="รายละเอียด" v-model="description"></v-text-field>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                      <v-spacer></v-spacer>
+                                      <v-btn color="primary" :disabled="!isValid" @click.native="[startStream(), dialog = false]">เริ่มไลฟ์</v-btn>
+                                      <v-btn color="primary" outline @click.native="dialog = false">ยกเลิก</v-btn>
+                                    </v-card-actions>
+                                  </v-card>
+                                </v-dialog>
+                          </v-flex>
+                        </v-layout>
+                    </div>
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+            </v-layout>
+
             </template>
             <template v-else>
               <v-layout row wrap>
@@ -89,19 +94,26 @@
 
     <template v-else>
          <template v-if="!liveStatus">
-            <v-card>
-              <v-card-text>
-                <v-layout>
-                  <v-flex xs6 text-xs-right>
-                     <img src="https://www.israel365.com/wp-content/uploads/2015/06/video.png" alt="" width="100" height="100">
-                  </v-flex>
-                  <v-flex xs6>
-                    <p class="headline mt-4">ยังไม่มีการไลฟ์ในขณะนี้</p>
-                    <nuxt-link  to="/"><span class="blue--text">เรียนรู้เพิ่มเติม</span></nuxt-link>
-                  </v-flex>
-                </v-layout>
-              </v-card-text>
-            </v-card>
+
+           <v-layout>
+             <v-flex xs12 text-xs-center>
+               <v-card height="400px">
+                 <v-card-text>
+                   <div>
+                       <v-layout row wrap style="padding-top:80px;">
+                         <v-flex xs12 md2 offset-md4 >
+                             <img :src="liveIcon" height="150">
+                         </v-flex>
+                         <v-flex xs12 md5 text-md-left text-xs-center mt-4>
+                           <h5>ยังไม่มีการไลฟ์ในขณะนี้</h5>
+                         </v-flex>
+                       </v-layout>
+                   </div>
+                 </v-card-text>
+               </v-card>
+             </v-flex>
+           </v-layout>
+
            </template>
     <template v-else>
              <v-layout row wrap>
@@ -208,7 +220,7 @@ export default {
       this.userLive[data.camera].isMe = true
       this.userLive[data.camera].cam = 2
       this.userLive[data.camera].userName = data.name
-      if (this.isTutor === false) {
+      if (this.isTutor == false) {
         console.log('not tutor')
         this.requestMedia()
         if (navigator.getUserMedia) {
@@ -501,7 +513,6 @@ export default {
     return {
       img: null,
       liveStatus: false,
-      isTutor: false,
       videoLive: null,
       interval: null,
       stream: '',
@@ -523,7 +534,8 @@ export default {
         text: '555',
         time: 5000
       },
-      dialog: false
+      dialog: false,
+      liveIcon: require('../../../static/live.png')
     }
   },
   computed: {
@@ -532,6 +544,9 @@ export default {
     },
     course () {
       return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
+    },
+    isTutor () {
+      return this.$store.state.tutor.isTutor
     }
   }
 }

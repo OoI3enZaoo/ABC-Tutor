@@ -447,6 +447,7 @@ export default {
   },
   UPDATE_COURSE ({state, commit}, data) {
     axios.post('http://' + state.currentIP + '/api/updatecourse/', data)
+    console.log('UPDATE_COURSE');
     new Vue().$socket.emit('update_course', data)
   }
 }

@@ -45,7 +45,7 @@
 
        <!-- ประกาศ -->
        <v-tabs-content id='tab-4'>
-         <announcement ></announcement>
+         <announcement></announcement>
        </v-tabs-content>
 
        <!-- แชท -->
@@ -76,28 +76,22 @@ export default {
     await store.dispatch('PULL_COURSE_ANNO', route.params.id)
     await store.dispatch('PULL_COURSE_QA', route.params.id)
     await store.dispatch('PULL_COURSE_CHAT', route.params.id)
+    await store.commit('CHECK_IS_TUTOR', route.params.id)
     // await store.dispatch('PULL_USER_ONLINE', route.params.id)
   },
   components: {
     parallax, overall, announcement, live, qa, videoCourse, chat, manage
   },
-  data () {
-    return {
-      menuItems: [
-        { title: 'ภาพรวม' },
-        { title: 'วีดีโอ' },
-        { title: 'วีดีโอสด' },
-        { title: 'ถามตอบ' },
-        { title: 'ประกาศ' },
-        { title: 'แชท' },
-        { title: 'หน้าจัดการ' }
-      ]
-    }
-  },
   computed: {
     courseData () {
       return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
+    },
+    menuItems () {
+      return this.$store.state.tutor.menuItems
     }
+  },
+  beforeDestroy () {
+    this.$store.commit('SET_DEFAULT_TUTOR')
   }
 }
 </script>

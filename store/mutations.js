@@ -144,5 +144,17 @@ export default {
     state.profile.facebook = ''
     state.profile.twiiter = ''
     state.profile.youtube = ''
+  },
+  CHECK_IS_TUTOR: (state, course_id) => state.courseCreate.map(c => {
+    if (c == course_id) {
+      state.tutor.isTutor = true
+      state.tutor.menuItems.push({title: 'หน้าจัดการ'})
+    }
+  }),
+  SET_DEFAULT_TUTOR: (state) => {
+    state.tutor.isTutor = false
+    if (state.tutor.menuItems.length == 7) {
+      state.tutor.menuItems.pop()
+    }
   }
 }

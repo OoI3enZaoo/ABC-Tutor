@@ -78,6 +78,7 @@ export default {
   },
   created() {
     this.setData()
+    console.log('manage(isTutor): ' + this.isTutor)
   },
   data () {
     return {
@@ -107,6 +108,11 @@ export default {
       this.setData()
     },
     saveData () {
+      this.data.course_id = this.course.course_id
+      if (this.data.coupon == undefined) {
+        this.data.coupon = ''
+      }
+      console.log('coupon: ' + this.data.coupon);
       this.$store.dispatch('UPDATE_COURSE', this.data)
     }
   },
