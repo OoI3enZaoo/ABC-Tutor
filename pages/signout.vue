@@ -9,6 +9,7 @@
 export default {
   asyncData ({ store, redirect }) {
     store.commit('setIsLogin', false)
+    store.commit('logout')
     redirect('/')
   }
 }

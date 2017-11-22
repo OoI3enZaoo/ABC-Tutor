@@ -13,7 +13,7 @@ export default () => {
       projectName: 'ABC-Tutor',
       statusNotification: false,
       profile: {
-        user_id: 1212312121,
+        user_id: 0,
         user_img: 'https://scontent.fbkk1-2.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?oh=ce1fb663302049cbb304c38276bc1638&oe=5A4E0989',
         fname: 'Theerapat',
         lname: 'Vijitpoo',

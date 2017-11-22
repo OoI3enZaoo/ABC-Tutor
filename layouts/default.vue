@@ -162,8 +162,14 @@
   import notification from '../components/toolbar/notification.vue'
   import logo from '../components/logo.vue'
   export default {
-    beforeMount () {
-      this.$socket.emit('subscribe', 1212335)
+    created () {
+      let user_id = this.$store.state.profile.user_id
+      if (user_id == 0) {
+        console.log('user_id: 0')
+      } else {
+        this.$socket.emit('join', user_id)
+        console.log('user_id: ' + user_id)
+      }
     },
     mounted () {
       // this.$options.sockets.qa = (data) => {
@@ -278,7 +284,7 @@
         this.snackbarText  = 'มีการประกาศใหม่จากติวเตอร์ใน' + data.subject
         this.snackbar = true
       },
-      this.$options.sockets.update_course = (data) => {        
+      this.$options.sockets.update_course = (data) => {
         this.$store.commit('updateCourse', data)
       }
     },
@@ -291,7 +297,7 @@
           {
             name: 'หน้าหลัก',
             icon: 'home',
-            link: '/'
+            link: '/home'
           },
           {
             name: 'สร้างคอร์ส',

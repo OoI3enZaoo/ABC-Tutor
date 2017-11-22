@@ -1,3 +1,4 @@
+import Vue from 'vue'
 export default {
   addProfile (state, data) {
     state.profile = data
@@ -126,5 +127,22 @@ export default {
   addUser_student: (state, data) => state.user.user_student.push(...data),
   addUser_review: (state, data) => state.user.user_review.push(...data),
   addUser_purchase: (state, data) => state.user.user_purchase.push(...data),
-  updateCourse: (state, data) => state.course.map(c => c.course_id == data.course_id ? c = data : '')
+  updateCourse: (state, data) => state.course.map(c => c.course_id == data.course_id ? c = data : ''),
+  logout: (state, data) => {
+    console.log('state.coursePurchased: ' + state.coursePurchased)
+    state.coursePurchased.map(cp => {
+        new Vue().$socket.emit('unsubscribe', cp)
+    })
+    new Vue().$socket.emit('leave', state.profile.user_id)
+    state.profile.user_id = 0
+    state.profile.user_img = ''
+    state.profile.fname = ''
+    state.profile.lname = ''
+    state.profile.sex = ''
+    state.profile.birthday = ''
+    state.profile.email = ''
+    state.profile.facebook = ''
+    state.profile.twiiter = ''
+    state.profile.youtube = ''
+  }
 }

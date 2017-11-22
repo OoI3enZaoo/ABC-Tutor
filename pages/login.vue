@@ -13,8 +13,7 @@
                 <v-text-field label="ชื่อผุ้ใช้" v-model="user_name"></v-text-field>
                 <v-text-field label="รหัสผ่าน" v-model="user_pass"></v-text-field>
                 <!-- <v-checkbox label="ให้ฉันลงชื่อเข้าใช้อยู่เสมอ"></v-checkbox> -->
-                <v-btn primary :disabled="!isValid" @click.native="login">เข้าสู่ระบบ</v-btn><br>
-                <v-btn primary @click.native="hackLogin">เข้าสู่ระบบ(ลัด)</v-btn><br>
+                <v-btn primary :disabled="!isValid" @click.native="login" block>เข้าสู่ระบบ</v-btn>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -56,6 +55,8 @@ export default {
           let result = res.data[0]
           this.$store.commit('addUserData', result)
           this.$store.commit('setIsLogin', true)
+          console.log('user_iduser_id: ' + user_id);
+          this.$socket.emit('join', user_id)
           this.$router.push('/home')
         })
       }

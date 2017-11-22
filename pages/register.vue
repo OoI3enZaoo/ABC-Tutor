@@ -184,6 +184,7 @@ export default {
         this.data.user_id = result.user_id
         this.$store.commit('addUserData', this.data)
         this.$store.commit('setIsLogin', true)
+        this.$socket.emit('join', result.user_id)
         this.$router.push('/home')
       })
     },

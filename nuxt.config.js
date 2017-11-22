@@ -21,7 +21,8 @@ module.exports = {
       { src: 'https://use.fontawesome.com/eed138f88e.js' },
       { src: 'https://cdn.webrtc-experiment.com/RecordRTC.js' },
       { src: 'https://webrtc.github.io/adapter/adapter-latest.js' },
-      { src: 'https://cdn.WebRTC-Experiment.com/getScreenId.js' }
+      { src: 'https://cdn.WebRTC-Experiment.com/getScreenId.js' },
+      { src: 'https://cdn.omise.co/omise.js' }
     ]
   },
   plugins: [

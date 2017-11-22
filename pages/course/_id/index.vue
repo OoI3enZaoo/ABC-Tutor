@@ -112,7 +112,12 @@
             <v-card-text>
               <span v-if="!checkCoursePurchase" class="headline">{{course.price}}.-</span><br><br>
               <div class="text-xs-center">
-                  <v-btn v-if="!checkCoursePurchase && !checkCourseCreate" primary block @click.native="purchasedCourse">ซื้อตอนนี้</v-btn>
+                  <div class="form" v-if="!checkCoursePurchase && !checkCourseCreate">
+                      <form ref="omiseform" name="checkoutForm" method="POST" :action="'http://172.104.167.197:4000/checkout/' + course.course_id +'/' + course.branch_id + '/' + $store.state.profile.user_id + '/' + currentDateTime">
+                       <!-- <v-btn type="submit">submitsubmit</v-btn> -->
+                      <v-btn primary block class="checkout-button-1" type="submit" id="checkout-button-1" ref="cbutton1"><v-icon dark>shopping_cart</v-icon>&nbsp;ซื้อตอนนี้</v-btn>
+                    </form>
+                  </div>
                   <template v-if="!checkCoursePurchase && !checkCourseCreate">
                     <template v-if="!checkCourseFavorite">
                       <v-btn  primary outline block @click.native="favoriteCourse(1)">เพิ่มเป็นรายการที่อยากได้</v-btn>
@@ -135,6 +140,7 @@
       </v-layout>
     </v-container>
 
+branch_id >> {{course.branch_id}}
   </div>
 </template>
 
@@ -148,33 +154,49 @@ Vue.use(require('vue-moment'), {
 })
 export default {
   async fetch ({store, route}) {
-    await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)    
+    await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
     await store.dispatch('PULL_COURSE_REVIEW', route.params.id)
   },
   components: {
     parallax,
     userPurchase
   },
+  mounted () {
+    this.$options.sockets.purchase = (data) => {
+      console.log('data: ' + data)
+      this.$store.dispatch('ADD_COURSE_PURCHASED', data)
+      data.fname = this.$store.state.profile.fname
+      data.lname = this.$store.state.profile.lname
+      data.user_img = this.$store.state.profile.user_img
+      this.$store.commit('addCourseUserPurchased', [data])
+      this.$socket.emit('course_user_purchased', data)
+      this.$socket.emit('subscribe', data.course_id)
+    }
+    if (!this.checkCoursePurchase && !this.checkCourseCreate) {
+      OmiseCard.configure({
+        publicKey:        'pkey_test_5a1ks8kiuxwic3f4bre',
+        amount:           this.course.price + '00',
+        currency:         'thb',
+        image:           'https://image.ibb.co/hKwoL6/icon.png',
+        frameLabel:       'ABC-Tutor',
+        frameDescription: 'สำหรับบัตร เดบิต/เครดิต',
+        buttonLabel:      'จ่ายตอนนี้',
+        location:         'no',
+        billingName:      '',
+        billingAddress:   '',
+        submitFormTarget: null,
+      });
+        // Configuring your own custom button
+        OmiseCard.configureButton('#checkout-button-1', {
+          frameLabel: this.course.subject ,
+          submitLabel: 'จ่ายตอนนี้',
+        });
+        // Then, attach all of the config and initiate it by 'OmiseCard.attach();' method
+        OmiseCard.attach();
+    }
+  },
   methods: {
-    purchasedCourse() {
-      // if (this.$store.state.isLogin == true) {
-        console.log('course_id: ' + this.course.course_id)
-        let data = {
-          course_id: this.course.course_id,
-          branch_id: this.course.branch_id,
-          user_id: this.$store.state.profile.user_id,
-          purchase_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
-        }
-        this.$store.dispatch('ADD_COURSE_PURCHASED', data)
-        data.fname = this.$store.state.profile.fname
-        data.lname = this.$store.state.profile.lname
-        data.user_img = this.$store.state.profile.user_img
-        this.$store.commit('addCourseUserPurchased', [data])
-        this.$socket.emit('course_user_purchased', data)
-        this.$socket.emit('subscribe', data.course_id)
-        // this.$router.push('/')
-      // }
-    },
+
     favoriteCourse(status) {
       if (status == 1) {
         this.$store.dispatch('ADD_COURSE_FAVORITE', this.course.course_id)
@@ -204,6 +226,9 @@ export default {
     },
     courseReview () {
       return this.$store.getters.COURSE_REVIEW_FROM_COURSE_ID(this.$route.params.id)
+    },
+    currentDateTime () {
+      return Vue.moment().format('YYYY-MM-DD HH:mm:ss')
     }
   }
 }
