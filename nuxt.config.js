@@ -4,7 +4,7 @@ module.exports = {
   */
   mode: 'spa',
   router: {
-    middleware: ['https','checkLogin']
+    middleware: ['checkLogin']
   },
   head: {
     title: 'ABC-Tutor',

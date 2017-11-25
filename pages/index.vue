@@ -117,8 +117,8 @@ import branch from '../components/branch.vue'
 import popularCourse from '../components/popularCourse.vue'
 import RatingInCard from '../components/RatingInCard.vue'
 export default {
-  async asyncData ({store}) {
-    await store.dispatch('PULL_POPULAR_COURSE_INDEX')
+  asyncData ({store}) {
+    store.dispatch('PULL_POPULAR_COURSE_INDEX')
   },
   computed: {
     branchs () {

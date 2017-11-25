@@ -104,9 +104,9 @@ export default {
       })
     }
   },
-  async PULL_POPULAR_COURSE_INDEX ({commit, state}) {
+  PULL_POPULAR_COURSE_INDEX ({commit, state}) {
     if (state.popularCourseIndex.length == 0) {
-      await axios.get('http://' + state.currentIP + '/api/popularcourse')
+      axios.get('http://' + state.currentIP + '/api/popularcourse')
       .then (res => {
         let result = res.data
         result.map(str => {

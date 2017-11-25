@@ -1,14 +1,30 @@
 {
   "name": "ABC-Tutor",
-  "version": "2.0.0",
+  "version": "3.0.1",
   "description": "ติวออนไลน์ หรือ ABC-Tutor โรงเรียนออนไลน์สำหรับคนที่ต้องการความก้าวหน้าในอาชีพหรือสำหรับคนที่อยากสอนหนังสือเปิดคอร์สติวเองก็สามารถทำได้ฟรี !!",
-  "author": "",
+  "author": "Blend.Theerapat@gmail.com",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
   },
+  "keywords": [
+    "ติวออนไลน์",
+    "ติวออนไลน์.com",
+    "ติว",
+    "abc-tutor",
+    "ระบบติวออนไลน์",
+    "ระบบติว",
+    "หาคนติว",
+    "ติวไลฟ์สด",
+    "ไลฟ์สด",
+    "ไลฟ์",
+    "ไลฟ์ติว",
+    "PWA",
+    "nuxt.js",
+    "vue.js"
+  ],
   "dependencies": {
     "@nuxtjs/component-cache": "^1.1.0",
     "@nuxtjs/pwa": "^0.2.1",
