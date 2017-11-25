@@ -34,15 +34,29 @@
         </v-list>
         <v-divider></v-divider>
         <v-list>
-          <v-list-tile >
+          <!-- <v-list-tile>
             <v-list-tile-action>
               <v-switch v-model="notification" color="primary"></v-switch>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>การแจ้งเตือน</v-list-tile-title>
-              <v-list-tile-sub-title>{{$store.state.profile.user_id}}</v-list-tile-sub-title>
             </v-list-tile-content>
+          </v-list-tile> -->
+          <v-list-tile @click="">
+            <v-list-tile-action>
+              <v-list-tile-title>
+                <nuxt-link tag="span" :to="'/user/' + profile.user_id">ข้อมูลส่วนตัว</nuxt-link>
+              </v-list-tile-title>
+            </v-list-tile-action>
           </v-list-tile>
+          <v-list-tile @click="">
+            <v-list-tile-action>
+              <v-list-tile-title>
+                <nuxt-link tag="span" to="/settings/">แก้ไขข้อมูลส่วนตัว</nuxt-link>
+              </v-list-tile-title>
+            </v-list-tile-action>
+          </v-list-tile>
+          <v-divider></v-divider>
           <v-list-tile @click="">
             <v-list-tile-action>
               <v-list-tile-title>

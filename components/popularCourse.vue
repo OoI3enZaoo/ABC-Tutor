@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="course.length > 0">
     <br>
     <v-container grid-list-lg>
       <v-layout>

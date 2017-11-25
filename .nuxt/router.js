@@ -4,13 +4,14 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const _4ab2933c = () => import('..\\pages\\index.vue' /* webpackChunkName: "pages\\index" */).then(m => m.default || m)
-const _64b48b18 = () => import('..\\pages\\test.vue' /* webpackChunkName: "pages\\test" */).then(m => m.default || m)
 const _145a3653 = () => import('..\\pages\\login.vue' /* webpackChunkName: "pages\\login" */).then(m => m.default || m)
-const _46e816c1 = () => import('..\\pages\\course\\index.vue' /* webpackChunkName: "pages\\course\\index" */).then(m => m.default || m)
+const _64b48b18 = () => import('..\\pages\\test.vue' /* webpackChunkName: "pages\\test" */).then(m => m.default || m)
+const _9be6a9ae = () => import('..\\pages\\settings.vue' /* webpackChunkName: "pages\\settings" */).then(m => m.default || m)
 const _e7d76636 = () => import('..\\pages\\home.vue' /* webpackChunkName: "pages\\home" */).then(m => m.default || m)
+const _5fe76756 = () => import('..\\pages\\aboutus.vue' /* webpackChunkName: "pages\\aboutus" */).then(m => m.default || m)
 const _746632db = () => import('..\\pages\\signout.vue' /* webpackChunkName: "pages\\signout" */).then(m => m.default || m)
 const _2c68dda9 = () => import('..\\pages\\register.vue' /* webpackChunkName: "pages\\register" */).then(m => m.default || m)
-const _9be6a9ae = () => import('..\\pages\\settings.vue' /* webpackChunkName: "pages\\settings" */).then(m => m.default || m)
+const _46e816c1 = () => import('..\\pages\\course\\index.vue' /* webpackChunkName: "pages\\course\\index" */).then(m => m.default || m)
 const _6fbe161c = () => import('..\\pages\\tutor\\create.vue' /* webpackChunkName: "pages\\tutor\\create" */).then(m => m.default || m)
 const _a8d8c78e = () => import('..\\pages\\user\\_id.vue' /* webpackChunkName: "pages\\user\\_id" */).then(m => m.default || m)
 const _b362a486 = () => import('..\\pages\\mycourse\\_id.vue' /* webpackChunkName: "pages\\mycourse\\_id" */).then(m => m.default || m)
@@ -59,24 +60,29 @@ export function createRouter () {
 			name: "index"
 		},
 		{
-			path: "/test",
-			component: _64b48b18,
-			name: "test"
-		},
-		{
 			path: "/login",
 			component: _145a3653,
 			name: "login"
 		},
 		{
-			path: "/course",
-			component: _46e816c1,
-			name: "course"
+			path: "/test",
+			component: _64b48b18,
+			name: "test"
+		},
+		{
+			path: "/settings",
+			component: _9be6a9ae,
+			name: "settings"
 		},
 		{
 			path: "/home",
 			component: _e7d76636,
 			name: "home"
+		},
+		{
+			path: "/aboutus",
+			component: _5fe76756,
+			name: "aboutus"
 		},
 		{
 			path: "/signout",
@@ -89,9 +95,9 @@ export function createRouter () {
 			name: "register"
 		},
 		{
-			path: "/settings",
-			component: _9be6a9ae,
-			name: "settings"
+			path: "/course",
+			component: _46e816c1,
+			name: "course"
 		},
 		{
 			path: "/tutor/create",

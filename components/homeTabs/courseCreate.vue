@@ -8,18 +8,17 @@
         <v-container grid-list-lg>
             <v-layout row wrap>
               <v-flex xs12 sm11>
-                <v-text-field
+                <!-- <v-text-field
                 solo
                 label="ค้นหาคอร์สของคุณ"
                 append-icon='search'
                 >
-                </v-text-field>
+                </v-text-field> -->
               </v-flex>
               <v-flex xs12 sm1>
                   <v-btn primary block nuxt to = '/tutor/create'>สร้างคอร์ส</v-btn>
               </v-flex>
             </v-layout>
-            <br><br>
             <v-layout row wrap v-for="(data, index) in courseCreate" :key="index">
               <v-flex xs12>
                 <v-card>
@@ -41,22 +40,10 @@
                               </v-flex>
                               <v-flex xs4 text-xs-right>
                                   <span>สร้างเมื่อ {{data.ts}}</span> <br>
-                                  <span>อัพเดทล่าสุด {{data.lastUpdate}}</span>
+                                  <!-- <span>อัพเดทล่าสุด {{data.lastUpdate}}</span> -->
                               </v-flex>
                             </v-layout>
 
-                              <v-layout>
-                                <template v-for="a in 4">
-                                    <v-flex xs3>
-                                      <v-card class="grey lighten-4 text-xs-center">
-                                        <v-card-text>
-                                          <span><b>ลงทะเบียนรวม</b></span><br>
-                                          <span>6,855</span>
-                                        </v-card-text>
-                                      </v-card>
-                                    </v-flex>
-                                </template>
-                              </v-layout>
                           </v-card-text>
                         </v-flex>
                       </v-layout>

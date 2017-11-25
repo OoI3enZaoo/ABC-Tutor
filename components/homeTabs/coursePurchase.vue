@@ -8,7 +8,7 @@
         <div class="text-xs-right">
           <v-layout row>
             <v-flex xs6>
-              <v-text-field class="elevation-1" solo label="ค้นหา"></v-text-field>
+              <!-- <v-text-field class="elevation-1" solo label="ค้นหา"></v-text-field> -->
             </v-flex>
             <v-flex xs6>
               <v-btn primary outline nuxt to="/course">รายการคอร์ส</v-btn>
@@ -93,7 +93,7 @@ export default {
   components: {
     noDataCard
   },
-  created () {
+  mounted () {
     this.getData()
   },
   data () {

@@ -26,7 +26,25 @@
 
               </template>
               <template v-else>
-                <noDataCard :png="announcement" text="ยังไม่มีการประกาศจากเจ้าของคอร์ส" ></noDataCard>
+                <v-layout>
+                  <v-flex xs12 text-xs-center>
+                    <v-card height="400px">
+                      <v-card-text>
+                        <div>
+                            <v-layout row wrap style="padding-top:80px;">
+                              <v-flex xs12 md2 offset-md4 >
+                                  <img :src="announcement" height="150">
+                              </v-flex>
+                              <v-flex xs12 md5 text-md-left text-xs-center mt-4>
+                                <h5>ยังไม่มีการประกาศจากเจ้าของคอร์ส</h5>
+                              </v-flex>
+                            </v-layout>
+                        </div>
+                      </v-card-text>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+
               </template>
           </template>
         <template v-else v-for="(data, i) in courseAnno" style="margin-top:50px;">
@@ -91,7 +109,6 @@ Vue.use(require('vue-moment'), {
     moment
 })
 import create from './addon/createQuestion.vue'
-import noDataCard from '../noDataCard.vue'
 export default {
   data () {
     return {
@@ -100,8 +117,7 @@ export default {
     }
   },
   components: {
-    create,
-    noDataCard
+    create
   },
   methods: {
     dataFromQuill (val) {
