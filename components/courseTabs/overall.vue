@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container grid-list-lg><br>
-      <p class="headline">กิจกรรมล่าสุด</p>      
+      <p class="headline">กิจกรรมล่าสุด</p>
       <v-layout row wrap>
         <v-flex xs12 sm6>
           <v-card>
@@ -23,9 +23,9 @@
                     <v-divider inset></v-divider>
                   </v-list>
               </template>
-              <v-card-text>
+              <!-- <v-card-text>
                 <span class="blue--text" style="text-decoration:underline;">ดูคำถามทั้งหมด</span>
-              </v-card-text>
+              </v-card-text> -->
           </v-card>
         </v-flex>
         <v-flex xs12 sm6>
@@ -48,9 +48,9 @@
                     <v-divider inset></v-divider>
                   </v-list>
               </template>
-              <v-card-text>
+              <!-- <v-card-text>
                 <span class="blue--text" style="text-decoration:underline;">ดูคำถามทั้งหมด</span>
-              </v-card-text>
+              </v-card-text> -->
           </v-card>
         </v-flex>
       </v-layout>
@@ -63,14 +63,23 @@
 
   <p class="headline">ผู้สอน</p>
   <v-layout>
-    <v-flex lg1 sm2 xs3>
-        <img src="https://scontent.fbkk2-4.fna.fbcdn.net/v/t1.0-9/18670848_1440946712632376_9108286887308110690_n.jpg?_nc_eui2=v1%3AAeHK1rd2oRtb-z5eaABMDoa_ZZO1Vt9C_dyvbyH7me7jRPK1VH4BkQ-B3l3E4-UCfv8f48-uzvc1E3JbfAeFAZeSaSFSWLWoaRU2NzmLv9hqIg&oh=fe0776c03fef863ba5ec6b9dcb16bff9&oe=5A267C89" height="70">
+    <v-flex lg2 md3 sm5 xs7>
+        <img :src="course.user_img" height="100">
     </v-flex>
-    <v-flex lg4 sm4 xs8>
-        <span class="blue--text">Theerapat Vijitpoo</span><br>
-        <v-icon>fa-facebook-official</v-icon>&nbsp;&nbsp;<v-icon>fa-twitter-square</v-icon>&nbsp;&nbsp;<v-icon>fa fa-linkedin-square</v-icon><br>
-        <span>Lorem ipsum  pariatur. Excepteur sint occaecat cupidatat non proident,</span>
-
+    <v-flex lg10 md9 sm7 xs5>
+        <router-link :to="'/user/' + course.user_id" tag="span" style="cursor:pointer;"><h6 class="blue--text">{{course.fname}} {{course.lname}}</h6></router-link>
+        <div>
+          <v-icon>fa-google-plus-square</v-icon>&nbsp;&nbsp;&nbsp;<a target="_blank" :href="'https://mail.google.com/mail/?view=cm&fs=1&to=' + course.email">{{course.email}}</a>
+        </div>
+        <div v-if="course.facebook !== ''">
+          <v-icon>fa-facebook-official</v-icon>&nbsp;&nbsp; <a target="_blank" :href="course.facebook">{{course.facebook}}</a>
+        </div>
+        <div v-if="course.twitter !== ''">
+          <v-icon>fa-twitter-square</v-icon>&nbsp;&nbsp; <a target="_blank" :href="course.twitter">{{course.twitter}}</a>
+        </div>
+        <div v-if="course.youtube !== ''">
+          <v-icon>fa-youtube-square</v-icon>&nbsp;&nbsp; <a target="_blank" :href="course.youtube">{{course.youtube}}</a>
+        </div>
     </v-flex>
   </v-layout>
 <br><br><v-divider></v-divider><br><br>
@@ -83,6 +92,9 @@ export default {
   computed: {
     isTutor () {
       return this.$store.state.tutor.isTutor
+    },
+    course () {
+      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
     }
   }
 }

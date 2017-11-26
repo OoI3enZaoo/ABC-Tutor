@@ -32,9 +32,9 @@
                       </v-flex>
                       <v-flex lg5 xs12>
                         <v-card-text>
-                          <span>{{data.subject}} ({{data.code}})</span><br>
-                          <p class="grey--text">Theerapat Vijitpoo</p>
-                          <p>เนื้อหาสอบบทที่ 1-5 เนื้อหาสำหรับการสอบกลางภาค</p>
+                          <span>{{data.subject}} ({{data.code}})</span><br>                          
+                          <p class="grey--text">{{data.fname}} {{data.lname}}</p>
+                          <p v-html="data.des"></p>
                         </v-card-text>
                       </v-flex>
                       <v-flex lg4 xs12 text-xs-right>

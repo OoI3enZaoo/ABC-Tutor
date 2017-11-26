@@ -365,7 +365,12 @@ export default {
                     console.log(data)
                     this.$socket.emit('live_tutor', data)
                   }, 20)
-
+                  let des
+                  if (this.course.code !== '') {
+                    des = 'มีการไลฟ์จากติวเตอร์ (' + this.course.code + ')'
+                  } else {
+                    des = 'มีการไลฟ์จากติวเตอร์์'
+                  }
                   let notification = {
                     course_id: this.course.course_id,
                     user_id: this.$store.state.profile.user_id,
@@ -375,7 +380,7 @@ export default {
                     code: this.course.code,
                     user_img: this.$store.state.profile.user_img,
                     noti_cover: this.course.cover,
-                    noti_des: 'มีการไลฟ์ใหม่',
+                    noti_des: des,
                     noti_type: 2,
                     noti_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
                   }

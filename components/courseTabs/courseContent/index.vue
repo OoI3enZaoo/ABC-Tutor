@@ -28,7 +28,12 @@
               <noDataCard :png="contentIcon" text="ยังไม่มีวีดีโอในตอนนี้" ></noDataCard>
           </template>
       </template>
-      <template v-else v-for="data in courseContent">
+      <template v-else v-for="(data, index) in courseContent">
+        <template v-if="isTutor && index == 0">
+          <div class="text-xs-right mb-2">
+            <createCourseContent @contentcourse = "contentcourse"></createCourseContent>
+          </div>
+        </template>
           <expansion :title="data.content_title" :time= "data.content_ts" :description="data.content_des" :files="data.files" :contentId="data.content_id"></expansion>
       <br>
       </template>
@@ -74,6 +79,12 @@ export default {
       data.course_id = this.$route.params.id
       data.content_ts = Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       this.$store.dispatch('ADD_COURSE_CONTENT', data)
+      let des
+      if (this.course.code !== '') {
+        des = 'มีเนื้อหาของคอร์สใหม่ (' + this.course.code + ')'
+      } else {
+        des = 'มีเนื้อหาของคอร์สใหม่'
+      }
       let notification = {
         course_id: this.course.course_id,
         user_id: this.$store.state.profile.user_id,
@@ -83,7 +94,7 @@ export default {
         code: this.course.code,
         user_img: this.$store.state.profile.user_img,
         noti_cover: this.course.cover,
-        noti_des: 'มีเนื้อหาของคอร์สใหม่',
+        noti_des: des,
         noti_type: 2,
         noti_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       }

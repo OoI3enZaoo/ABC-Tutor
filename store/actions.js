@@ -17,8 +17,8 @@ export default {
         let result = res.data
         commit('addCheckPullCourse', branch_id)
         result.map(rs => {
-          let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
-          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube}])
+          let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
+          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
           let inStore = false
           state.courseVote.find(f => f.course_id == rs.course_id  ? inStore = true : '')
           rs.avg != 0 && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
@@ -35,8 +35,8 @@ export default {
       .then (res => {
         let result = res.data
         result.map(rs => {
-          let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
-          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube}])
+          let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
+          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
           let inStore = false
           state.courseVote.find(f => f.course_id == rs.course_id  ? inStore = true : '')
           rs.avg != 0 && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
@@ -71,7 +71,6 @@ export default {
     .then (res => {
       let result = res.data
       payload.content_id = result.content_id
-
       commit('addCourseContent', payload)
       payload.user_id = state.profile.user_id
       new Vue().$socket.emit('courseContent', payload)
@@ -182,6 +181,7 @@ export default {
       await axios.get('http://' + state.currentIP + '/api/get_course_content/' + course_id)
       .then (res => {
         content_id = res.data
+        new Vue().$socket.emit('subscribe', content_id)
       })
       content_id.map(con => {
         axios.get('http://' + state.currentIP + '/api/get_course_content_file/' + con.content_id)
@@ -318,13 +318,13 @@ export default {
         let result = res.data
         commit('isCoursePurchased', true)
           result.map(rs => {
-            let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
+            let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
             commit('addCoursePurchased', [rs.course_id])
             new Vue().$socket.emit('subscribe', rs.course_id)
             let courseinStore = false
             state.course.find(c => c.course_id == course_id ? courseinStore = true : '')
             if (courseinStore == false) {
-              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube}])
+              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
               let voteinStore = false
               state.courseVote.find(f => f.course_id == rs.course_id  ? voteinStore = true : '')
               rs.avg != 0 && voteinStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
@@ -343,13 +343,13 @@ export default {
         let result = res.data
         commit('isCourseCreated', true)
           result.map(rs => {
-            let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
+            let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
             commit('addCourseCreate', [rs.course_id])
             new Vue().$socket.emit('subscribe', rs.course_id)
             let courseinStore = false
             state.course.find(c => c.course_id == course_id ? courseinStore = true : '')
             if (courseinStore == false) {
-              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube}])
+              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
               let voteinStore = false
               state.courseVote.find(f => f.course_id == rs.course_id  ? voteinStore = true : '')
               rs.avg != 0 && voteinStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
@@ -367,12 +367,12 @@ export default {
         let result = res.data
         commit('isCourseFavorite', true)
           result.map(rs => {
-            let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
+            let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
             commit('addCourseFavorite', [rs.course_id])
             let courseinStore = false
             state.course.find(c => c.course_id == course_id ? courseinStore = true : '')
             if (courseinStore == false) {
-              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,facebook,twitter,youtube}])
+              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,emil,facebook,twitter,youtube}])
               let voteinStore = false
               state.courseVote.find(f => f.course_id == rs.course_id  ? voteinStore = true : '')
               rs.avg != 0 && voteinStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''

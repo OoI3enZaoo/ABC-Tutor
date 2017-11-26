@@ -26,7 +26,11 @@
     <template v-else>
       <template v-if="!dataOfQuestion">
         <v-container grid-list-lg>
-
+          <template v-if="!isTutor">
+            <div class="text-xs-right mb-2">
+              <create title="ตั้งคำถาม" type="1"  @result="dataFromQuill"></create>
+            </div>
+          </template>
           <v-card v-for="(data,index) in courseQA" :key="index">
                 <v-list two-line>
                   <v-list-tile avatar @click="" @click.native="QADetail(data)">

@@ -23,7 +23,6 @@
                     </v-card>
                   </v-flex>
                 </v-layout>
-
               </template>
               <template v-else>
                 <v-layout>
@@ -48,6 +47,11 @@
               </template>
           </template>
         <template v-else v-for="(data, i) in courseAnno" style="margin-top:50px;">
+          <template v-if="isTutor && i == 0">
+            <div class="text-xs-right mb-2">
+              <create title="สร้างคำประกาศ" type="2"  @result="dataFromQuill"></create>
+            </div>
+          </template>
             <v-expansion-panel expand>
                 <v-expansion-panel-content>
 
@@ -61,7 +65,7 @@
                               <v-list-tile-title><span class="blue--text">{{data.fname}} {{data.lname}}</span></v-list-tile-title>
                               <v-list-tile-sub-title>
                                 <span class="grey--text">ประกาศเมื่อ {{data.annou_ts | moment('from','now',true)}} ก่อน</span>
-                                    <p v-html="data.annou_text"></p>
+                                    <p v-html="data.annou_text" class="black--text"></p>
                               </v-list-tile-sub-title>
 
                             </v-list-tile-content>
@@ -94,11 +98,9 @@
                 </v-expansion-panel-content>
 
             </v-expansion-panel>
-
+            <div style="margin-top:20px;"></div>
           </template>
-<br><br>
           </v-layout>
-          <br><br><br><br>
     </v-container>
   </div>
 </template>
@@ -128,6 +130,12 @@ export default {
         annou_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
       }
       this.$store.dispatch('ADD_COURSE_ANNO', data)
+      let des
+      if (this.course.code !== '') {
+        des = 'มีการประกาศใหม่จากติวเตอร์ (' + this.course.code + ')'
+      } else {
+        des = 'มีการประกาศใหม่จากติวเตอร์'
+      }
       let notification = {
         course_id: this.course.course_id,
         subject: this.course.subject,
@@ -136,7 +144,7 @@ export default {
         fname: this.$store.state.profile.fname,
         lname: this.$store.state.profile.lname,
         user_img: this.$store.state.profile.user_img,
-        noti_des: 'มีการประกาศใหม่จากติวเตอร์',
+        noti_des: des,
         noti_cover: this.course.cover,
         noti_type: 2,
         noti_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')

@@ -135,8 +135,6 @@
       </v-card>
     </v-container>
 
-
-
   </div>
 </template>
 <script>

@@ -31,19 +31,32 @@
                           <v-card-text>
                             <v-layout>
                               <v-flex xs9>
-                                  <h6><b>{{data.subject}} ({{data.code}}) {{data.price}}.-</b></h6>
+                                <h6><b>{{data.subject}} ({{data.code}}) {{data.price}}.-</b></h6>
+                                <div v-if="$store.getters.COURSE_VOTE_FROM_COURSE_ID(data.course_id).length == 0" >
                                   <template v-for="a in 5">
-                                    <v-icon>star</v-icon>
+                                    <v-icon>star_border</v-icon>
                                   </template>
                                   &nbsp;&nbsp;
-                                  <span>5.0</span>&nbsp;&nbsp; <span>จากคนโหวตทั้งหมด</span>&nbsp;<span>5,040</span>&nbsp;<span>คน</span>
+                                  <span>0.0</span>&nbsp;&nbsp; <span>จากคนโหวตทั้งหมด</span>&nbsp;<span>0</span>&nbsp;<span>คน</span>
+                                </div>
+                                <div v-else v-for="vote in $store.getters.COURSE_VOTE_FROM_COURSE_ID(data.course_id)">
+                                  <template v-for="(star, index) in 5">
+                                      <template v-if="vote.avg.toFixed(0) > index">
+                                        <v-icon>star</v-icon>
+                                      </template>
+                                      <template v-else>
+                                          <v-icon>star_border</v-icon>
+                                      </template>
+                                  </template>
+                                  &nbsp;&nbsp;
+                                  <span>{{vote.avg}}</span>&nbsp;&nbsp; <span>จากคนโหวตทั้งหมด</span>&nbsp;<span>{{vote.length}}</span>&nbsp;<span>คน</span>
+                                </div>
                               </v-flex>
                               <v-flex xs4 text-xs-right>
                                   <span>สร้างเมื่อ {{data.ts}}</span> <br>
                                   <!-- <span>อัพเดทล่าสุด {{data.lastUpdate}}</span> -->
                               </v-flex>
                             </v-layout>
-
                           </v-card-text>
                         </v-flex>
                       </v-layout>
@@ -52,6 +65,7 @@
                 <br>
               </v-flex>
             </v-layout>
+            <!-- {{$store.state.courseVote}} -->
               </v-container>
           </template>
   </div>
