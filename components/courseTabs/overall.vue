@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container grid-list-lg><br>
-      <p class="headline">กิจกรรมล่าสุด</p>
+      <!-- <p class="headline">กิจกรรมล่าสุด</p>
       <v-layout row wrap>
         <v-flex xs12 sm6>
           <v-card>
@@ -23,9 +23,6 @@
                     <v-divider inset></v-divider>
                   </v-list>
               </template>
-              <!-- <v-card-text>
-                <span class="blue--text" style="text-decoration:underline;">ดูคำถามทั้งหมด</span>
-              </v-card-text> -->
           </v-card>
         </v-flex>
         <v-flex xs12 sm6>
@@ -48,13 +45,10 @@
                     <v-divider inset></v-divider>
                   </v-list>
               </template>
-              <!-- <v-card-text>
-                <span class="blue--text" style="text-decoration:underline;">ดูคำถามทั้งหมด</span>
-              </v-card-text> -->
           </v-card>
         </v-flex>
       </v-layout>
-<br><br><v-divider></v-divider><br><br>
+<br><br><v-divider></v-divider><br><br> -->
 
       <p class="headline">เกี่ยวกับคอร์ส</p>
       <p>เนื้อหาเกี่ยวกับสอบกลางภาค บทที่ 1-5</p>

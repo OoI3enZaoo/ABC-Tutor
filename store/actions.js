@@ -230,13 +230,15 @@ export default {
       axios.post('http://' + state.currentIP + '/api/insertcourse_q_comment', payload)
   },
   ADD_COURSE_CHAT ({state, commit}, payload) {
-    axios.post('http://' + state.currentIP + '/api/insertchat/', payload)
+    let { course_id, user_id, chat_text, chat_ts } = payload
+    axios.post('http://' + state.currentIP + '/api/insert_chat_mongo/', payload)
   },
   async PULL_COURSE_CHAT ({state, commit}, course_id) {
-    await axios.get('http://' + state.currentIP + '/api/get_course_chat/' + course_id)
+    await axios.get('http://' + state.currentIP + '/api/getchat/' + course_id)
     .then (res => {
       let result = res.data
-      commit('addCourseChat', result)
+      let reverse = result.reverse()
+      commit('addCourseChat', reverse)
     })
   },
 

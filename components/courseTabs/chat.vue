@@ -19,6 +19,9 @@
                               <v-list-tile-title>{{data.fname}} {{data.lname}} &nbsp;&nbsp; <span class="grey--text">{{data.date}}</span> </v-list-tile-title>
                               <v-list-tile-sub-title>{{data.chat_text}}</v-list-tile-sub-title>
                           </v-list-tile-content>
+                          <v-list-tile-action>
+                            <v-list-tile-action-text>{{data.chat_ts | moment('from','now', true)}}</v-list-tile-action-text>
+                          </v-list-tile-action>
                         </v-list-tile>
                       </template>
                 </div>
@@ -61,7 +64,7 @@ const moment = require('moment')
 Vue.use(require('vue-moment'), {
     moment
 })
-export default {  
+export default {
   created () {
     this.roomId = this.$route.params.id
     let data = {
@@ -72,7 +75,7 @@ export default {
       user_img: this.$store.state.profile.user_img
     }
     let {course_id,user_id} = data
-    this.$store.dispatch('USER_ONLINE', {course_id,user_id})
+    // this.$store.dispatch('USER_ONLINE', {course_id,user_id})
     let socket = data
     socket.course_id += 11111
     this.$socket.emit('online', socket)

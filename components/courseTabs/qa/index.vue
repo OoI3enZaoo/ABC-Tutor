@@ -86,7 +86,8 @@
                                 </v-list-tile-avatar>
                                 <v-list-tile-content>
                                     <v-list-tile-title>
-                                      <span class="blue--text"><nuxt-link :to="'/user/' + data.user_id" class="blue--text">{{data.fname}} {{data.lname}}</nuxt-link></span>  <span class="grey--text">&nbsp;&nbsp; {{data.q_ts | moment('from','now',true)}} ที่แล้ว</span>
+
+                                      <span class="blue--text"><nuxt-link :to="'/user/' + data.user_id" class="blue--text">{{data.fname}} {{data.lname}}</nuxt-link></span>  <span class="grey--text">&nbsp;&nbsp; {{data.q_com_ts | moment('from','now',true)}} ที่แล้ว</span>
                                     </v-list-tile-title>
                                     <v-list-tile-sub-title>{{data.q_com_text}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
