@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" :overlay="false">
-      <v-btn primary dark slot="activator">{{title}}</v-btn>
+      <v-btn block primary dark slot="activator">{{title}}</v-btn>
       <v-card>
         <v-toolbar dark class="primary">
           <v-btn icon @click.native="dialog = false" dark>

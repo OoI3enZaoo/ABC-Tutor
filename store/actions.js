@@ -255,7 +255,7 @@ export default {
         axios.get('http://' + state.currentIP + '/api/get_course_announce_comment/' + q.annou_id)
         .then(res => {
           let {fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts} = q
-          commit('addCourseAnno', [{fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts,reply:res.data}])
+          commit('addCourseAnno', [{fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts,reply:res.data,showReply:false}])
         })
       })
     }

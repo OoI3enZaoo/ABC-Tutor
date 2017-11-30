@@ -2,9 +2,9 @@
   <div>
     <!-- {{$store.state.courseDetail.userOnline}} -->
     <v-container>
-      <p class="headline">แชท</p>
+      <!-- <p class="headline">แชท</p>
       <blockquote>สามารถเข้ามาพูดคุยกันได้ที่นี่เลย</blockquote>
-      <br>
+      <br> -->
 
           <v-card>
               <v-list two-line>

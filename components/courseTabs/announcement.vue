@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-container grid-list-lg>
-
           <template v-if="courseAnno.length == 0">
               <template v-if="isTutor">
                 <v-layout>
@@ -49,10 +48,10 @@
             <div class="text-xs-right mb-2">
               <create v-if="isTutor && i == 0" title="สร้างคำประกาศ" type="2"  @result="dataFromQuill" ></create>
             </div>
-            <v-expansion-panel expand>
-                <v-expansion-panel-content>
-                      <div slot="header">
-                        <v-list two-line>
+            <v-card>
+              <v-card-text>
+
+                        <v-list >
                           <v-list-tile>
                             <v-list-tile-avatar>
                               <img :src="data.user_img" alt="">
@@ -61,39 +60,57 @@
                               <v-list-tile-title><span class="blue--text">{{data.fname}} {{data.lname}}</span></v-list-tile-title>
                               <v-list-tile-sub-title>
                                 <span class="grey--text">ประกาศเมื่อ {{data.annou_ts | moment('from','now',true)}} ก่อน</span>
-                                    <p v-html="data.annou_text" class="black--text"></p>
                               </v-list-tile-sub-title>
-
                             </v-list-tile-content>
                           </v-list-tile>
                         </v-list>
-                        <v-text-field
-                          class="elevation-1"
-                          solo
-                          label='พิมข้อความของคุณที่นี่..'
-                          single-line
-                          @keyup.enter="SendReply($event.target.value,data)"
-                        ></v-text-field>
-                      </div>
-                      <v-card>
-                        <v-card-text>
-                          <v-layout v-for="(reply,index) in data.reply" :key="index">
+                        <div class="ma-3">
+                          <p v-html="data.annou_text" class="black--text"></p>
+                          <div class="ma-2">
+                            <v-layout>
                               <v-flex xs2 sm2 md1 lg1>
                                 <v-avatar>
-                                  <img :src="reply.user_img" alt="avatar" >
+                                  <img :src="$store.state.profile.user_img" >
                                 </v-avatar>
                               </v-flex>
-                              <v-flex xs10 sm10 md4 lg5>
-                                  <span class="blue--text">{{reply.fname}} {{reply.lname}}</span> &nbsp;<span class="grey--text">{{data.annou_com_ts | moment('from','now',true)}}</span><br>
-                                  <span>{{reply.annou_com_text}}</span>
+                              <v-flex xs10 sm10 md11 lg11>
+                                <v-text-field
+                                  class="elevation-0"
+                                  solo
+                                  label='พิมข้อความของคุณที่นี่..'
+                                  single-line
+                                  style="border: solid 1px grey;"
+                                  @keyup.enter="SendReply($event.target.value,data)"
+                                ></v-text-field>
                               </v-flex>
-                              <br><br><br>
-                          </v-layout>
+                            </v-layout>
+
+                            <template v-if="data.showReply == true">
+                              <v-layout v-for="(reply,index) in data.reply" :key="index">
+                                  <v-flex xs2 sm2 md1 lg1>
+                                    <v-avatar>
+                                      <img :src="reply.user_img" alt="avatar" >
+                                    </v-avatar>
+                                  </v-flex>
+                                  <v-flex xs10 sm10 md11 lg11>
+                                      <span class="blue--text">{{reply.fname}} {{reply.lname}}</span> &nbsp;<span class="grey--text">{{data.annou_com_ts | moment('from','now',true)}}</span><br>
+                                      <span>{{reply.annou_com_text}}</span>
+                                  </v-flex>
+                                  <br><br><br>
+                              </v-layout>
+                            </template>
+
+                          </div>
+                            <template v-if="data.reply.length !== 0 && data.showReply == false">
+                              <v-btn outline color="primary" @click.native="data.showReply = true">ดูการตอบกลับ ({{data.reply.length}})</v-btn>
+                            </template>
+                        </div>
+
+
                         </v-card-text>
                       </v-card>
-                </v-expansion-panel-content>
 
-            </v-expansion-panel>
+
             <div style="margin-top:20px;"></div>
           </template>
 
@@ -111,7 +128,7 @@ export default {
   data () {
     return {
       replyText: '',
-      announcement: require('../../static/announcement.png')
+      announcement: require('../../static/announcement.png'),
     }
   },
   components: {

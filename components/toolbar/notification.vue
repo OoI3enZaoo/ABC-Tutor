@@ -42,9 +42,9 @@
                 <div style="height:300px; overflow:scroll; overflow-x:hidden;">
                   <template v-if="$store.getters.NOTIFICATION(1).length == 0">
                       <v-list-tile>
-                        <v-list-content>
+                        <v-list-tile-content>
                           <p>ยังไม่มีการแจ้งเตือนในขณะนี้</p>
-                        </v-list-content>
+                        </v-list-tile-content>
                       </v-list-tile>
                   </template>
                   <template v-else v-for="data in $store.getters.NOTIFICATION(1)">
@@ -66,9 +66,9 @@
                 <div style="height:300px; overflow:scroll; overflow-x:hidden;">
                   <template v-if="$store.getters.NOTIFICATION(2).length == 0">
                       <v-list-tile>
-                        <v-list-content>
+                        <v-list-tile-content>
                           <p>ยังไม่มีการแจ้งเตือนในขณะนี้</p>
-                        </v-list-content>
+                        </v-list-tile-content>
                       </v-list-tile>
                   </template>
                   <template v-else v-for="data in $store.getters.NOTIFICATION(2)">
