@@ -98,6 +98,10 @@ export default {
       }
   },
   addCourseQA: (state, data) => state.courseDetail.courseQA.unshift(...data),
+  setCourseQA: (state, data) => {
+    console.log(data)
+    state.courseDetail.courseQA.push(...data)
+  },
   addCourseQAComment: (state, data) => {
     state.courseDetail.courseQA.map(res => res.q_id == data.q_id ? res.reply.push(data) : '')
   },

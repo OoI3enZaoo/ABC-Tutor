@@ -52,9 +52,19 @@ export default {
     axios.post('http://' + state.currentIP + '/api/insertuserpurchase', payload)
   },
   ADD_COURSE_FAVORITE ({state, commit}, payload) {
+    const data = {
+      course_id: payload,
+      user_id: state.profile.user_id
+    }
+    axios.post('http://' + state.currentIP + '/api/insert_course_fav', data)
     commit('addCourseFavorite', [payload])
   },
   REMOVE_COURSE_FAVORITE ({state, commit}, payload) {
+    const data = {
+      course_id: payload,
+      user_id: state.profile.user_id
+    }
+    axios.post('http://' + state.currentIP + '/api/delete_course_fav', data)
     commit('removeCourseFavorite', payload)
   },
   UPDATE_PROFILE ({state, commit}, payload) {
@@ -203,12 +213,12 @@ export default {
       await axios.get('http://' + state.currentIP + '/api/get_course_q/' + course_id)
       .then(res => {
         qa = res.data
-      })
-      qa.map(q => {
-        axios.get('http://' + state.currentIP + '/api/get_course_q_comment/' + q.q_id)
-        .then(res => {
-          let {fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts} = q
-          commit('addCourseQA', [{fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts,reply:res.data}])
+        qa.map(q => {
+          axios.get('http://' + state.currentIP + '/api/get_course_q_comment/' + q.q_id)
+          .then(res => {
+            let {fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts} = q
+            commit('setCourseQA', [{fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts,reply:res.data}])
+          })
         })
       })
     }
@@ -374,7 +384,7 @@ export default {
             let courseinStore = false
             state.course.find(c => c.course_id == course_id ? courseinStore = true : '')
             if (courseinStore == false) {
-              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,emil,facebook,twitter,youtube}])
+              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
               let voteinStore = false
               state.courseVote.find(f => f.course_id == rs.course_id  ? voteinStore = true : '')
               rs.avg != 0 && voteinStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''

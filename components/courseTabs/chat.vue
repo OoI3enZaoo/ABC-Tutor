@@ -9,7 +9,7 @@
           <v-card>
               <v-list two-line>
                 <v-subheader>สนทนา</v-subheader>
-                <div id="container" style="overflow:scroll; overflow-x:hidden; height:500px; display:inline;" class="grey lighten-4">
+                <div id="container" style="overflow:scroll; overflow-x:hidden; height:500px; " class="grey lighten-4">
                     <template v-for="data in Messages">
                         <v-list-tile avatar >
                           <v-list-tile-avatar>
