@@ -93,7 +93,7 @@
                                     </v-avatar>
                                   </v-flex>
                                   <v-flex xs10 sm10 md11 lg11>
-                                      <span class="blue--text">{{reply.fname}} {{reply.lname}}</span> &nbsp;<span class="grey--text">{{data.annou_com_ts | moment('from','now',true)}}</span><br>
+                                      <span class="blue--text">{{reply.fname}} {{reply.lname}}</span> &nbsp;<span class="grey--text">{{reply.annou_com_ts | moment('from','now',true)}}</span><br>
                                       <span>{{reply.annou_com_text}}</span>
                                   </v-flex>
                                   <br><br><br>
