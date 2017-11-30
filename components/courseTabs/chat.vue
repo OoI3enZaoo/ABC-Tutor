@@ -3,13 +3,13 @@
     <!-- {{$store.state.courseDetail.userOnline}} -->
     <v-container>
       <p class="headline">แชท</p>
+      <blockquote>สามารถเข้ามาพูดคุยกันได้ที่นี่เลย</blockquote>
       <br>
-      <v-layout>
-        <v-flex xs12>
+
           <v-card>
               <v-list two-line>
                 <v-subheader>สนทนา</v-subheader>
-                <div id="container" style="overflow:scroll; overflow-x:hidden; height:500px;" class="grey lighten-4">
+                <div id="container" style="overflow:scroll; overflow-x:hidden; height:500px; display:inline;" class="grey lighten-4">
                     <template v-for="data in Messages">
                         <v-list-tile avatar >
                           <v-list-tile-avatar>
@@ -25,11 +25,21 @@
                         </v-list-tile>
                       </template>
                 </div>
-
               </v-list>
-            <v-text-field solo label="พิมช้อความ"  v-model="chatText" @keyup.enter="sendMessage"></v-text-field>
+              <v-text-field class="elevation-0"solo label="พิมพ์ข้อความที่นี่..."  v-model="chatText" @keyup.enter="sendMessage"></v-text-field>
+              <!-- <v-layout>
+                <v-flex xs10>
+                  <v-text-field class="elevation-0"solo label="พิมพ์ข้อความที่นี่..."  v-model="chatText" @keyup.enter="sendMessage"></v-text-field>
+                </v-flex>
+                <v-flex xs2>
+                  <div class="blue">
+                    <v-card class="elevation-0" style="display:inline;"><a @click="sendMessage(text)" tag="span"><v-card-text class="white--text"><h6 class="ml-3"style="display:inline;">ส่ง</h6></v-card-text></a></v-card>
+                  </div>
+                </v-flex>
+              </v-layout> -->
+
           </v-card>
-        </v-flex>
+
         <!-- <v-flex lg2 md3 sm4>
             <v-card class="hidden-xs-only">
                   <div style="height:610px; overflow:scroll; overflow-x:hidden;">
@@ -52,7 +62,7 @@
                   </div>
             </v-card>
         </v-flex> -->
-      </v-layout>
+
 
     </v-container>
     <br><br><br>

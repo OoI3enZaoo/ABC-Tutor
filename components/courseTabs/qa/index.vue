@@ -13,7 +13,7 @@
                       </v-flex>
                       <v-flex xs12 ml-5 md5 text-md-left text-xs-center mt-4>
                           <h5>ยังไม่มีการตั้งคำถามในขณะนี้</h5>
-                          <create title="ตั้งคำถาม" type="1"  @result="dataFromQuill"></create>
+                          <create v-if="!isTutor" title="ตั้งคำถาม" type="1"  @result="dataFromQuill"></create>
                       </v-flex>
                     </v-layout>
                 </div>

@@ -43,7 +43,7 @@
             </template>
             <template v-else>
               <v-layout row wrap>
-                <v-flex xs8>
+                <v-flex lg8 md12 sm12 xs12>
                   <v-card>
                       <video ref="video"  :src="this.source" autoplay width ="100%" style="max-height:497px;"></video>
                     <v-card-text>
@@ -57,7 +57,7 @@
                     </v-card-text>
                   </v-card>
                 </v-flex>
-                <v-flex xs4>
+                <v-flex lg4 class="hidden-md-and-down">
                     <chat :message = "liveMessage" @getMessage="getMessage"></chat>
                 </v-flex>
                 <template v-for="(data, index) in userLive">
@@ -117,7 +117,7 @@
            </template>
     <template v-else>
              <v-layout row wrap>
-               <v-flex xs8>
+               <v-flex lg8 md12 sm12 xs12>
                  <v-card>
                    <v-card-media :src="videoLive" height="500"></v-card-media>
                    <v-card-text>
@@ -131,7 +131,7 @@
                    </v-card-text>
                  </v-card>
                </v-flex>
-               <v-flex xs4>
+               <v-flex lg4 class="hidden-md-and-down">
                    <chat :message = "liveMessage" @getMessage="getMessage"></chat>
                </v-flex>
                <template v-for="(data, index) in userLive">

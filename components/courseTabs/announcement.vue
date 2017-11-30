@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container grid-list-lg>
-          <v-layout row wrap>
+
           <template v-if="courseAnno.length == 0">
               <template v-if="isTutor">
                 <v-layout>
@@ -43,18 +43,14 @@
                     </v-card>
                   </v-flex>
                 </v-layout>
-
               </template>
           </template>
-        <template v-else v-for="(data, i) in courseAnno" style="margin-top:50px;">
-          <template v-if="isTutor && i == 0">
+        <template v-else v-for="(data, i) in courseAnno" >
             <div class="text-xs-right mb-2">
-              <create title="สร้างคำประกาศ" type="2"  @result="dataFromQuill"></create>
+              <create v-if="isTutor && i == 0" title="สร้างคำประกาศ" type="2"  @result="dataFromQuill" ></create>
             </div>
-          </template>
             <v-expansion-panel expand>
                 <v-expansion-panel-content>
-
                       <div slot="header">
                         <v-list two-line>
                           <v-list-tile>
@@ -82,12 +78,12 @@
                       <v-card>
                         <v-card-text>
                           <v-layout v-for="(reply,index) in data.reply" :key="index">
-                              <v-flex xs2 sm1>
+                              <v-flex xs2 sm2 md1 lg1>
                                 <v-avatar>
                                   <img :src="reply.user_img" alt="avatar" >
                                 </v-avatar>
                               </v-flex>
-                              <v-flex xs10 sm3>
+                              <v-flex xs10 sm10 md4 lg5>
                                   <span class="blue--text">{{reply.fname}} {{reply.lname}}</span> &nbsp;<span class="grey--text">{{data.annou_com_ts | moment('from','now',true)}}</span><br>
                                   <span>{{reply.annou_com_text}}</span>
                               </v-flex>
@@ -100,7 +96,7 @@
             </v-expansion-panel>
             <div style="margin-top:20px;"></div>
           </template>
-          </v-layout>
+
     </v-container>
   </div>
 </template>

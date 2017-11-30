@@ -55,15 +55,15 @@
           </v-card>
           <br>
 
-          <v-subheader>ช่องทางการรับเงิน</v-subheader>
+          <!-- <v-subheader>ช่องทางการรับเงิน</v-subheader>
           <v-card>
             <v-card-text>
               <v-subheader>รายละเอียด</v-subheader>
-              
+
             </v-card-text>
           </v-card>
           <br>
-          <br>
+          <br> -->
 
           <div class="text-xs-right">
             <v-btn primary outline>คืนค่าเดิม</v-btn>
