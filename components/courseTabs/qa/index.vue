@@ -31,7 +31,7 @@
               <create title="ตั้งคำถาม" type="1"  @result="dataFromQuill"></create>
             </div>
           </template>
-          <v-card v-for="(data,index) in courseQA" :key="index">
+          <v-card v-for="(data,index) in $store.getters.COURSE_QA(this.$route.params.id)" :key="index">
                 <v-list two-line>
                   <v-list-tile avatar @click="" @click.native="QADetail(data)">
                     <v-list-tile-avatar>

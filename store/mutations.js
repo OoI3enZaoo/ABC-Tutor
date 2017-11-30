@@ -98,14 +98,13 @@ export default {
       }
   },
   addCourseQA: (state, data) => state.courseDetail.courseQA.unshift(...data),
-  setCourseQA: (state, data) => {
-    console.log(data)
-    state.courseDetail.courseQA.push(...data)
-  },
+  setCourseQA: (state, data) =>
+    state.courseDetail.courseQA.push(...data),  
   addCourseQAComment: (state, data) => {
     state.courseDetail.courseQA.map(res => res.q_id == data.q_id ? res.reply.push(data) : '')
   },
   addCourseChat: (state, data) => state.courseDetail.courseChat.push(...data),
+  setCourseAnno: (state, data) => state.courseDetail.courseAnno.push(...data),
   addCourseAnno: (state, data) => state.courseDetail.courseAnno.unshift(...data),
   addCourseAnnoComment: (state, data) => {
     state.courseDetail.courseAnno.map(res => res.annou_id == data.annou_id ? res.reply.push(data) : '')

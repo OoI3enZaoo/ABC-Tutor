@@ -213,12 +213,12 @@ export default {
       await axios.get('http://' + state.currentIP + '/api/get_course_q/' + course_id)
       .then(res => {
         qa = res.data
-        qa.map(q => {
-          axios.get('http://' + state.currentIP + '/api/get_course_q_comment/' + q.q_id)
-          .then(res => {
-            let {fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts} = q
-            commit('setCourseQA', [{fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts,reply:res.data}])
-          })
+      })
+      await qa.map((q) => {
+        axios.get('http://' + state.currentIP + '/api/get_course_q_comment/' + q.q_id)
+        .then(res => {
+          let {fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts} = q
+          commit('setCourseQA', [{fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts,reply:res.data}])
         })
       })
     }
@@ -261,11 +261,11 @@ export default {
       .then(res => {
         qa = res.data
       })
-      qa.map(q => {
+      await qa.map((q)  => {
         axios.get('http://' + state.currentIP + '/api/get_course_announce_comment/' + q.annou_id)
         .then(res => {
           let {fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts} = q
-          commit('addCourseAnno', [{fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts,reply:res.data,showReply:false}])
+          commit('setCourseAnno', [{fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts,reply:res.data,showReply:false}])
         })
       })
     }
