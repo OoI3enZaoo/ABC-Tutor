@@ -44,13 +44,12 @@
                 </v-layout>
               </template>
           </template>
-        <template v-else v-for="(data, i) in $store.getters.COURSE_ANNO(this.$route.params.id)" >
+        <template v-else v-for="(data, i) in courseAnno" >
             <div class="text-xs-right mb-2">
               <create v-if="isTutor && i == 0" title="สร้างคำประกาศ" type="2"  @result="dataFromQuill" ></create>
             </div>
             <v-card>
               <v-card-text>
-
                         <v-list >
                           <v-list-tile>
                             <v-list-tile-avatar>

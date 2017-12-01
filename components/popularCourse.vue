@@ -8,7 +8,7 @@
       </v-layout>
       <v-layout row wrap>
         <template v-for="data in course">
-            <v-flex xs6 md4 lg3>
+            <v-flex xs6 md6 lg3>
               <nuxt-link :to="'/course/' + data.course_id" tag="span" style="cursor:pointer;">
                 <v-card>
                   <v-card-media :src="data.cover" height="150"></v-card-media>

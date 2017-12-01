@@ -99,12 +99,14 @@ export default {
   },
   addCourseQA: (state, data) => state.courseDetail.courseQA.unshift(...data),
   setCourseQA: (state, data) =>
-    state.courseDetail.courseQA.push(...data),  
+    state.courseDetail.courseQA.push(...data),
   addCourseQAComment: (state, data) => {
     state.courseDetail.courseQA.map(res => res.q_id == data.q_id ? res.reply.push(data) : '')
   },
   addCourseChat: (state, data) => state.courseDetail.courseChat.push(...data),
-  setCourseAnno: (state, data) => state.courseDetail.courseAnno.push(...data),
+  setCourseAnno: (state, data) => {
+    state.courseDetail.courseAnno.push(...data)
+  },
   addCourseAnno: (state, data) => state.courseDetail.courseAnno.unshift(...data),
   addCourseAnnoComment: (state, data) => {
     state.courseDetail.courseAnno.map(res => res.annou_id == data.annou_id ? res.reply.push(data) : '')
@@ -137,16 +139,15 @@ export default {
         new Vue().$socket.emit('unsubscribe', cp)
     })
     new Vue().$socket.emit('leave', state.profile.user_id)
-    state.profile.user_id = 0
-    state.profile.user_img = ''
-    state.profile.fname = ''
-    state.profile.lname = ''
-    state.profile.sex = ''
-    state.profile.birthday = ''
-    state.profile.email = ''
-    state.profile.facebook = ''
-    state.profile.twiiter = ''
-    state.profile.youtube = ''
+    state.profile = {}
+    state.coursePurchased = []
+    state.courseFavorite = []
+    state.courseCreate = []
+    state.isCheckReview = false
+    state.isCoursePurchased = false
+    state.isCourseCreated = false
+    state.isCourseFavorite = false
+    state.notification = []
   },
   CHECK_IS_TUTOR: (state, course_id) => state.courseCreate.map(c => {
     if (c == course_id) {

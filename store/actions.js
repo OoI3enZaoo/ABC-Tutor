@@ -244,15 +244,18 @@ export default {
     axios.post('http://' + state.currentIP + '/api/insert_chat_mongo/', payload)
   },
   async PULL_COURSE_CHAT ({state, commit}, course_id) {
-    await axios.get('http://' + state.currentIP + '/api/getchat/' + course_id)
-    .then (res => {
-      let result = res.data
-      let reverse = result.reverse()
-      commit('addCourseChat', reverse)
-    })
+    let isCheck = false
+    state.courseDetail.courseChat.map (cd => cd.course_id == course_id ? isCheck = true : '')
+    if (isCheck == false) {
+      await axios.get('http://' + state.currentIP + '/api/getchat/' + course_id)
+      .then (res => {
+        let result = res.data
+        let reverse = result.reverse()
+        commit('addCourseChat', reverse)
+      })
+    }
   },
-
-  async PULL_COURSE_ANNO ({commit, state}, course_id) {
+  async PULL_COURSE_ANNO ({state,commit}, course_id) {
     let qa
     let isCheck = false
     state.courseDetail.courseAnno.find(res => res.course_id == course_id ? isCheck = true : '')
@@ -269,8 +272,42 @@ export default {
         })
       })
     }
+    console.log('PULL_COURSE_ANNO');
+    // dispatch('getCourseAnnounce', course_id)
   },
-
+  async getCourseAnnounce ({state, dispatch, commit}, course_id) {
+    console.log('getCourseAnnounce');
+    let isCheck = false
+    await state.courseDetail.courseAnno.find(res => res.course_id == course_id ? isCheck = true : '')
+    if (isCheck == false) {
+      const anno = await dispatch('courseAnno', course_id)
+      await anno.map(async (q) => {
+        const comment = await dispatch('courseAnnoComment', q.annou_id)
+        console.log(q)
+        console.log(comment)
+        let announce = q
+        announce.reply = comment
+        commit('setCourseAnno', [announce])
+      })
+    }
+  },
+  // courseAnno ({state}, course_id) {
+  //   console.log('course_ID <<< : ' + course_id);
+  //   return new Promise((resolve, reject) => {
+  //     axios.get('http://' + state.currentIP + '/api/get_course_announce/' + course_id)
+  //     .then(res => {
+  //       resolve(res.data)
+  //     })
+  //   })
+  // },
+  // courseAnnoComment ({state}, annou_id) {
+  //   return new Promise((resolve,reject) => {
+  //       axios.get('http://' + state.currentIP + '/api/get_course_announce_comment/' + annou_id)
+  //       .then(res => {
+  //         resolve (res.data)
+  //       })
+  //   })
+  // },
   ADD_COURSE_ANNO ({commit, state}, payload) {
     axios.post('http://' + state.currentIP + '/api/insertcourse_announce/', payload)
     .then (res=> {
