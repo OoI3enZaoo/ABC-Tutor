@@ -94,6 +94,7 @@ export default {
     noDataCard
   },
   mounted () {
+    // console.log('coursePurLength ' + this.coursePur.length);
     this.getData()
   },
   data () {
@@ -118,18 +119,15 @@ export default {
       }
     }
   },
-  methods: {
-    getData () {
-      this.$store.state.coursePurchased.map(data => {
+   methods: {
+     async getData () {
+       await this.$store.state.coursePurchased.map((data) => {
         this.coursePur.push(...this.$store.getters.COURSE_FROM_ID(data))
         this.dialog.push({status: false})
-      })
-      this.$store.state.coursePurchased.map(data => {
         this.point.push([{id:1,icon:'start_border'},{id:2,icon:'start_border'},{id:3,icon:'start_border'},{id:4,icon:'start_border'},{id:5,icon:'start_border'}])
         this.numberPoint.push({id: 1, mypoint: 0})
-        console.log(this.point)
       })
-      this.point.map((p,i) => this.mouseOver(i, 4))
+      await this.point.map((p,i) => this.mouseOver(i, 4))
     },
     mouseOver (index,dex) {
       if (dex == 0) {

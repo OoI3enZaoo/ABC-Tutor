@@ -50,7 +50,7 @@ export default () => {
         isTutor: false,
         menuItems: [
           { title: 'ภาพรวม' },
-          { title: 'วีดีโอ' },
+          { title: 'เอกสารและวีดีโอ' },
           { title: 'วีดีโอสด' },
           { title: 'ถามตอบ' },
           { title: 'ประกาศ' },

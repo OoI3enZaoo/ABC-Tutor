@@ -18,51 +18,50 @@
         </v-flex>
       </v-layout>
     </parallax>
-    <v-tabs light>
+    <v-tabs v-model="active" light>
       <hr>
      <v-tabs-bar class="white">
        <v-tabs-slider class="primary"></v-tabs-slider>
        <v-tabs-item
          v-for="(data,i) in menuItems"
          :key="i"
-         :href="'#tab-' + i"
+         :href="'#' + data.title"
        >
          {{data.title}}
        </v-tabs-item>
      </v-tabs-bar>
      <hr>
        <!-- ภาพรวม -->
-       <v-tabs-content id='tab-0'>
+       <v-tabs-content id='ภาพรวม'>
            <overall></overall>
        </v-tabs-content>
 
        <!-- วีดีโอ -->
-       <v-tabs-content id='tab-1'>
+       <v-tabs-content id='เอกสารและวีดีโอ'>
          <videoCourse></videoCourse>
        </v-tabs-content>
 
        <!-- วีดีโอสด -->
-       <v-tabs-content id='tab-2'>
+       <v-tabs-content id='วีดีโอสด'>
          <live></live>
        </v-tabs-content>
 
        <!-- ถามตอบ -->
-       <v-tabs-content id='tab-3'>
+       <v-tabs-content id='ถามตอบ'>
          <qa></qa>
        </v-tabs-content>
 
        <!-- ประกาศ -->
-       <v-tabs-content id='tab-4'>
+       <v-tabs-content id='ประกาศ'>
          <announcement></announcement>
        </v-tabs-content>
 
        <!-- แชท -->
-       <v-tabs-content id='tab-5'>
+       <v-tabs-content id='แชท'>
          <chat></chat>
        </v-tabs-content>
-
        <!-- การจัดการ -->
-       <v-tabs-content id='tab-6'>
+       <v-tabs-content id='การจัดการ'>
          <manage></manage>
        </v-tabs-content>
    </v-tabs>
@@ -79,13 +78,14 @@ import chat from '../../../components/courseTabs/chat.vue'
 import manage from '../../../components/courseTabs/manage.vue'
 export default {
   async asyncData ({ store, route }) {
-    // await store.dispatch('PULL_COURSE_DATA', route.params.id)
-    await store.dispatch('PULL_COURSE_CONTENT', route.params.id)
-    await store.dispatch('PULL_COURSE_ANNO', route.params.id)
-    await store.dispatch('PULL_COURSE_QA', route.params.id)
-    await store.dispatch('PULL_COURSE_CHAT', route.params.id)
+    await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
     await store.commit('CHECK_IS_TUTOR', route.params.id)
     // await store.dispatch('PULL_USER_ONLINE', route.params.id)
+  },
+  data () {
+    return {
+      active: null
+    }
   },
   components: {
     parallax, overall, announcement, live, qa, videoCourse, chat, manage
@@ -96,6 +96,29 @@ export default {
     },
     menuItems () {
       return this.$store.state.tutor.menuItems
+    }
+  },
+  created () {
+    this.active = location.hash.substring(1)
+    console.log('location.hash.substring(1):' + this.active );
+
+
+  },
+  watch: {
+    active: function (val) {
+      location.hash = val
+      if (val == 'เอกสารและวีดีโอ') {
+        this.$store.dispatch('PULL_COURSE_CONTENT', this.$route.params.id)
+      }
+      else if (val == 'ถามตอบ') {
+        this.$store.dispatch('PULL_COURSE_QA', this.$route.params.id)
+      }
+      else if (val == 'ประกาศ') {
+        this.$store.dispatch('PULL_COURSE_ANNO', this.$route.params.id)
+      }
+      else if (val == 'แชท') {
+        this.$store.dispatch('PULL_COURSE_CHAT', this.$route.params.id)
+      }
     }
   },
   beforeDestroy () {

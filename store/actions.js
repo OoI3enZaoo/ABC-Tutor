@@ -438,10 +438,10 @@ export default {
       dispatch('PULL_BRANCHS')
     }
     if (state.isLogin == true) {
-      dispatch('FETCH_COURSE_REVIEW')
-      dispatch('FETCH_COURSE_CREATED')
-      dispatch('FETCH_COURSE_FAVORITE')
-      dispatch('FETCH_COURSE_PURCHASED')
+      // dispatch('FETCH_COURSE_REVIEW')
+      // dispatch('FETCH_COURSE_CREATED')
+      // dispatch('FETCH_COURSE_FAVORITE')
+      // dispatch('FETCH_COURSE_PURCHASED')
     }
   },
 
