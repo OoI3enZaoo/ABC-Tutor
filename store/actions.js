@@ -132,11 +132,7 @@ export default {
   async PULL_USER_PURCHASED ({commit, state}, course_id) {
     console.log('course_id: ' + course_id);
     let isCheck = false
-    for (let i = 0; i < state.courseUserPurchased.length; i++ ) {
-      if (state.courseUserPurchased[i].course_id == course_id) {
-        await (isCheck = true)
-      }
-    }
+    state.courseUserPurchased.find(cp => cp.course_id == course_id ? isCheck = true : '')
     if (isCheck == false) {
       await axios.get('http://' + state.currentIP + '/api/userpurchased/' + course_id)
       .then (res => {
@@ -147,12 +143,7 @@ export default {
   },
   async PULL_USER ({commit, state}, user_id) {
     let isCheck = false
-    for (let i = 0; i < state.user.length; i ++) {
-      if (state.user.user_id == user_id) {
-        await(isCheck = true)
-        break
-      }
-    }
+    state.user.find(u => u.user_id == user_id ? isCheck = true : '')
     if (isCheck == false) {
       await axios.get('http://' + state.currentIP + '/api/user/' + user_id)
       .then(res => {
@@ -165,22 +156,19 @@ export default {
     commit('addCheckReview', [payload.course_id])
     axios.post('http://' + state.currentIP + '/api/insertreview', payload)
   },
-  async PULL_COURSE_REVIEW ({commit, state}, courseId) {
+  PULL_COURSE_REVIEW ({commit, state}, courseId) {
     let isCheck = false
-    for (let i = 0; i < state.courseReview.length; i++) {
-      if (state.courseReview[i].course_id == courseId) {
-        await (isCheck = true)
-        break
-      }
-    }
+    // console.log('PULL_COURSE_REVIEW: ' + courseId);
+    state.courseReview.find(cr => cr.course_id == courseId ? isCheck = true : '')
     if (isCheck == false) {
       axios.get('http://' + state.currentIP + '/api/get_review_course_order_ts/' + courseId)
       .then (res => {
         let result = res.data
-        if (result.length != 0) {
-          commit('addCourseReview', result)
-        }
+        commit('addCourseReview', result)
       })
+    } else {
+
+      commit('addCourseReview', result)
     }
   },
   async PULL_COURSE_CONTENT ({commit, state}, course_id) {
@@ -272,25 +260,25 @@ export default {
         })
       })
     }
-    console.log('PULL_COURSE_ANNO');
+    // console.log('PULL_COURSE_ANNO');
     // dispatch('getCourseAnnounce', course_id)
   },
-  async getCourseAnnounce ({state, dispatch, commit}, course_id) {
-    console.log('getCourseAnnounce');
-    let isCheck = false
-    await state.courseDetail.courseAnno.find(res => res.course_id == course_id ? isCheck = true : '')
-    if (isCheck == false) {
-      const anno = await dispatch('courseAnno', course_id)
-      await anno.map(async (q) => {
-        const comment = await dispatch('courseAnnoComment', q.annou_id)
-        console.log(q)
-        console.log(comment)
-        let announce = q
-        announce.reply = comment
-        commit('setCourseAnno', [announce])
-      })
-    }
-  },
+  // async getCourseAnnounce ({state, dispatch, commit}, course_id) {
+  //   console.log('getCourseAnnounce');
+  //   let isCheck = false
+  //   await state.courseDetail.courseAnno.find(res => res.course_id == course_id ? isCheck = true : '')
+  //   if (isCheck == false) {
+  //     const anno = await dispatch('courseAnno', course_id)
+  //     await anno.map(async (q) => {
+  //       const comment = await dispatch('courseAnnoComment', q.annou_id)
+  //       console.log(q)
+  //       console.log(comment)
+  //       let announce = q
+  //       announce.reply = comment
+  //       commit('setCourseAnno', [announce])
+  //     })
+  //   }
+  // },
   // courseAnno ({state}, course_id) {
   //   console.log('course_ID <<< : ' + course_id);
   //   return new Promise((resolve, reject) => {
@@ -456,44 +444,66 @@ export default {
       dispatch('FETCH_COURSE_PURCHASED')
     }
   },
+
   PULL_USER_DATA ({state, commit}, user_id) {
-    axios.get('http://' + state.currentIP + '/api/user/' + user_id)
-    .then (res => {
-      let result = res.data
-      commit('addUser_data', result)
-    })
+    let isCheck = false
+    state.user.user_data.find(u => user_id == user_id ? isCheck = true : '')
+    if (isCheck == false) {
+      axios.get('http://' + state.currentIP + '/api/user/' + user_id)
+      .then (res => {
+        let result = res.data
+        commit('addUser_data', result)
+      })
+    }
   },
   PULL_USER_OWNER ({state, commit}, user_id) {
-    axios.get('http://' + state.currentIP + '/api/get_all_userowner/' + user_id)
-    .then (res => {
-      let result = res.data
-      commit('addUser_owner', result)
-    })
+    let isCheck = false
+    state.user.user_owner.find(u => user_id == user_id ? isCheck = true : '')
+    if (isCheck == false) {
+      axios.get('http://' + state.currentIP + '/api/get_all_userowner/' + user_id)
+      .then (res => {
+        let result = res.data
+        commit('addUser_owner', result)
+      })
+    }
   },
   PULL_USER_STUDENT ({state, commit}, user_id) {
-    axios.get('http://' + state.currentIP + '/api/get_all_my_user/' + user_id)
-    .then (res => {
-      let result = res.data
-      result[0].user_id = user_id
-      commit('addUser_student', result)
-    })
+    let isCheck = false
+    state.user.user_student.find(u => user_id == user_id ? isCheck = true : '')
+    if (isCheck == false) {
+      axios.get('http://' + state.currentIP + '/api/get_all_my_user/' + user_id)
+      .then (res => {
+        let result = res.data
+        result[0].user_id = user_id
+        commit('addUser_student', result)
+      })
+    }
   },
   PULL_USER_REVIEW ({state, commit}, user_id) {
-    axios.get('http://' + state.currentIP + '/api/get_all_my_review/' + user_id)
-    .then (res => {
-      let result = res.data
-      result[0].user_id = user_id
-      commit('addUser_review', result)
-    })
+    let isCheck = false
+    state.user.user_review.find(u => user_id == user_id ? isCheck = true : '')
+    if (isCheck == false) {
+      axios.get('http://' + state.currentIP + '/api/get_all_my_review/' + user_id)
+      .then (res => {
+        let result = res.data
+        result[0].user_id = user_id
+        commit('addUser_review', result)
+      })
+    }
   },
   PULL_USER_PURCHASE ({state, commit}, user_id) {
-    axios.get('http://' + state.currentIP + '/api/get_all_userpurchased/' + user_id)
-    .then (res => {
-      let result = res.data
-      result.map(r => r.user_id = user_id)
-      commit('addUser_purchase', result)
-    })
+    let isCheck = false
+    state.user.user_purchase.find(u => user_id == user_id ? isCheck = true : '')
+    if (isCheck == false) {
+      axios.get('http://' + state.currentIP + '/api/get_all_userpurchased/' + user_id)
+      .then (res => {
+        let result = res.data
+        result.map(r => r.user_id = user_id)
+        commit('addUser_purchase', result)
+      })
+    }
   },
+
   UPDATE_COURSE ({state, commit}, data) {
     axios.post('http://' + state.currentIP + '/api/updatecourse/', data)
     console.log('UPDATE_COURSE');

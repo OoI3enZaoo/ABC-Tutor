@@ -67,7 +67,7 @@
 
                        <v-flex lg3 xs12 text-xs-right>
                          <v-card-text>
-                           <span class="grey--text">อัพเดทล่าสุด {{data.lastUpdate | moment('from','now',true)}} ที่ผ่านมา</span><br>
+                           <!-- <span class="grey--text">อัพเดทล่าสุด {{data.lastUpdate | moment('from','now',true)}} ที่ผ่านมา</span><br> -->
                            <br>
                              <v-btn class="mt-2" primary @click.native="linkTo(data.course_id)">ดูรายละเอียดคอร์ส</v-btn><br><br>
                            </v-card-text>

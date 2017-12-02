@@ -1,12 +1,20 @@
 <template>
   <div>
-    <parallax src="http://abcworldwidestone.com/material-portfolio/wp-content/uploads/2014/10/Belgium-Black-Polished-2cm-Lot-3071-Close-up.jpg" height="200">
-      <v-layout>
-        <v-flex sm3 xs6>
+    <parallax :src="$store.state.background" height="230">
+      <v-layout row wrap>
+        <v-flex md3 sm6 xs12>
+          <div class="text-xs-center ">
             <img :src="courseData.cover" height="150">
+
+          </div>
         </v-flex>
-        <v-flex sm9 xs6>
-          <h4 class="white--text" ><b>{{courseData.subject}} ({{courseData.code}})</b></h4>
+        <v-flex md9 sm6 xs12>
+          <div class="mt-5 hidden-xs-only">
+            <h4 class="white--text" ><b>{{courseData.subject}} ({{courseData.code}})</b></h4>
+          </div>
+          <div class="hidden-sm-and-up text-xs-center">
+            <h4 class="white--text" ><b>{{courseData.subject}} ({{courseData.code}})</b></h4>
+          </div>
         </v-flex>
       </v-layout>
     </parallax>

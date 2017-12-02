@@ -306,8 +306,8 @@ export default {
     startStream (val) {
       this.liveStatus = true
       getScreenId( (error, sourceId, screen_constraints) => {
-    // error    == null || 'permission-denied' || 'not-installed' || 'installed-disabled' || 'not-chrome'
-    // sourceId == null || 'string' || 'firefox'
+    error    == null || 'permission-denied' || 'not-installed' || 'installed-disabled' || 'not-chrome'
+    sourceId == null || 'string' || 'firefox'
     console.log('getScreenId');
     if(sourceId && sourceId != 'firefox') {
         screen_constraints = {
@@ -470,7 +470,7 @@ export default {
       return !!this.getMedia()
     },
     getMedia () {
-      return (navigator.getUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia)
+      return (navigator.getUserMedia || navigator.webkitGetUserMedia  || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia)
     },
     requestMedia () {
       navigator.getUserMedia = this.getMedia()

@@ -1,8 +1,9 @@
 <template>
   <div>
       <parallax height="200" :src= "$store.state.background">
-      <h4 class="mt-5 white--text" style="display:inline; ">หน้าจัดการคอร์ส</h4>
+      <h4 class="mt-5 white--text" style="display:inline; ">หน้าจัดการคอร์ส</h4>      
       </parallax>
+
       <v-tabs light>
         <hr>
        <v-tabs-bar class="white">
@@ -19,6 +20,7 @@
          <!-- คอร์สทั้งหมด -->
          <v-tabs-content id='tab-0'>
             <coursePurchased></coursePurchased>
+
          </v-tabs-content>
 
          <!-- รายการโปรด -->

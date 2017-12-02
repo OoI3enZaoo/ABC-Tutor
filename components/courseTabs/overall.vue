@@ -56,11 +56,11 @@
 <br><br><v-divider></v-divider><br><br>
 
   <p class="headline">ผู้สอน</p>
-  <v-layout>
-    <v-flex lg2 md3 sm5 xs7>
+  <v-layout row wrap>
+    <v-flex lg2 md3 sm5 xs12 text-xs-center>
         <img :src="course.user_img" height="100">
     </v-flex>
-    <v-flex lg10 md9 sm7 xs5>
+    <v-flex lg10 md9 sm7 xs12>
         <router-link :to="'/user/' + course.user_id" tag="span" style="cursor:pointer;"><h6 class="blue--text">{{course.fname}} {{course.lname}}</h6></router-link>
         <div>
           <v-icon>fa-google-plus-square</v-icon>&nbsp;&nbsp;&nbsp;<a target="_blank" :href="'https://mail.google.com/mail/?view=cm&fs=1&to=' + course.email">{{course.email}}</a>

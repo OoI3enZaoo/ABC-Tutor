@@ -1,19 +1,22 @@
 <template>
       <v-flex xs6 sm4 md3>
-        <nuxt-link :to="'/course/' + favorite.course_id " tag="span" style="cursor:pointer;">
-          <v-card>
-            <v-card-media :src="favorite.cover" height="150"></v-card-media>
-            <v-card-text>
-              <p>{{favorite.subject}} ({{favorite.code}})</p>
-              <span class="grey--text">{{favorite.fname}} {{favorite.lname}}</span><br>
-              <RatingInCard :courseId= "favorite.course_id"></RatingInCard>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <h6 class="primary--text">{{favorite.price}}.-</h6>
-            </v-card-actions>
-          </v-card>
-        </nuxt-link>
+        <v-tooltip right>
+          <nuxt-link :to="'/course/' + favorite.course_id " tag="span" style="cursor:pointer;" slot="activator">
+            <v-card>
+              <v-card-media :src="favorite.cover" height="150"></v-card-media>
+              <v-card-text>
+                <p>{{favorite.subject}} ({{favorite.code}})</p>
+                <span class="grey--text">{{favorite.fname}} {{favorite.lname}}</span><br>
+                <RatingInCard :courseId= "favorite.course_id"></RatingInCard>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <h6 class="primary--text">{{favorite.price}}.-</h6>
+              </v-card-actions>
+            </v-card>
+          </nuxt-link>
+          <span>{{favorite.subject}}</span>
+        </v-tooltip>
       </v-flex>
 </template>
 <script>

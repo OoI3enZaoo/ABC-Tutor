@@ -60,7 +60,7 @@ export default () => {
     },
     plugins: [
       createPersistedState({
-        paths: ['profile', 'isLogin', 'projectName', 'statusNotification', 'background', 'branchs']
+        paths: ['profile', 'isLogin']
       })
     ],
     getters,

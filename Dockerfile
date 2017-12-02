@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:alpine
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 # Install app dependencies
 COPY package.json /usr/src/app/
 Run cd /usr/src/app/
+Run npm cache clean -f
 Run npm install
 Run node --version
 

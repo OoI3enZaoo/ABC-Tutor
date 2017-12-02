@@ -7,7 +7,10 @@
       <template v-else>
         <v-container grid-list-lg>
             <div class="text-xs-right mb-2">
-              <v-btn primary nuxt to = '/tutor/create'>สร้างคอร์ส</v-btn>
+              <v-tooltip top>
+                <v-btn primary nuxt to = '/tutor/create' slot="activator">สร้างคอร์ส</v-btn>
+                <span>มีคอร์สเป็นของตนเอง</span>
+              </v-tooltip>
             </div>
             <v-layout row wrap>
                 <template v-for="data in courseCreate">
