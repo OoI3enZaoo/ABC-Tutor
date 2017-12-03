@@ -98,14 +98,23 @@ export default {
       }
   },
   addCourseQA: (state, data) => state.courseDetail.courseQA.unshift(...data),
-  setCourseQA: (state, data) =>
-    state.courseDetail.courseQA.push(...data),
+  setCourseQA: (state, data) => {
+    data.map(d => d.reply = [])
+    state.courseDetail.courseQA.push(...data)
+  },
+  setCourseQAComment: (state, payload) => {
+    state.courseDetail.courseQA.map(res => res.q_id == payload.q_id ? res.reply = payload.comment : '')
+  },
   addCourseQAComment: (state, data) => {
     state.courseDetail.courseQA.map(res => res.q_id == data.q_id ? res.reply.push(data) : '')
   },
   addCourseChat: (state, data) => state.courseDetail.courseChat.push(...data),
   setCourseAnno: (state, data) => {
+    data.map(d => [d.reply = [], d.showReply = false])
     state.courseDetail.courseAnno.push(...data)
+  },
+  setCourseAnnoComment: (state, payload) => {
+    state.courseDetail.courseAnno.map(res => res.annou_id == payload.annou_id ? res.reply = payload.comment : '')
   },
   addCourseAnno: (state, data) => state.courseDetail.courseAnno.unshift(...data),
   addCourseAnnoComment: (state, data) => {
@@ -152,7 +161,7 @@ export default {
   CHECK_IS_TUTOR: (state, course_id) => state.courseCreate.map(c => {
     if (c == course_id) {
       state.tutor.isTutor = true
-      state.tutor.menuItems.push({title: 'หน้าจัดการ'})
+      state.tutor.menuItems.push({title: 'การจัดการ'})
     }
   }),
   SET_DEFAULT_TUTOR: (state) => {

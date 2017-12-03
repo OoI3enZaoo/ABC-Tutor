@@ -201,12 +201,16 @@ export default {
       await axios.get('http://' + state.currentIP + '/api/get_course_q/' + course_id)
       .then(res => {
         qa = res.data
+        commit('setCourseQA', res.data)
       })
       await qa.map((q) => {
         axios.get('http://' + state.currentIP + '/api/get_course_q_comment/' + q.q_id)
         .then(res => {
-          let {fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts} = q
-          commit('setCourseQA', [{fname,lname,user_img,q_id,course_id,user_id,q_title,q_des,q_ts,reply:res.data}])
+          let result = {
+            q_id: q.q_id,
+            comment: res.data
+          }
+          commit('setCourseQAComment', result)
         })
       })
     }
@@ -251,51 +255,20 @@ export default {
       await axios.get('http://' + state.currentIP + '/api/get_course_announce/' + course_id)
       .then(res => {
         qa = res.data
+        commit('setCourseAnno', res.data)
       })
       await qa.map((q)  => {
         axios.get('http://' + state.currentIP + '/api/get_course_announce_comment/' + q.annou_id)
         .then(res => {
-          let {fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts} = q
-          commit('setCourseAnno', [{fname,lname,user_img,annou_id,course_id,user_id,annou_text,annou_ts,reply:res.data,showReply:false}])
+            let result = {
+              annou_id: q.annou_id,
+              comment: res.data
+            }
+            commit('setCourseAnnoComment', result)
         })
       })
     }
-    // console.log('PULL_COURSE_ANNO');
-    // dispatch('getCourseAnnounce', course_id)
   },
-  // async getCourseAnnounce ({state, dispatch, commit}, course_id) {
-  //   console.log('getCourseAnnounce');
-  //   let isCheck = false
-  //   await state.courseDetail.courseAnno.find(res => res.course_id == course_id ? isCheck = true : '')
-  //   if (isCheck == false) {
-  //     const anno = await dispatch('courseAnno', course_id)
-  //     await anno.map(async (q) => {
-  //       const comment = await dispatch('courseAnnoComment', q.annou_id)
-  //       console.log(q)
-  //       console.log(comment)
-  //       let announce = q
-  //       announce.reply = comment
-  //       commit('setCourseAnno', [announce])
-  //     })
-  //   }
-  // },
-  // courseAnno ({state}, course_id) {
-  //   console.log('course_ID <<< : ' + course_id);
-  //   return new Promise((resolve, reject) => {
-  //     axios.get('http://' + state.currentIP + '/api/get_course_announce/' + course_id)
-  //     .then(res => {
-  //       resolve(res.data)
-  //     })
-  //   })
-  // },
-  // courseAnnoComment ({state}, annou_id) {
-  //   return new Promise((resolve,reject) => {
-  //       axios.get('http://' + state.currentIP + '/api/get_course_announce_comment/' + annou_id)
-  //       .then(res => {
-  //         resolve (res.data)
-  //       })
-  //   })
-  // },
   ADD_COURSE_ANNO ({commit, state}, payload) {
     axios.post('http://' + state.currentIP + '/api/insertcourse_announce/', payload)
     .then (res=> {

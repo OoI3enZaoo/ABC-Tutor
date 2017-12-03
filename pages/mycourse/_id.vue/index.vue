@@ -78,8 +78,8 @@ import chat from '../../../components/courseTabs/chat.vue'
 import manage from '../../../components/courseTabs/manage.vue'
 export default {
   async asyncData ({ store, route }) {
-    await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
     await store.commit('CHECK_IS_TUTOR', route.params.id)
+    await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
     // await store.dispatch('PULL_USER_ONLINE', route.params.id)
   },
   data () {
