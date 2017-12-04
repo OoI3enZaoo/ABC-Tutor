@@ -406,16 +406,24 @@ export default {
   // ADD_NOTIFICATION ({commit}, payload) {
   //   axios.post('http://' + state.currentIP + '/api/insertnotification', payload)
   // },
-  nuxtClientInit ({state, tate, dispatch}) {
+  nuxtClientInit ({state, commit, dispatch}) {
     if (state.branchs.length == 0) {
       dispatch('PULL_BRANCHS')
     }
-    if (state.isLogin == true) {
-      // dispatch('FETCH_COURSE_REVIEW')
-      // dispatch('FETCH_COURSE_CREATED')
-      // dispatch('FETCH_COURSE_FAVORITE')
-      // dispatch('FETCH_COURSE_PURCHASED')
+    let pathname = window.location.pathname.split('/')[1]
+    let pathvalue = window.location.pathname.split('/')[2]
+    if (pathname == 'mycourse') {
+      if (state.courseCreate == '') {
+        dispatch('FETCH_COURSE_CREATED')
+      }
+      commit('CHECK_IS_TUTOR', pathvalue)
     }
+    // if (state.isLogin == true) {
+    //   dispatch('FETCH_COURSE_REVIEW')
+    //   dispatch('FETCH_COURSE_CREATED')
+    //   dispatch('FETCH_COURSE_FAVORITE')
+    //   dispatch('FETCH_COURSE_PURCHASED')
+    // }
   },
 
   PULL_USER_DATA ({state, commit}, user_id) {

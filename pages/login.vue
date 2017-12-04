@@ -3,8 +3,8 @@
     <br><br>
       <v-container>
         <v-layout>
-          <v-flex xs12 sm6 md4 lg4 offset-xs6 offset-sm3 offset-md4 offset-lg4>
-            <v-card >
+          <v-flex xs12 sm8 md7 lg5  offset-sm3 offset-md3 offset-lg4>
+            <v-card>
               <v-card-text>
                 <h6 class="red--text">เข้าสู่ระบบ</h6>
                 <p style="display:inline;">ยังไม่ได้ลงทะเบียนกับเรา?</p>&nbsp;<nuxt-link to="/register">ลงทะเบียน</nuxt-link><br><br>

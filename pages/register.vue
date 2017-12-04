@@ -3,7 +3,7 @@
     <br><br>
       <v-container>
         <v-layout>
-          <v-flex xs12 sm6 md4 lg4 offset-xs6 offset-sm3 offset-md4 offset-lg4>
+          <v-flex xs12 sm8 md7 lg5  offset-sm3 offset-md3 offset-lg4>
             <v-card >
               <v-card-text>
                 <h6 class="red--text">ลงทะเบียน</h6>

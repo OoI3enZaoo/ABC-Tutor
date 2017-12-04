@@ -102,7 +102,6 @@ export default {
     this.active = location.hash.substring(1)
     console.log('location.hash.substring(1):' + this.active );
 
-
   },
   watch: {
     active: function (val) {

@@ -26,9 +26,9 @@
     <template v-else>
       <template v-if="!dataOfQuestion">
         <v-container grid-list-lg>
-          <template v-if="!isTutor">
+          <template>
             <div class="text-xs-right mb-2">
-              <create title="ตั้งคำถาม" type="1"  @result="dataFromQuill"></create>
+              <create v-if="!isTutor" title="ตั้งคำถาม" type="1"  @result="dataFromQuill"></create>
             </div>
           </template>
           <v-card v-for="(data,index) in $store.getters.COURSE_QA(this.$route.params.id)" :key="index">
@@ -54,7 +54,6 @@
                 </v-list>
               </v-card>
             </v-container>
-
           </template>
           <template v-else>
             <v-container grid-list-lg>

@@ -39,7 +39,6 @@
                 </v-card>
               </v-flex>
             </v-layout>
-
             </template>
             <template v-else>
               <v-layout row wrap>
@@ -52,7 +51,7 @@
                           <h6 style="display:inline;">{{title}}</h6>
                           <span>{{description}}</span>
                         </v-flex>
-                        <v-flex xs6 text-xs-right><h6 style="display:inline;">0 ที่รับชมอยู่ในขณะนี้</h6></v-flex>
+                        <!-- <v-flex xs6 text-xs-right><h6 style="display:inline;">0 ที่รับชมอยู่ในขณะนี้</h6></v-flex> -->
                       </v-layout>
                     </v-card-text>
                   </v-card>
@@ -126,7 +125,7 @@
                          <h6 style="display:inline;">{{title}}</h6>
                          <span>{{description}}</span>
                        </v-flex>
-                       <v-flex xs6 text-xs-right><h6 style="display:inline;">0 ที่รับชมอยู่ในขณะนี้</h6></v-flex>
+                       <!-- <v-flex xs6 text-xs-right><h6 style="display:inline;">0 ที่รับชมอยู่ในขณะนี้</h6></v-flex> -->
                      </v-layout>
                    </v-card-text>
                  </v-card>
@@ -185,6 +184,8 @@ export default {
   mounted () {
     this.$options.sockets.live_tutor = (data) => {
       this.videoLive = data.message
+      this.title = data.title
+      this.description = data.description
       console.log('live_tutor')
       if (this.liveStatus === false) {
         this.liveStatus = true
@@ -360,9 +361,10 @@ export default {
                   this.interval = setInterval(() => {
                     let data = {
                       course_id: this.$route.params.id,
-                      message: this.capture()
+                      message: this.capture(),
+                      title: this.title,
+                      description: this.description
                     }
-                    console.log(data)
                     this.$socket.emit('live_tutor', data)
                   }, 20)
                   let des

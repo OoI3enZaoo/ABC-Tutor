@@ -65,10 +65,7 @@
           <br>
           <br> -->
 
-          <div class="text-xs-right">
-            <v-btn primary outline>คืนค่าเดิม</v-btn>
-            <v-btn primary>บันทึก</v-btn>
-          </div>
+          
         </v-flex>
         <v-flex xs2>
           <userPurchase></userPurchase>

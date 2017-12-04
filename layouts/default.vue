@@ -148,7 +148,7 @@
         </v-card-actions>
         <hr>
         <v-card-actions>
-          <v-btn flat dark round>ช่วยเหลือ</v-btn>
+          <!-- <v-btn flat dark round>ช่วยเหลือ</v-btn> -->
           <v-btn flat dark round @click.native="$router.push('/aboutus')">เกี่ยวกับเรา</v-btn>
         </v-card-actions>
       </v-card-text>
