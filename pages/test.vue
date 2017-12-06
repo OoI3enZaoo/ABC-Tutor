@@ -1,23 +1,50 @@
 <template>
   <div>
-    <v-btn color="primary" @click.native="startRecordingg">Start Recording</v-btn>
-    <button id="btn-stop-recording" disabled>Stop Recording</button><br>
-    <video width="320" height="240" controls autoplay></video>
+    <v-container>
+      <h3>My Peer ID: {{mypeerid}}</h3>
+      <br>
+      <v-layout>
+        <v-flex xs4>
+            <v-text-field label="anotherid" v-model="anotherid"></v-text-field>
+        </v-flex>
+        <v-flex xs4>
+          <v-btn @click.native="connection">Connect</v-btn>
+        </v-flex>
+      </v-layout>
+
+    </v-container>
   </div>
 </template>
 <script>
-// import RecordRTC from 'recordrtc
-// import getScreenId from 'get-screen-id'
+import Peer from 'peerjs-client'
+let peer;
+
 export default {
-  created() {
-    //do something after creating vue instance
-    let a = []
-    let str = "hello my name is ben"
-    a[0] = {data1: str, 'data2': 'hello2'}
-
-    console.log(a[0].data1)
-
-
+  mounted () {
+    peer  = new Peer({key: 'yxjhqfcelv7vi'});
+    setTimeout(()=> {
+      this.mypeerid = peer.id
+      console.log('peer: ' + peer.id);
+    },3000)
+    peer.on('connection', function(conn) {
+      conn.on('data', function(data){
+        console.log(data);
+      });
+    });
+  },
+  data () {
+    return {
+      anotherid: '2j32hk3h4k',
+      mypeerid: null
+    }
+  },
+  methods: {
+    connection() {
+      var conn = peer.connect(this.anotherid)
+      conn.on('open', function () {
+        conn.send('hi!');
+      })
+    }
   }
 }
 </script>

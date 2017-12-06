@@ -23,6 +23,7 @@ module.exports = {
       { src: 'https://webrtc.github.io/adapter/adapter-latest.js' },
       { src: 'https://cdn.WebRTC-Experiment.com/getScreenId.js' },
       { src: 'https://cdn.omise.co/omise.js' }
+      // { src: 'http://cdn.peerjs.com/0.3/peer.js' }
     ]
   },
   plugins: [

@@ -1,6 +1,9 @@
 <template>
 <div>
   <v-container grid-list-lg>
+    peerId: {{clientPeerId}}
+    peerId: {{tutorPeerId}}
+    <video id="videoTest" ref="videoTest"autoplay ></video>
     <template v-if="isTutor">
           <template v-if="!liveStatus">
 
@@ -44,7 +47,8 @@
               <v-layout row wrap>
                 <v-flex lg8 md12 sm12 xs12>
                   <v-card>
-                      <video ref="video"  :src="this.source" autoplay width ="100%" style="max-height:497px;"></video>
+                    12123
+                      <video ref="video"  :src="source" autoplay width ="100%" style="max-height:497px;"></video>
                     <v-card-text>
                       <v-layout>
                         <v-flex xs6>
@@ -92,6 +96,7 @@
 
 
     <template v-else>
+      live status = {{liveStatus}}
          <template v-if="!liveStatus">
 
            <v-layout>
@@ -118,7 +123,10 @@
              <v-layout row wrap>
                <v-flex lg8 md12 sm12 xs12>
                  <v-card>
-                   <v-card-media :src="videoLive" height="500"></v-card-media>
+                   <!-- <v-card-media :src="videoLive" height="500"></v-card-media> -->
+                   <!-- <video :src="videoLive" autoplay></video> -->
+                   dfdf
+                   <video :src="videoLive" autoplay  style="max-height:497px;"></video>
                    <v-card-text>
                      <v-layout>
                        <v-flex xs6>
@@ -177,16 +185,58 @@ const moment = require('moment')
 Vue.use(require('vue-moment'), {
     moment
 })
+import Peer from 'peerjs-client'
+let peer
 export default {
   components: {
     chat
   },
+  created() {
+    //do something after creating vue instance
+    this.tutorPeerId = 'a2kj2a209a027d'
+    this.clientPeerId = 'efa2k3902zka'
+  },
   mounted () {
+    console.log('isTutor' + this.isTutor)
+    if (this.isTutor === true) {
+      peer  = new Peer(this.tutorPeerId, {key: 'yxjhqfcelv7vi'});
+      peer.on('connection', function(conn) {
+        conn.on('data', function(data){
+          console.log('tutor: ' + data);
+        })
+      })
+    } else {
+      peer  = new Peer(this.clientPeerId, {key: 'yxjhqfcelv7vi'});
+      peer.on('connection', function(conn) {
+        conn.on('data', function(data){
+          this.liveStatus = true
+          console.log('client2: ' + data);
+        })
+      })
+      peer.on('call', function (call) {
+        navigator.getUserMedia({video: true, audio: true}, function(stream) {
+          call.answer(stream)
+          call.on('stream', function(remoteStream) {
+            console.log('stream')
+            console.log(remoteStream)
+            console.log(window.URL.createObjectURL(remoteStream))
+            document.getElementById('videoTest').src = window.URL.createObjectURL(remoteStream)
+          })
+        }, function(err) {
+          console.log('Failed to get local stream' ,err);
+        })
+      })
+    }
     this.$options.sockets.live_tutor = (data) => {
-      this.videoLive = data.message
-      this.title = data.title
-      this.description = data.description
-      console.log('live_tutor')
+      // this.videoLive = data.message
+      // this.source = data.message
+      // console.log(data)
+      // this.$refs.videoLivenna.src = data.message2
+
+      // this.title = data.title
+      // this.description = data.description
+      // console.log(data.video)
+      // this.$refs.videoTest.src = data.video
       if (this.liveStatus === false) {
         this.liveStatus = true
       }
@@ -223,11 +273,9 @@ export default {
       this.userLive[data.camera].userName = data.name
       if (this.isTutor == false) {
         console.log('not tutor')
-        this.requestMedia()
+        // this.requestMedia()
         if (navigator.getUserMedia) {
-          navigator.getUserMedia({
-            audio: true, video: true
-          }, stream => {
+          navigator.getUserMedia( stream => {
             this.userLive[data.camera].source = window.URL.createObjectURL(stream)
             this.stream = stream
             this.$emit('started', stream)
@@ -299,6 +347,9 @@ export default {
     }
   },
   methods: {
+    handleDataAvailable () {
+      console.log('dfdf');
+    },
     showSnackbar (context = 'info', text) {
       this.snackbar.context = context
       this.snackbar.text = text
@@ -331,7 +382,7 @@ export default {
         }
     }
 
-    this.requestMedia()
+    // this.requestMedia()
       if (navigator.getUserMedia) {
       navigator.getUserMedia(screen_constraints, stream => {
         navigator.getUserMedia({
@@ -345,28 +396,43 @@ export default {
       			stream2.top = stream.height - stream2.height;
       			stream2.left = stream.width - stream2.width;
 
+
+
             recorder = RecordRTC([stream, stream2], {
                 type: 'video',
                 recorderType: MediaStreamRecorder,
-                // mimeType: 'video/webm\;codecs=vp9',
                 mineType: {
                   audio: 'audio/wav',  // audio/ogg or audio/webm or audio/wav
                   video: 'video/webm', // video/webm or video/vp8
                   gif:   'image/gif'
                 },
                 previewStream: mystream => {
-                   console.log(mystream)
+                   // console.log(mystream)
+                  let captureStream = this.$refs.video.captureStream()
                   this.source = window.URL.createObjectURL(mystream)
+                  console.log(this.source)
                   this.stream = mystream
+                  var conn = peer.connect(this.clientPeerId)
+                  conn.on('open', function () {
+                    conn.send('hieeeex!');
+                  })
+                  let call = peer.call(this.clientPeerId, mystream)
+                  call.on('stream', function(stream) {
+                    console.log('stream na ' + stream)
+                  })
+                  let a = 1
                   this.interval = setInterval(() => {
                     let data = {
                       course_id: this.$route.params.id,
-                      message: this.capture(),
+                      message: mystream,
+                      message2: mystream,
                       title: this.title,
                       description: this.description
                     }
-                    this.$socket.emit('live_tutor', data)
-                  }, 20)
+                    a == 1 ? console.log(mystream) : ''
+                    a++
+                    // this.$socket.emit('live_tutor', mystream)
+                  }, 200)
                   let des
                   if (this.course.code !== '') {
                     des = 'มีการไลฟ์จากติวเตอร์ (' + this.course.code + ')'
@@ -396,13 +462,13 @@ export default {
   }
 })
     },
-    async stopStream (val) {
+    stopStream (val) {
       console.log('stopStream');
       this.liveStatus = false
       this.stream.getVideoTracks()[0].stop()
       let formData = new FormData();
       let fileName = this.title + '.webm'
-    recorder.stopRecording(() => {
+      recorder.stopRecording(() => {
         let blob = recorder.getBlob()
         formData.append('video', blob, fileName)
       })
@@ -472,13 +538,13 @@ export default {
       return !!this.getMedia()
     },
     getMedia () {
-      return (navigator.getUserMedia || navigator.webkitGetUserMedia  || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia)
+      return (navigator.getUserMedia    || navigator.msGetUserMedia || navigator.oGetUserMedia)
     },
     requestMedia () {
-      navigator.getUserMedia = this.getMedia()
+      // navigator.getUserMedia = this.getMedia()
     },
     capture (cam) {
-      console.log('capture')
+      // console.log('capture')
       if (!this.hasMedia()) {
         this.$emit('notsupported')
         return null
@@ -486,7 +552,7 @@ export default {
       return this.getCanvas(cam).toDataURL('image/jpeg')
     },
     getCanvas (cam = null) {
-      console.log('getCanvas')
+      // console.log('getCanvas')
       let video
       if (cam === 1) {
         video = this.$refs.cam1[0]
@@ -509,7 +575,7 @@ export default {
       this.ctx = canvas.getContext('2d')
       this.canvas = canvas
       this.ctx.drawImage(video, 0, 0, this.canvas.width, this.canvas.height)
-      console.log(canvas)
+      // console.log(canvas)
       return canvas
     },
     getMessage (data) {
@@ -542,7 +608,9 @@ export default {
         time: 5000
       },
       dialog: false,
-      liveIcon: require('../../../static/live.png')
+      liveIcon: require('../../../static/live.png'),
+      clientPeerId: '',
+      tutorPeerId: ''
     }
   },
   computed: {
