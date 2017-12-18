@@ -8,7 +8,7 @@ export default {
         commit('addBranchs', result)
       })
   },
-  async PULL_COURSE_FROM_BRANCH_ID ({state, commit}, branch_id) {
+  async PULL_COURSE_FROM_BRANCH_ID ({state, commit, dispatch}, branch_id) {
     let isCheck = false
     state.checkPullCourse.find(f => f == branch_id ? isCheck = true : '')
     if (isCheck == false) {
@@ -26,22 +26,31 @@ export default {
       })
     }
   },
-  async PULL_COURSE_FROM_COURSE_ID ({commit, state, dispatch}, courseId) {
+  async PULL_COURSE_FROM_COURSE_ID ({commit, state, dispatch, route}, courseId) {
     let isCheck = false
-    state.course.find(f => f.course_id == courseId ? isCheck = true : '')
-    if(isCheck == false) {
-      dispatch('PULL_COURSE_REVIEW', courseId)
-      await axios.get('http://' + state.currentIP + '/api/course/' + courseId)
-      .then (res => {
-        let result = res.data
-        result.map(rs => {
-          let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
-          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
-          let inStore = false
-          state.courseVote.find(f => f.course_id == rs.course_id  ? inStore = true : '')
-          rs.avg != 0 && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
+    let haveCourse = false
+    state.coursePurchased.find(cp => cp == courseId ? haveCourse = true : '')
+    state.courseCreate.find(cp => cp == courseId ? haveCourse = true : '')
+    if(haveCourse == true) {
+      state.course.find(f => f.course_id == courseId ? isCheck = true : '')
+      if(isCheck == false) {
+        dispatch('PULL_COURSE_REVIEW', courseId)
+        new Vue().$socket.emit('subscribe', content_id)
+        await axios.get('http://' + state.currentIP + '/api/course/' + courseId)
+        .then (res => {
+          let result = res.data
+          result.map(rs => {
+            let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
+            commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
+            let inStore = false
+            state.courseVote.find(f => f.course_id == rs.course_id  ? inStore = true : '')
+            rs.avg != 0 && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
+          })
+          return true
         })
-      })
+      }
+    } else {
+      return false
     }
   },
   async PUSH_COURSE ({state, commit}, data) {
@@ -156,20 +165,18 @@ export default {
     commit('addCheckReview', [payload.course_id])
     axios.post('http://' + state.currentIP + '/api/insertreview', payload)
   },
-  PULL_COURSE_REVIEW ({commit, state}, courseId) {
+  PULL_COURSE_REVIEW ({commit, state, getters}, courseId) {
     let isCheck = false
-    // console.log('PULL_COURSE_REVIEW: ' + courseId);
     state.courseReview.find(cr => cr.course_id == courseId ? isCheck = true : '')
-    if (isCheck == false) {
-      axios.get('http://' + state.currentIP + '/api/get_review_course_order_ts/' + courseId)
-      .then (res => {
-        let result = res.data
-        commit('addCourseReview', result)
-      })
-    } else {
-
-      commit('addCourseReview', result)
-    }
+    if (isCheck == false) {      
+        axios.get('http://' + state.currentIP + '/api/get_review_course_order_ts/' + courseId)
+        .then (res => {
+          let result = res.data
+          if (result !== undefined) {
+            commit('addCourseReview', result)
+          }
+        })
+      }
   },
   async PULL_COURSE_CONTENT ({commit, state}, course_id) {
     let content_id
@@ -418,12 +425,12 @@ export default {
       }
       commit('CHECK_IS_TUTOR', pathvalue)
     }
-    // if (state.isLogin == true) {
-    //   dispatch('FETCH_COURSE_REVIEW')
-    //   dispatch('FETCH_COURSE_CREATED')
-    //   dispatch('FETCH_COURSE_FAVORITE')
-    //   dispatch('FETCH_COURSE_PURCHASED')
-    // }
+    if (state.isLogin == true) {
+      dispatch('FETCH_COURSE_REVIEW')
+      dispatch('FETCH_COURSE_CREATED')
+      dispatch('FETCH_COURSE_FAVORITE')
+      dispatch('FETCH_COURSE_PURCHASED')
+    }
   },
 
   PULL_USER_DATA ({state, commit}, user_id) {

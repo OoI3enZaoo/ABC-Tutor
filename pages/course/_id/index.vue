@@ -159,6 +159,14 @@ export default {
     parallax,
     userPurchase
   },
+  created () {
+    console.log('coursefromid')
+    console.log(this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0])
+    console.log('coursefrompopular')
+    console.log(this.$store.getters.COURSE_POPULAR_INDEX_FROM_ID(this.$route.params.id)[0])
+    console.log('course')
+    console.log(this.course)
+  },
   mounted () {
     this.$options.sockets.purchase = (data) => {
       console.log('data: ' + data)
@@ -170,7 +178,7 @@ export default {
       this.$socket.emit('course_user_purchased', data)
       this.$socket.emit('subscribe', data.course_id)
     }
-    if (!this.checkCoursePurchase && !this.checkCourseCreate) {
+    if (!this.checkCoursePurchase && ! this.checkCourseCreate) {
       OmiseCard.configure({
         publicKey:        'pkey_test_5a1ks8kiuxwic3f4bre',
         amount:           this.course.price + '00',
@@ -205,7 +213,7 @@ export default {
   },
   computed: {
     course () {
-      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
+      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0] == undefined ? this.$store.getters.COURSE_POPULAR_INDEX_FROM_ID(this.$route.params.id)[0] : this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
     },
     checkCourseFavorite () {
       return this.$store.getters.COURSE_FAVORITE(this.$route.params.id)[0]

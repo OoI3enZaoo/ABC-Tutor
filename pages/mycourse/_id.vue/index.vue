@@ -77,9 +77,15 @@ import videoCourse from '../../../components/courseTabs/courseContent'
 import chat from '../../../components/courseTabs/chat.vue'
 import manage from '../../../components/courseTabs/manage.vue'
 export default {
-  async asyncData ({ store, route }) {
+  async asyncData ({ store, route, redirect}) {
     await store.commit('CHECK_IS_TUTOR', route.params.id)
-    await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
+     const status = await store.dispatch('PULL_COURSE_FROM_COURSE_ID', route.params.id)
+
+     console.log('hellonanananana');
+     console.log(status)
+     if (status == false) {
+        redirect('/')
+     }
     // await store.dispatch('PULL_USER_ONLINE', route.params.id)
   },
   data () {

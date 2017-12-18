@@ -173,31 +173,26 @@
     },
     mounted () {
       // this.$options.sockets.qa = (data) => {
-      //   console.log('qa: ' + JSON.stringify(data))
       //   this.$store.commit('addQA', data)
       // }
       // this.$options.sockets.courseContent = (data) => {
-      //   console.log('courseContent: ' + JSON.stringify(data))
+
       //   this.$store.commit('addCourseContent', data)
       // }
       // this.$options.sockets.chat = (data) => {
-      //   console.log('addChat: ' + JSON.stringify(data))
       //   this.$store.commit('addChat', data)
       // }
       this.$options.sockets.courseContent = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
           this.$store.commit('addCourseContent', data)
-          console.log(data)
         }
       }
       this.$options.sockets.PUSH_COURSE = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('PUSH_COURSE: ' + JSON.stringify(data))
           this.$store.commit('addCourses', [data])
         }
       }
       this.$options.sockets.course_user_purchased = (data) => {
-        console.log('course_user_purchased: ' + JSON.stringify(data))
         if (this.$store.state.profile.user_id != data.user_id) {
           console.log('course_user_purchased: ')
           this.$store.commit('addCourseUserPurchasedSocket', [data])
@@ -205,57 +200,57 @@
       }
       this.$options.sockets.voting = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('voting: ' + JSON.stringify(data))
+
           this.$store.commit('updateCourseVote', data)
         }
       }
       this.$options.sockets.course_review = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('course_review: ' +JSON.stringify(data))
+
           this.$store.commit('addCourseReviewSocket', [data])
         }
       }
       this.$options.sockets.qa = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('qa: ' +JSON.stringify(data))
+
           this.$store.commit('addCourseQA', [data])
         }
       }
       this.$options.sockets.qa_comment = (data) => {
         console.log('qa_comment')
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('qa_comment: ' +JSON.stringify(data))
+
           this.$store.commit('addCourseQAComment', data)
         }
       }
       this.$options.sockets.chat = (data) => {
         console.log('chat')
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('chat: ' +JSON.stringify(data))
+
           this.$store.commit('addCourseChat', [data])
         }
       }
       this.$options.sockets.announcement = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('announcement: ' + JSON.stringify(data))
+
           this.$store.commit('addCourseAnno', [data])
         }
       }
       this.$options.sockets.announcement_comment = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('addCourseAnnoComment: ' + JSON.stringify(data))
+
           this.$store.commit('addCourseAnnoComment', data)
         }
       },
       this.$options.sockets.online = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('addUserOnline: ' + JSON.stringify(data))
+
           this.$store.commit('addUserOnline', [data])
         }
       },
       this.$options.sockets.offline = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('removeUserOnline: ' + JSON.stringify(data))
+
           this.$store.commit('removeUserOnline', data)
         }
       }
@@ -269,7 +264,7 @@
       }
       this.$options.sockets.noti_content = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-          console.log('noti_content: ' + JSON.stringify(data))
+
           this.$store.commit('addNotification', [data])
           this.$store.commit('addNotificationCount')
         }

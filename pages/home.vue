@@ -63,6 +63,7 @@ export default {
   },
   watch: {
     active: function (val) {
+      console.log('val: ' + val)
       location.hash = val
       if (val == 'คอร์สที่ซื้อ') {
         this.$store.dispatch('FETCH_COURSE_REVIEW')

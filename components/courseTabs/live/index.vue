@@ -3,10 +3,8 @@
   <v-container grid-list-lg>
     peerId: {{clientPeerId}}
     peerId: {{tutorPeerId}}
-    <video id="videoTest" ref="videoTest"autoplay ></video>
     <template v-if="isTutor">
           <template v-if="!liveStatus">
-
             <v-layout>
               <v-flex xs12 text-xs-center>
                 <v-card height="400px">
@@ -63,7 +61,7 @@
                 <v-flex lg4 class="hidden-md-and-down">
                     <chat :message = "liveMessage" @getMessage="getMessage"></chat>
                 </v-flex>
-                <template v-for="(data, index) in userLive">
+                <!-- <template v-for="(data, index) in userLive">
                     <v-flex xs3  :key="index">
                       <v-card class="white" height="200px">
                         <template v-if="data.cam === 2">
@@ -88,7 +86,7 @@
                         <v-btn primary @click.native="forceStopCamera(index)">บังคับปิดกล้อง</v-btn>
                       </template>
                     </v-flex>
-                  </template>
+                  </template> -->
                 <v-btn block primary @click.native="stopStream">ปิดการไลฟ์</v-btn>
               </v-layout>
             </template>
@@ -125,8 +123,8 @@
                  <v-card>
                    <!-- <v-card-media :src="videoLive" height="500"></v-card-media> -->
                    <!-- <video :src="videoLive" autoplay></video> -->
-                   dfdf
-                   <video :src="videoLive" autoplay  style="max-height:497px;"></video>
+                   <video id="videoLive"  autoplay width ="100%" style="max-height:497px;"></video>
+                   <!-- <video id="videoTest" ref="videoTest"autoplay ></video> -->
                    <v-card-text>
                      <v-layout>
                        <v-flex xs6>
@@ -141,7 +139,7 @@
                <v-flex lg4 class="hidden-md-and-down">
                    <chat :message = "liveMessage" @getMessage="getMessage"></chat>
                </v-flex>
-               <template v-for="(data, index) in userLive">
+               <!-- <template v-for="(data, index) in userLive">
                    <v-flex xs3  :key="index">
                      <v-card class="white" height="200px">
                        <template v-if="data.cam === 2">
@@ -157,7 +155,7 @@
                        <v-btn primary @click.native="stopCamera(index)">ปิดกล้องตนเอง</v-btn>
                      </template>
                    </v-flex>
-                 </template>
+                 </template> -->
              </v-layout>
            </template>
     </template>
@@ -173,6 +171,7 @@
         {{ snackbar.text }}
         <v-btn dark flat @click.native="snackbar.model = false">ปิด</v-btn>
       </v-snackbar>
+      <v-btn @click.native="test">test</v-btn>
   </v-container>
 </div>
 </template>
@@ -187,40 +186,43 @@ Vue.use(require('vue-moment'), {
 })
 import Peer from 'peerjs-client'
 let peer
+
 export default {
   components: {
     chat
   },
   created() {
     //do something after creating vue instance
-    this.tutorPeerId = 'a2kj2a209a027d'
+    this.tutorPeerId = 'a2kj2a209a027'
     this.clientPeerId = 'efa2k3902zka'
   },
   mounted () {
+
     console.log('isTutor' + this.isTutor)
     if (this.isTutor === true) {
-      peer  = new Peer(this.tutorPeerId, {key: 'yxjhqfcelv7vi'});
+      peer  = new Peer(this.tutorPeerId,{host: '172.104.167.197', port: 4444, path: '/myapp'});
       peer.on('connection', function(conn) {
         conn.on('data', function(data){
           console.log('tutor: ' + data);
         })
       })
     } else {
-      peer  = new Peer(this.clientPeerId, {key: 'yxjhqfcelv7vi'});
+      peer  = new Peer(this.clientPeerId,{host: '172.104.167.197', port: 4444, path: '/myapp'});
       peer.on('connection', function(conn) {
         conn.on('data', function(data){
-          this.liveStatus = true
           console.log('client2: ' + data);
         })
       })
       peer.on('call', function (call) {
-        navigator.getUserMedia({video: true, audio: true}, function(stream) {
+
+        navigator.getUserMedia({video: false, audio: true}, function(stream) {
           call.answer(stream)
           call.on('stream', function(remoteStream) {
             console.log('stream')
             console.log(remoteStream)
             console.log(window.URL.createObjectURL(remoteStream))
-            document.getElementById('videoTest').src = window.URL.createObjectURL(remoteStream)
+            document.getElementById('videoLive').src = window.URL.createObjectURL(remoteStream)
+            // this.videoLive = window.URL.createObjectURL(remoteStream)
           })
         }, function(err) {
           console.log('Failed to get local stream' ,err);
@@ -232,9 +234,8 @@ export default {
       // this.source = data.message
       // console.log(data)
       // this.$refs.videoLivenna.src = data.message2
-
-      // this.title = data.title
-      // this.description = data.description
+      this.title = data.title
+      this.description = data.description
       // console.log(data.video)
       // this.$refs.videoTest.src = data.video
       if (this.liveStatus === false) {
@@ -347,6 +348,10 @@ export default {
     }
   },
   methods: {
+    test () {
+
+      console.log('test')
+    },
     handleDataAvailable () {
       console.log('dfdf');
     },
@@ -408,8 +413,15 @@ export default {
                 },
                 previewStream: mystream => {
                    // console.log(mystream)
+                   let data = {
+                     course_id: this.$route.params.id,
+                     title: this.title,
+                     description: this.description
+                   }
+                 this.$socket.emit('live_tutor', data)
                   let captureStream = this.$refs.video.captureStream()
                   this.source = window.URL.createObjectURL(mystream)
+                  ss(socket).emit('profile-image', window.URL.createObjectURL(mystream), {name: 'ddd'})
                   console.log(this.source)
                   this.stream = mystream
                   var conn = peer.connect(this.clientPeerId)
@@ -417,22 +429,6 @@ export default {
                     conn.send('hieeeex!');
                   })
                   let call = peer.call(this.clientPeerId, mystream)
-                  call.on('stream', function(stream) {
-                    console.log('stream na ' + stream)
-                  })
-                  let a = 1
-                  this.interval = setInterval(() => {
-                    let data = {
-                      course_id: this.$route.params.id,
-                      message: mystream,
-                      message2: mystream,
-                      title: this.title,
-                      description: this.description
-                    }
-                    a == 1 ? console.log(mystream) : ''
-                    a++
-                    // this.$socket.emit('live_tutor', mystream)
-                  }, 200)
                   let des
                   if (this.course.code !== '') {
                     des = 'มีการไลฟ์จากติวเตอร์ (' + this.course.code + ')'

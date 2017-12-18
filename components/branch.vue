@@ -1,7 +1,7 @@
 <template>
     <v-flex xs12 sm6 md4>
       <nuxt-link :to="'/allcourse/' + branchId" tag="span" style="cursor:pointer;">
-        <v-card>
+        <v-card class="elevation-4">
           <v-card-media :src = "img" height="200"></v-card-media>
           <v-card-title>{{text}}</v-card-title>
         </v-card>

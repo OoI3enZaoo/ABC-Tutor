@@ -14,6 +14,11 @@ export default {
       return courseId == item.course_id
     })
   },
+  COURSE_POPULAR_INDEX_FROM_ID (state) {
+    return courseId => state.popularCourseIndex.filter(item => {
+      return courseId == item.course_id
+    })
+  },
   user: (state) => state.user,
   BRANCH_FROM_NAME (state) {
     return name => state.branchs.filter(item => {
