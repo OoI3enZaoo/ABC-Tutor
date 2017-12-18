@@ -54,8 +54,6 @@
        </v-tabs-item>
      </v-tabs-bar>
      <br>
-
-       <!-- ภาพรวม -->
        <v-tabs-content id='วิทยาศาสตร์และเทคโนโลยี'>
          <v-layout row wrap>
              <template v-for="data in branchs">

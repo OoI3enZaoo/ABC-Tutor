@@ -162,8 +162,11 @@ export default {
   created () {
     console.log('coursefromid')
     console.log(this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0])
-    console.log('coursefrompopular')
+    console.log('index popular')
     console.log(this.$store.getters.COURSE_POPULAR_INDEX_FROM_ID(this.$route.params.id)[0])
+    console.log('home popular')
+    console.log(this.$store.getters.COURSE_POPULAR_HOME_FROM_ID(this.$route.params.id)[0])
+
     console.log('course')
     console.log(this.course)
   },
@@ -213,7 +216,7 @@ export default {
   },
   computed: {
     course () {
-      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0] == undefined ? this.$store.getters.COURSE_POPULAR_INDEX_FROM_ID(this.$route.params.id)[0] : this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
+      return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0] == undefined ? this.$store.getters.COURSE_POPULAR_INDEX_FROM_ID(this.$route.params.id)[0] == undefined ? this.$store.getters.COURSE_POPULAR_HOME_FROM_ID(this.$route.params.id)[0] : this.$store.getters.COURSE_POPULAR_INDEX_FROM_ID(this.$route.params.id)[0]  : this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
     },
     checkCourseFavorite () {
       return this.$store.getters.COURSE_FAVORITE(this.$route.params.id)[0]

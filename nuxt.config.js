@@ -20,7 +20,8 @@ module.exports = {
     script: [
       { src: 'https://use.fontawesome.com/eed138f88e.js' },
       { src: 'https://cdn.webrtc-experiment.com/RecordRTC.js' },
-      { src: 'https://webrtc.github.io/adapter/adapter-latest.js' },
+      // { src: 'https://webrtc.github.io/adapter/adapter-latest.js' },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/6.0.3/adapter_no_edge.js'},
       { src: 'https://cdn.WebRTC-Experiment.com/getScreenId.js' },
       { src: 'https://cdn.omise.co/omise.js' }
       // { src: 'http://cdn.peerjs.com/0.3/peer.js' }

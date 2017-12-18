@@ -1,8 +1,8 @@
 <template>
 <div>
   <v-container grid-list-lg>
-    peerId: {{clientPeerId}}
-    peerId: {{tutorPeerId}}
+    <!-- peerId: {{clientPeerId}}
+    peerId: {{tutorPeerId}} -->
     <template v-if="isTutor">
           <template v-if="!liveStatus">
             <v-layout>
@@ -171,7 +171,7 @@
         {{ snackbar.text }}
         <v-btn dark flat @click.native="snackbar.model = false">ปิด</v-btn>
       </v-snackbar>
-      <v-btn @click.native="test">test</v-btn>
+
   </v-container>
 </div>
 </template>
@@ -193,11 +193,11 @@ export default {
   },
   created() {
     //do something after creating vue instance
-    this.tutorPeerId = 'a2kj2a209a027'
-    this.clientPeerId = 'efa2k3902zka'
+    this.tutorPeerId = 'a2kj2a209a027xa'
+    this.clientPeerId = 'efa2k3902zkaxa'
   },
   mounted () {
-
+console.log('hello world')
     console.log('isTutor' + this.isTutor)
     if (this.isTutor === true) {
       peer  = new Peer(this.tutorPeerId,{host: '172.104.167.197', port: 4444, path: '/myapp'});
@@ -347,11 +347,7 @@ export default {
       }
     }
   },
-  methods: {
-    test () {
-
-      console.log('test')
-    },
+  methods: {    
     handleDataAvailable () {
       console.log('dfdf');
     },
@@ -421,7 +417,7 @@ export default {
                  this.$socket.emit('live_tutor', data)
                   let captureStream = this.$refs.video.captureStream()
                   this.source = window.URL.createObjectURL(mystream)
-                  ss(socket).emit('profile-image', window.URL.createObjectURL(mystream), {name: 'ddd'})
+                  // ss(socket).emit('profile-image', window.URL.createObjectURL(mystream), {name: 'ddd'})
                   console.log(this.source)
                   this.stream = mystream
                   var conn = peer.connect(this.clientPeerId)

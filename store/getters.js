@@ -19,6 +19,11 @@ export default {
       return courseId == item.course_id
     })
   },
+  COURSE_POPULAR_HOME_FROM_ID (state) {
+    return courseId => state.popularCourseHome.filter(item => {
+      return courseId == item.course_id
+    })
+  },
   user: (state) => state.user,
   BRANCH_FROM_NAME (state) {
     return name => state.branchs.filter(item => {
