@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <div style="height:525px; overflow:scroll; overflow-x:hidden">
+      <div id="container" style="height:525px; overflow:scroll; overflow-x:hidden">
           <v-subheader>แชทสด</v-subheader>
           <v-list three-line>
             <template v-for="data in message">
@@ -16,7 +16,7 @@
              </template>
           </v-list>
         </div>
-      <v-text-field solo label="พิมพ์ข้อความ..." @keyup.enter="sendMessage($event.target.value)"></v-text-field>
+      <v-text-field  id="message"solo label="พิมพ์ข้อความ..." @keyup.enter="sendMessage($event.target.value)"></v-text-field>
     </v-card>
   </div>
 </template>
@@ -24,8 +24,17 @@
 export default {
   props: ['message'],
   methods: {
+    scrollToEnd () {
+      setTimeout(() => {
+        var container = this.$el.querySelector('#container')
+        container.scrollTop = container.scrollHeight
+        this.chatText = ''
+      }, 100)
+    },
     sendMessage (message) {
       console.log('message: ' + message)
+
+      console.log(this.$el.querySelector('#message').html)
       let data = {
         user_id: this.profile.user_id,
         course_id: this.courseID,
@@ -33,9 +42,10 @@ export default {
         lname: this.profile.lname,
         user_img: this.profile.user_img,
         message: message
-      }    
+      }
       this.$emit('getMessage', data)
       this.$socket.emit('live_message', data)
+      this.scrollToEnd()
     }
   },
   computed: {

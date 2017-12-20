@@ -157,6 +157,9 @@ export default {
     state.isCourseCreated = false
     state.isCourseFavorite = false
     state.notification = []
+    if (state.tutor.isTutor == true) {
+      state.tutor.isTutor = false
+    }
   },
   CHECK_IS_TUTOR: (state, course_id) => {
     console.log('CHECK_IS_TUTOR');

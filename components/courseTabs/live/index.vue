@@ -1,8 +1,9 @@
 <template>
 <div>
   <v-container grid-list-lg>
-    <!-- peerId: {{clientPeerId}}
-    peerId: {{tutorPeerId}} -->
+    clientPeerId: {{clientPeerId}}
+    tutorPeerId: {{tutorPeerId}}
+    istutor {{isTutor}}
     <template v-if="isTutor">
           <template v-if="!liveStatus">
             <v-layout>
@@ -94,7 +95,7 @@
 
 
     <template v-else>
-      live status = {{liveStatus}}
+      <!-- live status = {{liveStatus}} -->
          <template v-if="!liveStatus">
 
            <v-layout>
@@ -158,6 +159,7 @@
                  </template> -->
              </v-layout>
            </template>
+           <!-- <v-btn @click.native="test">test</v-btn> -->
     </template>
     <v-snackbar
       :timeout="snackbar.time"
@@ -191,44 +193,46 @@ export default {
   components: {
     chat
   },
-  created() {
+  created () {
     //do something after creating vue instance
-    this.tutorPeerId = 'a2kj2a209a027xa'
-    this.clientPeerId = 'efa2k3902zkaxa'
+    this.tutorPeerId = '9fp7idslu0cced00'
+    this.clientPeerId = '9fp7aidslu0dffg000'
   },
   mounted () {
 console.log('hello world')
     console.log('isTutor' + this.isTutor)
     if (this.isTutor === true) {
-      peer  = new Peer(this.tutorPeerId,{host: '172.104.167.197', port: 4444, path: '/myapp'});
+      peer  = new Peer(this.tutorPeerId,{host: '172.104.167.197', port: 9000, path: '/myapp'});
+      // peer  = new Peer({key: 'inma6ltgbpwopqfr'}, this.tutorPeerId);
+
       peer.on('connection', function(conn) {
         conn.on('data', function(data){
           console.log('tutor: ' + data);
         })
       })
     } else {
-      peer  = new Peer(this.clientPeerId,{host: '172.104.167.197', port: 4444, path: '/myapp'});
+      peer  = new Peer(this.clientPeerId,{host: '172.104.167.197', port: 9000, path: '/myapp'});
+      // peer  = new Peer({key: 'inma6ltgbpwopqfr'}, this.tutorPeerId);
       peer.on('connection', function(conn) {
         conn.on('data', function(data){
           console.log('client2: ' + data);
         })
       })
-      peer.on('call', function (call) {
 
-        navigator.getUserMedia({video: false, audio: true}, function(stream) {
-          call.answer(stream)
-          call.on('stream', function(remoteStream) {
-            console.log('stream')
-            console.log(remoteStream)
-            console.log(window.URL.createObjectURL(remoteStream))
-            document.getElementById('videoLive').src = window.URL.createObjectURL(remoteStream)
-            // this.videoLive = window.URL.createObjectURL(remoteStream)
-          })
-        }, function(err) {
-          console.log('Failed to get local stream' ,err);
-        })
-      })
     }
+
+    peer.on('call', function (call) {
+      navigator.getUserMedia({video: false, audio: true}, function(stream) {
+        call.answer(stream)
+        call.on('stream', function(remoteStream) {
+          document.getElementById('videoLive').src = window.URL.createObjectURL(remoteStream)
+
+          // this.videoLive = window.URL.createObjectURL(remoteStream)
+        })
+      }, function(err) {
+        console.log('Failed to get local stream' ,err);
+      })
+    })
     this.$options.sockets.live_tutor = (data) => {
       // this.videoLive = data.message
       // this.source = data.message
@@ -251,11 +255,13 @@ console.log('hello world')
         if (ul.isMe == true) {
           this.userLive[i].cam = 0
           this.userLive[i].userName = null
-          this.stream.getVideoTracks()[0].stop()
           clearInterval(this.userLive[i].interval)
           console.log('stop my live')
         }
       })
+      this.stream.getVideoTracks()[0].stop()
+      this.stream.getAudioTracks()[0].stop()
+      // this.stream.getTracks().forEach(track => track.stop());
 
     }
     this.$options.sockets.live_message = (data) => {
@@ -343,11 +349,20 @@ console.log('hello world')
       clearInterval(this.userLive[data.camera].interval)
       if (this.userLive[data.camera].isMe === true && this.isTutor === false) {
         this.stream.getVideoTracks()[0].stop()
+        this.stream.getAudioTracks()[0].stop()
         this.showSnackbar('info', 'คุณถูกบังคับปิดกล้องโดยติวเตอร์')
       }
     }
   },
-  methods: {    
+  methods: {
+    test () {
+      console.log(this.stream);
+      // this.stream.getTracks().forEach(track => track.stop());
+      this.stream.getVideoTracks()[0].stop()
+      this.stream.getAudioTracks()[0].stop()
+      console.log(this.stream.getAudioTracks())
+      console.log(this.stream.getAudioTracks()[0])
+    },
     handleDataAvailable () {
       console.log('dfdf');
     },
@@ -415,16 +430,17 @@ console.log('hello world')
                      description: this.description
                    }
                  this.$socket.emit('live_tutor', data)
-                  let captureStream = this.$refs.video.captureStream()
+                 var conn = peer.connect(this.clientPeerId)
+                 conn.on('open', function () {
+                   conn.send('hieeeex!');
+                 })
+                 let call = peer.call(this.clientPeerId, mystream)
+
+                  // let captureStream = this.$refs.video.captureStream()
                   this.source = window.URL.createObjectURL(mystream)
-                  // ss(socket).emit('profile-image', window.URL.createObjectURL(mystream), {name: 'ddd'})
-                  console.log(this.source)
-                  this.stream = mystream
-                  var conn = peer.connect(this.clientPeerId)
-                  conn.on('open', function () {
-                    conn.send('hieeeex!');
-                  })
-                  let call = peer.call(this.clientPeerId, mystream)
+
+
+
                   let des
                   if (this.course.code !== '') {
                     des = 'มีการไลฟ์จากติวเตอร์ (' + this.course.code + ')'
@@ -457,10 +473,9 @@ console.log('hello world')
     stopStream (val) {
       console.log('stopStream');
       this.liveStatus = false
-      this.stream.getVideoTracks()[0].stop()
       let formData = new FormData();
       let fileName = this.title + '.webm'
-      recorder.stopRecording(() => {
+      recorder.stopRecording((stream) => {
         let blob = recorder.getBlob()
         formData.append('video', blob, fileName)
       })
@@ -480,6 +495,21 @@ console.log('hello world')
       }
       this.$socket.emit('stoplive', data)
       console.log('clear Interval')
+      // console.log(this.stream.getVideoTracks()[0]);
+      // this.stream.getTracks().forEach(track => track.stop());
+      this.stream.getVideoTracks()[0].stop()
+      this.stream.getAudioTracks()[0].stop()
+      // this.stream.getTracks().forEach(track => track.stop());
+      // this.stream.getVideoTracks()[0].forEach(track => track.stop());
+      // this.stream.getTracks()[0].stop()
+
+
+// }
+
+
+      console.log(this.stream.getTracks()[0])
+      // console.log(this.stream.getVideoTracks()[0].enable);
+
       clearInterval(this.interval)
     },
     requestCamera (index) {
@@ -511,6 +541,7 @@ console.log('hello world')
       this.userLive[index].userName = null
       clearInterval(this.userLive[index].interval)
       this.stream.getVideoTracks()[0].stop()
+      this.stream.getAudioTracks()[0].stop()
       console.log('Methods: stopCamera')
       const data = {
         course_id: this.$route.params.id,

@@ -36,11 +36,11 @@
   </v-container>
 </div>
   <hr>
-<div class="text-xs-center white">
+<div class="white">
   <v-container grid-list-lg>
     <br>
 
-    <h5 class="black--text">สำรวจ</h5>
+    <h6>ที่ได้รับความนิยม</h6>
     <v-tabs light>
 
      <v-tabs-bar class="white">
@@ -112,23 +112,23 @@
               <v-layout>
                 <v-flex xs6>
                   <v-layout>
-                    <v-flex xs3>
+                    <v-flex xs5>
                         <img src="http://www.clker.com/cliparts/D/k/0/U/i/k/search-icon-red-hi.png" height="55" alt="">
                     </v-flex>
-                    <v-flex xs4 text-xs-left>
+                    <v-flex xs7 text-xs-left>
                       <span class ="white--text"><b>ค้นหาวิชาที่จะติว</b></span><br>
-                      <span class ="white--text">สำรวจวิชาที่สนใจจะติวด้วยรหัสวิชา</span>
+                      <span class ="white--text hidden-xs-only">สำรวจวิชาที่สนใจจะติวด้วยรหัสวิชา</span>
                     </v-flex>
                   </v-layout>
                 </v-flex>
                 <v-flex xs6>
                   <v-layout>
-                    <v-flex xs7 text-xs-right>
+                    <v-flex xs3 text-xs-right>
                         <img src="https://cdn4.iconfinder.com/data/icons/keynote-and-powerpoint-icons/256/Plus-128.png" height="55" alt="">
                     </v-flex>
-                    <v-flex xs4 text-xs-left class="ml-5">
+                    <v-flex xs9 text-xs-left class="ml-5">
                       <span class ="white--text"><b>สร้างคอร์ส</b></span><br>
-                      <span class ="white--text">สร้างคอร์สของคุณเพื่อความก้าวหน้าของคุณ</span>
+                      <span class ="white--text  hidden-xs-only">สร้างคอร์สของคุณเพื่อความก้าวหน้าของคุณ</span>
                     </v-flex>
                   </v-layout>
                 </v-flex>

@@ -55,11 +55,12 @@ export default {
         { title: 'รายการโปรด' },
         { title: 'คอร์สที่เป็นเจ้าของ' },
       ],
-      active: null
+      active: 'คอร์สที่ซื้อ'
     }
   },
   created () {
     this.active = location.hash.substring(1)
+    // this.active = "%E0%B8%84%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%AA%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B9%80%E0%B8%9B%E0%B9%87%E0%B8%99%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%82%E0%B8%AD%E0%B8%87"
   },
   watch: {
     active: function (val) {

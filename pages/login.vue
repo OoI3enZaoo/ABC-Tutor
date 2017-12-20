@@ -11,8 +11,7 @@
                 <hr>
                 <br>
                 <v-text-field label="ชื่อผุ้ใช้" v-model="user_name"></v-text-field>
-                <v-text-field type="password"label="รหัสผ่าน" v-model="user_pass" @keyup.enter="login"></v-text-field>
-                <!-- <v-checkbox label="ให้ฉันลงชื่อเข้าใช้อยู่เสมอ"></v-checkbox> -->
+                <v-text-field type="password"label="รหัสผ่าน" v-model="user_pass" ></v-text-field>
                 <v-btn primary :disabled="!isValid" @click.native="login" block>เข้าสู่ระบบ</v-btn>
               </v-card-text>
             </v-card>
@@ -60,10 +59,6 @@ export default {
           this.$router.push('/home')
         })
       }
-    },
-    hackLogin () {
-      this.$store.commit('setIsLogin', true)
-      this.$router.push('/home')
     }
   }
 }

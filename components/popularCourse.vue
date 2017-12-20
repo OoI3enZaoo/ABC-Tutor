@@ -3,8 +3,8 @@
     <br>
     <v-container grid-list-lg>
       <v-layout>
-        <v-flex xs11><h6>คอร์สที่ได้รับความนิยมใน "{{branchs}}"</h6></v-flex>
-        <v-flex xs1 text-xs-right><nuxt-link :to="'/allcourse/'+branchid">ดูทั้งหมด</nuxt-link></v-flex>
+        <v-flex xs9><h6>คอร์สที่ได้รับความนิยมใน "{{branchs}}"</h6></v-flex>
+        <v-flex xs3 text-xs-right><nuxt-link :to="'/allcourse/'+branchid">ดูทั้งหมด</nuxt-link></v-flex>
       </v-layout>
       <v-layout row wrap>
         <template v-for="data in course">
