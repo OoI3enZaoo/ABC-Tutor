@@ -22,7 +22,7 @@
       </v-text-field>
       <br>
       <v-layout row wrap>
-          <template v-for="(data,key) in course">
+          <template v-for="(data,key) in courseAfterSearch">
              <v-flex xs12 lg6 :key="key">
                <nuxt-link :to="'/course/' + data.course_id" tag="span" style="cursor:pointer;">
                   <v-card>
@@ -32,7 +32,7 @@
                       </v-flex>
                       <v-flex lg5 xs12>
                         <v-card-text>
-                          <span>{{data.subject}} ({{data.code}})</span><br>                          
+                          <span>{{data.subject}} ({{data.code}})</span><br>
                           <p class="grey--text">{{data.fname}} {{data.lname}}</p>
                           <p v-html="data.des"></p>
                         </v-card-text>
@@ -109,7 +109,7 @@ export default {
         this.courseAfterSearch = this.course
       } else {
         this.course.map(res => {
-          console.log(res)
+          // console.log(res)
           let code = res.code.search(val)
           let subject = res.subject.search(val)
           if (code != -1) {

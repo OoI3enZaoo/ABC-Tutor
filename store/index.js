@@ -6,7 +6,7 @@ import createPersistedState from 'vuex-persistedstate'
 export default () => {
   return new Vuex.Store({
     state: {
-      currentIP: '172.104.167.197:4000',
+      currentIP: 'https://rocky-fortress-72832.herokuapp.com',
       background: require('../static/background.jpg'),
       branchs: [],
       isLogin: false,
