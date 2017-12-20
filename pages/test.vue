@@ -21,8 +21,8 @@ let peer;
 
 export default {
   mounted () {
-    // peer  = new Peer({key: 'yxjhqfcelv7vi'});
-    peer  = new Peer({host: '172.104.167.197', port: 9000, path: '/myapp'});
+    peer  = new Peer({key: 'inma6ltgbpwopqfr'});
+    // peer  = new Peer({host: '172.104.167.197', port: 9000, path: '/myapp'});
     setTimeout(()=> {
       this.mypeerid = peer.id
       console.log('peer: ' + peer.id);
