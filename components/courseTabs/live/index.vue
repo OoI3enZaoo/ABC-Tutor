@@ -195,8 +195,8 @@ export default {
   },
   created () {
     //do something after creating vue instance
-    this.tutorPeerId = '2fp7idslu0cced00a'
-    this.clientPeerId = '5fp7aidslu0dffg000a'
+    this.tutorPeerId =  '2p7idslu0cced00xa'
+    this.clientPeerId = '5fp7aid0dffg000xa'
   },
   mounted () {
 console.log('hello world')
@@ -212,7 +212,7 @@ console.log('hello world')
       })
     } else {
       // peer  = new Peer(this.clientPeerId,{host: 'https://stark-retreat-88176.herokuapp.com/', path: '/myapp'});
-      peer  = new Peer({key: 'inma6ltgbpwopqfr'}, this.tutorPeerId);
+      peer  = new Peer({key: 'inma6ltgbpwopqfr'}, this.clientPeerId);
       peer.on('connection', function(conn) {
         conn.on('data', function(data){
           console.log('client2: ' + data);
