@@ -37,7 +37,7 @@ export default {
   methods: {
     async login () {
       let user_id = null
-      await axios.get('https://rocky-fortress-72832.herokuapp.com/api/get_check_password/' + this.user_name + '/' + this.user_pass)
+      await axios.get('https://xn--m3cia1ci0ba7c2i8c.com:4000/api/get_check_password/' + this.user_name + '/' + this.user_pass)
       .then (res => {
         let result = res.data[0]
         if (result.check_pass == 1) {
@@ -49,7 +49,7 @@ export default {
         }
       })
       if (user_id != null) {
-        axios.get('https://rocky-fortress-72832.herokuapp.com/api/user/' + user_id)
+        axios.get('https://xn--m3cia1ci0ba7c2i8c.com:4000/api/user/' + user_id)
         .then (res => {
           let result = res.data[0]
           this.$store.commit('addUserData', result)

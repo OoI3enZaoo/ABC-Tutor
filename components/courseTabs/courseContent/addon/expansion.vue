@@ -36,7 +36,7 @@ export default {
   methods: {
     openFile (name) {
       console.log(' filename: ' + name + ' contentId: ' + this.contentId)
-      let url = 'http://172.104.167.197:4000/api/getfile/' + this.contentId + '/' + name
+      let url = 'https://xn--m3cia1ci0ba7c2i8c.com:4000/api/getfile/' + this.contentId + '/' + name
       window.open(url, '_blank');
     }
   }
