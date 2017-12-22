@@ -430,14 +430,14 @@ console.log('hello world')
                      description: this.description
                    }
                  this.$socket.emit('live_tutor', data)
-                 var conn = peer.connect(this.clientPeerId)
-                 conn.on('open', function () {
-                   conn.send('hieeeex!');
-                 })
+                 this.source = window.URL.createObjectURL(mystream)
+                 // var conn = peer.connect(this.clientPeerId)
+                 // conn.on('open', function () {
+                 //   conn.send('hieeeex!');
+                 // })
                  let call = peer.call(this.clientPeerId, mystream)
 
                   // let captureStream = this.$refs.video.captureStream()
-                  this.source = window.URL.createObjectURL(mystream)
 
 
 
