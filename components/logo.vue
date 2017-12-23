@@ -36,7 +36,7 @@ export default {
       if (this.$store.isLogin == false) {
         return '/'
       } else {
-        return '/home'
+        return '/'
       }
     }
   }

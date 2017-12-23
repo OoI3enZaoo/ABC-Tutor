@@ -35,4 +35,11 @@ function listen() {
 
   https.createServer(options, nuxt.render).listen(port)
   console.log('Server listening on `localhost:' + port + '`.')
+
+  // var http = require('http');
+  // http.createServer(function (req, res) {
+  //     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+  //     res.end();
+  // }).listen(port);
+
 }

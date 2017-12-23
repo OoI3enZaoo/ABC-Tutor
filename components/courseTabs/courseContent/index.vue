@@ -52,6 +52,9 @@ Vue.use(require('vue-moment'), {
     moment
 })
 export default {
+  created() {    
+    moment.lang('th-TH')
+  },
   components: {
     createCourseContent,
     expansion,

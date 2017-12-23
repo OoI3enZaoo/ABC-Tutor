@@ -1,24 +1,13 @@
 <template>
   <div>
-
+    <parallax height = "200"  :src="$store.state.background">
+        <h4 class="white--text mt-2">ร่วมกันสร้างสังคมแห่งการเรียนรู้ออนไลน์กับเราได้เลย </h4>
+    </parallax>
     <br>
-    <!-- <v-container grid-list-lg>
-      <p class="headline text-xs-center">สร้างคอร์สใหม่</p>
-      <br>
-      <v-card>
-        <v-card-title class="grey lighten-3">มาเริ่มสร้างคอร์สใหม่กันเลย</v-card-title>
-        <hr><br>
-        <v-card-text>กรอกวิชาที่ต้องการติว
-            <v-text-field class="elevation-1 mt-2" solo label="เช่น คอมพิวเตอร์เบื้องต้น"></v-text-field>
-            <br><br>
-            <div class="text-xs-center">
-                <v-btn text-xs-center primary>สร้างคอร์ส</v-btn>
-            </div>
-        </v-card-text>
-      </v-card>
-    </v-container> -->
 
     <v-container grid-list-lg>
+      <template v-if="$store.state.isLogin == true">
+
       <div class="text-xs-center">
         <p class="headline">สร้างคอร์ส</p>
         <h6>สร้างคอร์สใหม่ด้วยตัวเองง่าย ๆ เพียง 5 ขั้นตอน</h6>
@@ -133,11 +122,17 @@
           </blockquote>
         </v-card-text>
       </v-card>
+      </template>
+      <template v-else>
+          สำหรับสมาชิกเท่านั้น
+          <v-btn  color="primary" @click.native="$router.push('/register')">สมัครสมาชิก</v-btn>
+      </template>
     </v-container>
 
   </div>
 </template>
 <script>
+import parallax from '../../components/parallax.vue'
 import base64upload from '../../components/base64upload.vue'
 import quill from '../../components/quill.vue'
 import Vue from 'vue'
@@ -148,7 +143,8 @@ Vue.use(require('vue-moment'), {
 export default {
   components: {
     base64upload,
-    quill
+    quill,
+    parallax
   },
   created () {
     this.$store.state.branchs.map(data => this.items.push(data.text))

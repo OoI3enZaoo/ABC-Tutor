@@ -126,6 +126,7 @@ Vue.use(require('vue-moment'), {
 })
 export default {
   created () {
+    moment.lang('th-TH')
     console.log('courseId: ' + this.courseId)
   },
   components: {

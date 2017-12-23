@@ -134,5 +134,10 @@ export default {
     return typeId => state.user.user_purchase.filter(item => {
       return typeId == item.user_id
     })
+  },
+  LIVE_SCHEDULE (state) {
+    return courseId => state.live_schedule.filter(item => {
+      return courseId == item.course_id
+    })
   }
 }

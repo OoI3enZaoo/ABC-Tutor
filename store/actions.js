@@ -18,7 +18,7 @@ export default {
         commit('addCheckPullCourse', branch_id)
         result.map(rs => {
           let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
-          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
+          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube,live_status:false}])
           let inStore = false
           state.courseVote.find(f => f.course_id == rs.course_id  ? inStore = true : '')
           rs.avg != 0 && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
@@ -41,7 +41,7 @@ export default {
           let result = res.data
           result.map(rs => {
             let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
-            commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
+            commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube,live_status:false}])
             let inStore = false
             state.courseVote.find(f => f.course_id == rs.course_id  ? inStore = true : '')
             rs.avg != 0 && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
@@ -341,7 +341,7 @@ export default {
             let courseinStore = false
             state.course.find(c => c.course_id == course_id ? courseinStore = true : '')
             if (courseinStore == false) {
-              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
+              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube,live_status:false}])
               let voteinStore = false
               state.courseVote.find(f => f.course_id == rs.course_id  ? voteinStore = true : '')
               rs.avg != 0 && voteinStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
@@ -366,7 +366,7 @@ export default {
             let courseinStore = false
             state.course.find(c => c.course_id == course_id ? courseinStore = true : '')
             if (courseinStore == false) {
-              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
+              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube,live_status:false}])
               let voteinStore = false
               state.courseVote.find(f => f.course_id == rs.course_id  ? voteinStore = true : '')
               rs.avg != 0 && voteinStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
@@ -389,7 +389,7 @@ export default {
             let courseinStore = false
             state.course.find(c => c.course_id == course_id ? courseinStore = true : '')
             if (courseinStore == false) {
-              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube}])
+              commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube,live_status:false}])
               let voteinStore = false
               state.courseVote.find(f => f.course_id == rs.course_id  ? voteinStore = true : '')
               rs.avg != 0 && voteinStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''
@@ -496,5 +496,20 @@ export default {
     axios.post(state.currentIP + '/api/updatecourse/', data)
     console.log('UPDATE_COURSE');
     new Vue().$socket.emit('update_course', data)
+  },
+  UPDATE_LIVE_SCHEDULE ({state, commit}, payload) {
+    axios.post(state.currentIP + '/api/update_course_live/', payload)
+    commit('UPDATE_LIVE_SCHEDULE', payload)
+  },
+  PULL_LIVE_SCHEDULE ({state, commit}, course_id) {
+    axios.get(state.currentIP + '/api/get_course_live/' + course_id)
+    .then (res => {
+      let result = res.data
+      commit('ADD_LIVE_SCHEDULE', result)
+    })
+  },
+  UPDATE_LIVE_STATUS ({state, commit}, payload) {
+    axios.post(state.currentIP + '/api/update_course_live_status/', payload)
+    commit('UPDATE_LIVE_STATUS', payload)
   }
 }

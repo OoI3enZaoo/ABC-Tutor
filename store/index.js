@@ -6,7 +6,7 @@ import createPersistedState from 'vuex-persistedstate'
 export default () => {
   return new Vuex.Store({
     state: {
-      currentIP: 'https://xn--m3cia1ci0ba7c2i8c.com:4000',
+        currentIP: 'https://xn--m3cia1ci0ba7c2i8c.com:4000',
       background: require('../static/background.jpg'),
       branchs: [],
       isLogin: false,
@@ -56,7 +56,8 @@ export default () => {
           { title: 'ประกาศ' },
           { title: 'แชท' }
         ]
-      }
+      },
+      live_schedule: []
     },
     plugins: [
       createPersistedState({

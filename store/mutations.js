@@ -162,18 +162,41 @@ export default {
     }
   },
   CHECK_IS_TUTOR: (state, course_id) => {
-    console.log('CHECK_IS_TUTOR');
-      state.courseCreate.map(c => {
-      if (c == course_id) {
+    console.log('CHECK_IS_TUTOR')
+    for (let i = 0; i < state.courseCreate.length; i ++) {
+      if (state.courseCreate[i] == course_id) {
         state.tutor.isTutor = true
-        state.tutor.menuItems.push({title: 'การจัดการ'})
+        let notPushYet = false
+        state.tutor.menuItems.find(mi => mi.title == 'การจัดการ' ? '' : notPushYet = true)
+        if (notPushYet == true) {
+          state.tutor.menuItems.push({title: 'การจัดการ'})
+          break
+        }
       }
-    })
+    }
+
   },
   SET_DEFAULT_TUTOR: (state) => {
     state.tutor.isTutor = false
     if (state.tutor.menuItems.length == 7) {
       state.tutor.menuItems.pop()
     }
+  },
+  UPDATE_LIVE_SCHEDULE: (state, data) => {
+    console.log('UPDATE_LIVE_SCHEDULE')
+    let isHave = false
+    console.log(data);
+    state.live_schedule.map((ls, i) => ls.course_id == data.course_id ? state.live_schedule[i] = data : '')
+  },
+  ADD_LIVE_SCHEDULE: (state, data) => {
+    console.log('ADD_LIVE_SCHEDULE');
+    let isCheck = false
+    state.live_schedule.find(ls => ls.course_id == data.course_id ? isCheck = true : '')
+    if (isCheck == false) {
+      state.live_schedule.push(...data)
+    }
+  },
+  UPDATE_LIVE_STATUS: (state, data) => {
+    state.course.map(c => c.course_id == data.course_id ? c.live_status = data.live_status : '')
   }
 }

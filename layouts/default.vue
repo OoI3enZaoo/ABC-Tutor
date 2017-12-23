@@ -290,7 +290,7 @@
         snackbarText: '',
         menuAfterLoginItem: [
           {
-            name: 'หน้าหลัก',
+            name: 'จัดการคอร์ส',
             icon: 'home',
             link: '/home'
           },
@@ -300,7 +300,7 @@
             link: '/tutor/create'
           },
           {
-            name: 'สำรวจ',
+            name: 'คอร์สเรียนทั้งหมด',
             icon: 'class',
             link: '/course'
           },
@@ -343,9 +343,6 @@
       avatar, notification, logo
     },
     computed: {
-      projectName () {
-        return this.$store.state.projectName
-      },
       isLogin () {
         return this.$store.state.isLogin
       },

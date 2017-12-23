@@ -23,9 +23,10 @@
   </div>
 </template>
 <script>
+const moment = require('moment')
 export default {
-
   created () {
+    moment.lang('th-TH')
     this.$store.dispatch('PULL_USER_PURCHASED', this.$route.params.id)
   },
   computed: {

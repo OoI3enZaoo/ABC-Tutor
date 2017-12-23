@@ -5,8 +5,8 @@
      <h5>เกี่ยวกับเรา</h5>
      <h6>รายชื่อนักพัฒนาโครงการ ABC-Tutor</h6><br>
    </div>
-   <v-layout row justify-space-between>
-     <v-flex xs5>
+   <v-layout row wrap justify-space-between>
+     <v-flex xs12 md5>
        <v-card>
          <v-card-media :src="au" height="60vh"></v-card-media>
          <v-card-text>
@@ -22,7 +22,7 @@
        </v-card-text>
        </v-card>
     </v-flex>
-    <v-flex xs5>
+    <v-flex xs12 md5>
       <v-card>
         <v-card-media :src="ben" height="60vh"></v-card-media>
         <v-card-text>

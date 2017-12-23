@@ -1,39 +1,30 @@
 <template>
 <div>
   <v-container grid-list-lg>
-    clientPeerId: {{clientPeerId}}
-    tutorPeerId: {{tutorPeerId}}
-    istutor {{isTutor}}
     <template v-if="isTutor">
           <template v-if="!liveStatus">
             <v-layout>
               <v-flex xs12 text-xs-center>
-                <v-card height="400px">
+                <v-card height="450px">
                   <v-card-text>
                     <div>
                         <v-layout row wrap style="padding-top:80px;">
-                          <v-flex xs12 md2 offset-md4 >
+                          <v-flex xs12 md3 offset-md3 >
                               <img :src="liveIcon" height="150">
                           </v-flex>
                           <v-flex xs12 md5 text-md-left text-xs-center mt-4>
                             <h5>คุณยังไม่ได้ทำการไลฟ์ในขณะนี้</h5>
-                            <v-dialog v-model="dialog" persistent max-width="500px">
-                                  <v-btn color="primary" dark slot="activator">เริ่มไลฟ์</v-btn>
-                                  <v-card>
-                                    <v-card-title>
-                                      <span class="headline">รายละเอียดของการไลฟ์</span>
-                                    </v-card-title>
-                                    <v-card-text>
-                                      <v-text-field label="หัวข้อการไลฟ์" v-model="title"></v-text-field>
-                                      <v-text-field label="รายละเอียด" v-model="description"></v-text-field>
-                                    </v-card-text>
-                                    <v-card-actions>
-                                      <v-spacer></v-spacer>
-                                      <v-btn color="primary" :disabled="!isValid" @click.native="[startStream(), dialog = false]">เริ่มไลฟ์</v-btn>
-                                      <v-btn color="primary" outline @click.native="dialog = false">ยกเลิก</v-btn>
-                                    </v-card-actions>
-                                  </v-card>
-                                </v-dialog>
+                            <template v-if="liveSchedule !== '' & liveSchedule.live_schedule !== null">
+                              <span >เวลาไลฟ์ครั้งต่อไปของคุณคือ {{liveSchedule.live_schedule}} (อีก {{liveSchedule.live_schedule | moment('from', 'now', true)}})</span>
+                            </template>
+                                <v-layout row wrap>
+                                  <v-flex xs6 md4>
+                                    <v-btn color="primary" block @click.native="dialogStartLive = true">เริ่มไลฟ์</v-btn>
+                                  </v-flex>
+                                  <v-flex xs6 md4>
+                                    <v-btn color="primary" block outline @click.native="dialogTimeLive = true">กำหนดเวลาไลฟ์</v-btn>
+                                  </v-flex>
+                                </v-layout>
                           </v-flex>
                         </v-layout>
                     </div>
@@ -62,8 +53,8 @@
                 <v-flex lg4 class="hidden-md-and-down">
                     <chat :message = "liveMessage" @getMessage="getMessage"></chat>
                 </v-flex>
-                <!-- <template v-for="(data, index) in userLive">
-                    <v-flex xs3  :key="index">
+                <template v-for="(data, index) in userLive">
+                    <v-flex xs3 offset-xs3  :key="index">
                       <v-card class="white" height="200px">
                         <template v-if="data.cam === 2">
 
@@ -87,8 +78,12 @@
                         <v-btn primary @click.native="forceStopCamera(index)">บังคับปิดกล้อง</v-btn>
                       </template>
                     </v-flex>
-                  </template> -->
-                <v-btn block primary @click.native="stopStream">ปิดการไลฟ์</v-btn>
+                    <v-flex xs8></v-flex>
+                  </template>
+                  <br>
+                  <v-flex xs12>
+                    <v-btn block primary @click.native="stopStream">ปิดการไลฟ์</v-btn>
+                  </v-flex>
               </v-layout>
             </template>
     </template>
@@ -109,6 +104,9 @@
                          </v-flex>
                          <v-flex xs12 md5 text-md-left text-xs-center mt-4>
                            <h5>ยังไม่มีการไลฟ์ในขณะนี้</h5>
+                           <template v-if="liveSchedule !== '' & liveSchedule.live_schedule !== null">
+                             <span >เวลาไลฟ์ครั้งต่อไปคือ {{liveSchedule.live_schedule}} (อีก {{liveSchedule.live_schedule | moment('from', 'now', true)}})</span>
+                           </template>
                          </v-flex>
                        </v-layout>
                    </div>
@@ -140,8 +138,8 @@
                <v-flex lg4 class="hidden-md-and-down">
                    <chat :message = "liveMessage" @getMessage="getMessage"></chat>
                </v-flex>
-               <!-- <template v-for="(data, index) in userLive">
-                   <v-flex xs3  :key="index">
+               <template v-for="(data, index) in userLive">
+                   <v-flex xs3 offset-xs3 :key="index">
                      <v-card class="white" height="200px">
                        <template v-if="data.cam === 2">
                           <video :ref="data.ref" :src="data.source" autoplay width ="100%"></video>
@@ -156,7 +154,7 @@
                        <v-btn primary @click.native="stopCamera(index)">ปิดกล้องตนเอง</v-btn>
                      </template>
                    </v-flex>
-                 </template> -->
+                 </template>
              </v-layout>
            </template>
            <!-- <v-btn @click.native="test">test</v-btn> -->
@@ -175,6 +173,88 @@
       </v-snackbar>
 
   </v-container>
+  <v-dialog v-model="dialogStartLive" persistent max-width="500px">
+    <v-card>
+      <v-card-title>
+        <span class="headline">รายละเอียดของการไลฟ์</span>
+      </v-card-title>
+      <v-card-text>
+        <v-text-field label="หัวข้อการไลฟ์" v-model="title"></v-text-field>
+        <v-text-field label="รายละเอียด" v-model="description"></v-text-field>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" :disabled="!isLiveValid" @click.native="[startStream(), dialogStartLive = false]">เริ่มไลฟ์</v-btn>
+        <v-btn color="primary" outline @click.native="dialogStartLive = false">ยกเลิก</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <v-dialog v-model="dialogTimeLive" persistent max-width="500px">
+    <v-card>
+      <v-card-title>
+        <span class="headline">กำหนดเวลาที่จะไลฟ์ครั้งต่อไป</span>
+      </v-card-title>
+      <v-card-text>
+
+          <v-text-field v-model="liveTimeText" prepend-icon="title" label="รายละเอียดการไลฟ์"></v-text-field>
+              <v-menu
+                  lazy
+                  :close-on-content-click="false"
+                  v-model="menuDate"
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  :nudge-right="40"
+                  max-width="290px"
+                  min-width="290px"
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="คลิ๊กเพื่อเลือกวันที่"
+                    v-model="date"
+                    prepend-icon="event"
+                    readonly
+                  ></v-text-field>
+                  <v-date-picker v-model="date"  scrollable autosave actions>
+
+                  </v-date-picker>
+                </v-menu>
+
+                <v-menu
+                    lazy
+                    :close-on-content-click="false"
+                    v-model="menuTime"
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    :nudge-right="40"
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <v-text-field
+                      slot="activator"
+                      label="คลิ๊กเพื่อเลือกเวลา"
+                      v-model="time"
+                      prepend-icon="access_time"
+                      readonly
+                    ></v-text-field>
+                    <v-time-picker v-model="time" format="24hr" actions autosave>
+
+                    </v-time-picker>
+
+                  </v-menu>
+
+
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" :disabled="!isTimeLiveValid" @click.native="[setTimeLive(), dialogTimeLive = false]">ตั้งค่า</v-btn>
+        <v-btn color="primary" outline @click.native="dialogTimeLive = false">ยกเลิก</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
 </div>
 </template>
 <script>
@@ -194,6 +274,7 @@ export default {
     chat
   },
   created () {
+    moment.lang('th-TH');
     //do something after creating vue instance
     this.tutorPeerId =  '2p7idslu0x00xa'
     this.clientPeerId = '5fp7aid0dc0xa'
@@ -281,15 +362,16 @@ console.log('hello world')
       if (this.isTutor == false) {
         console.log('not tutor')
         // this.requestMedia()
-        if (navigator.getUserMedia) {
-          navigator.getUserMedia( stream => {
+
+          navigator.getUserMedia({video: true},stream => {
             this.userLive[data.camera].source = window.URL.createObjectURL(stream)
             this.stream = stream
-            this.$emit('started', stream)
+            console.log('stream');
+            console.log(this.stream)
           }, error => {
-            this.$emit('error', error)
+
           })
-        }
+
         console.log('beforeInterval')
         this.userLive[data.camera].interval = setInterval(() => {
           let str = Number.parseInt(data.camera)
@@ -310,7 +392,7 @@ console.log('hello world')
       this.userLive[data.camera].userName = data.name
     }
     this.$options.sockets.live_cam_1 = (data) => {
-      console.log('cam 1')
+      // console.log('cam 1')
       if (this.isTutor) {
         this.userLive[0].source = data.message
       }
@@ -334,8 +416,10 @@ console.log('hello world')
       }
     }
     this.$options.sockets.stopCamera = (data) => {
+      console.log('stopCamera1')
+      // console.log(this.userLive[data.camera].cam)
       if (this.userLive[data.camera].cam !== 0) {
-        console.log('stopCamera')
+        console.log('stopCamera2')
         this.userLive[data.camera].cam = 0
         this.userLive[data.camera].userName = null
         clearInterval(this.userLive[data.camera].interval)
@@ -355,6 +439,16 @@ console.log('hello world')
     }
   },
   methods: {
+    setTimeLive () {
+      const data = {
+        user_id: this.$store.state.profile.user_id,
+        course_id: this.$route.params.id,
+        live_text: this.liveTimeText,
+        live_schedule: this.date + ' ' + this.time
+      }
+      this.$store.dispatch('UPDATE_LIVE_SCHEDULE', data)
+      this.$socket.emit('course_live', data)
+    },
     test () {
       console.log(this.stream);
       // this.stream.getTracks().forEach(track => track.stop());
@@ -461,6 +555,8 @@ console.log('hello world')
                     noti_ts: Vue.moment().format('YYYY-MM-DD HH:mm:ss')
                   }
                   this.$socket.emit('noti_content', notification)
+                  let {course_id} = notification
+                  this.$store.dispatch('UPDATE_LIVE_STATUS', {course_id, live_status: true})
 
                 }
             })
@@ -472,6 +568,7 @@ console.log('hello world')
     },
     stopStream (val) {
       console.log('stopStream');
+      this.$store.dispatch('UPDATE_LIVE_STATUS', {course_id: this.$route.params.id, live_status: false})
       this.liveStatus = false
       let formData = new FormData();
       let fileName = this.title + '.webm'
@@ -540,14 +637,14 @@ console.log('hello world')
       this.userLive[index].cam = 0
       this.userLive[index].userName = null
       clearInterval(this.userLive[index].interval)
-      this.stream.getVideoTracks()[0].stop()
-      this.stream.getAudioTracks()[0].stop()
       console.log('Methods: stopCamera')
       const data = {
         course_id: this.$route.params.id,
         camera: index
       }
       this.$socket.emit('stopCamera', data)
+      this.stream.getVideoTracks()[0].stop()
+      this.stream.getAudioTracks()[0].stop()
     },
     forceStopCamera (index) {
       const data = {
@@ -561,10 +658,10 @@ console.log('hello world')
       return !!this.getMedia()
     },
     getMedia () {
-      return (navigator.getUserMedia    || navigator.msGetUserMedia || navigator.oGetUserMedia)
+      return (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia)
     },
     requestMedia () {
-      // navigator.getUserMedia = this.getMedia()
+      navigator.getUserMedia = this.getMedia()
     },
     capture (cam) {
       // console.log('capture')
@@ -619,10 +716,10 @@ console.log('hello world')
       description: '',
       liveMessage: [],
       userLive: [
-        { cam: 0, userName: 'ben1', source: '', interval: null, ref: 'cam1', isMe: false },
-        { cam: 0, userName: 'ben2', source: '', interval: null, ref: 'cam2', isMe: false },
-        { cam: 0, userName: 'ben3', source: '', interval: null, ref: 'cam3', isMe: false },
-        { cam: 0, userName: 'ben4', source: '', interval: null, ref: 'cam4', isMe: false }
+        { cam: 0, userName: 'ben1', source: '', interval: null, ref: 'cam1', isMe: false }
+        // { cam: 0, userName: 'ben2', source: '', interval: null, ref: 'cam2', isMe: false },
+        // { cam: 0, userName: 'ben3', source: '', interval: null, ref: 'cam3', isMe: false },
+        // { cam: 0, userName: 'ben4', source: '', interval: null, ref: 'cam4', isMe: false }
       ],
       snackbar: {
         context: 'primary',
@@ -633,18 +730,31 @@ console.log('hello world')
       dialog: false,
       liveIcon: require('../../../static/live.png'),
       clientPeerId: '',
-      tutorPeerId: ''
+      tutorPeerId: '',
+      dialogStartLive: false,
+      dialogTimeLive: false,
+      date: null,
+      menuDate: false,
+      menuTime: false,
+      time: null,
+      liveTimeText: ''
     }
   },
   computed: {
-    isValid () {
+    isLiveValid () {
       return this.title !== '' && this.description !== ''
+    },
+    isTimeLiveValid () {
+      return this.time !== null && this.date !== null && this.liveTimeText !== ''
     },
     course () {
       return this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0]
     },
     isTutor () {
       return this.$store.state.tutor.isTutor
+    },
+    liveSchedule () {
+      return this.$store.getters.LIVE_SCHEDULE(this.$route.params.id)[0]
     }
   }
 }

@@ -111,9 +111,10 @@
             <v-card-media :src="course.cover" height="150"></v-card-media>
             <v-card-text>
               <span v-if="!checkCoursePurchase" class="headline">{{course.price}}.-</span><br><br>
+              <template v-if="$store.state.isLogin == true">
               <div class="text-xs-center">
                   <div class="form" v-if="!checkCoursePurchase && !checkCourseCreate">
-                      <form ref="omiseform" name="checkoutForm" method="POST" :action="'http://172.104.167.197:4000/checkout/' + course.course_id +'/' + course.branch_id + '/' + $store.state.profile.user_id + '/' + currentDateTime + '/' + course.price.toString()">
+                      <form ref="omiseform" name="checkoutForm" method="POST" :action="'https://xn--m3cia1ci0ba7c2i8c.com:4000/checkout/' + course.course_id +'/' + course.branch_id + '/' + $store.state.profile.user_id + '/' + currentDateTime + '/' + course.price.toString()">
                        <!-- <v-btn type="submit">submitsubmit</v-btn> -->
                       <v-btn primary block class="checkout-button-1" type="submit" id="checkout-button-1" ref="cbutton1"><v-icon dark>shopping_cart</v-icon>&nbsp;ซื้อตอนนี้</v-btn>
                     </form>
@@ -131,6 +132,11 @@
                     <v-btn primary nuxt :to="'/mycourse/' + course.course_id">ดูรายละเอียดคอร์ส</v-btn>
                   </template>
               </div>
+            </template>
+              <template v-else>
+                <p class="text-xs-center">สำหรับสมาชิกเท่านั้น</p>
+                  <v-btn block color="primary" @click.native="$router.push('/register')">สมัครสมาชิก</v-btn>
+              </template>
             </v-card-text>
           </v-card>
           <br><br>
@@ -160,6 +166,7 @@ export default {
     userPurchase
   },
   created () {
+    moment.lang('th-TH')
     console.log('coursefromid')
     console.log(this.$store.getters.COURSE_FROM_ID(this.$route.params.id)[0])
     console.log('index popular')
@@ -181,7 +188,7 @@ export default {
       this.$socket.emit('course_user_purchased', data)
       this.$socket.emit('subscribe', data.course_id)
     }
-    if (!this.checkCoursePurchase && ! this.checkCourseCreate) {
+    if (!this.checkCoursePurchase && ! this.checkCourseCreate && this.$store.state.isLogin == true) {
       OmiseCard.configure({
         publicKey:        'pkey_test_5a1ks8kiuxwic3f4bre',
         amount:           this.course.price + '00',

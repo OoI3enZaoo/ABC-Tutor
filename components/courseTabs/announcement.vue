@@ -44,7 +44,7 @@
                 </v-layout>
               </template>
           </template>
-        <template v-else v-for="(data, i) in courseAnno" >          
+        <template v-else v-for="(data, i) in courseAnno" >
             <div class="text-xs-right mb-2">
               <create v-if="isTutor && i == 0" title="สร้างคำประกาศ" type="2"  @result="dataFromQuill" ></create>
             </div>
@@ -124,6 +124,9 @@ Vue.use(require('vue-moment'), {
 })
 import create from './addon/createQuestion.vue'
 export default {
+  created () {
+    moment.lang('th-TH')
+  },
   data () {
     return {
       replyText: '',

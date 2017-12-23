@@ -1,16 +1,15 @@
 <template>
   <div>
     <parallax height = "500" type="link" src="http://www.gengotutors.com/img/slides/skype-language-tutor-homepage-background.jpg" position="center">
-      <h1 class="white--text text-xs-center">เรียนกับอาจารย์ไม่รู้เรื่อง ?</h1>
-      <h4 class="white--text">มาเริ่มต้นกับเราที่ ABC-Tutor</h4>
-
+      <h1 class="white--text text-xs-center">ติวออนไลน์</h1>
+      <h4 class="white--text">เปิดประสบการณ์ใหม่ที่ไม่เหมือนใครกับระบบวีดีโอสตีมมิ่ง</h4>
       <v-btn v-if="!$store.state.isLogin" round primary large style="padding: 60px 70px 60x 70px;" nuxt to ="/login">สม้ครสมาชิก</v-btn>
     </parallax>
  <div>
   <br><br>
   <v-container
         grid-list-lg>
-    <h6>ที่ได้รับความนิยม</h6>
+    <h6>คอร์สยอดนิยม</h6>
     <v-spacer></v-spacer>
     <v-layout row wrap>
       <template v-for="data in popularCourseIndex">
@@ -40,7 +39,7 @@
   <v-container grid-list-lg>
     <br>
 
-    <h6>ที่ได้รับความนิยม</h6>
+    <h6>คอร์สเรียนทั้งหมด</h6>
     <v-tabs light>
 
      <v-tabs-bar class="white">
@@ -108,7 +107,7 @@
         <v-card flat class="grey darken-4">
           <v-card-text>
             <div class="text-xs-center">
-              <h5 class ="white--text">{{$store.state.projectName}} ทำงานอย่างไร?</h5>
+              <h5 class ="white--text">{{$store.state.projectName}} ทำงานอย่างไร ?</h5>
               <v-layout>
                 <v-flex xs6>
                   <v-layout>
@@ -145,7 +144,7 @@
           <v-card-text>
             <div class="text-xs-center">
               <h5 style="display:inline;"><b>ประสบการณ์การใหม่บนมือถือ</b></h5>
-              <p>ไม่ต้องติดตั้งแอปพลิเคชันบนมือถือ สำหรับ Android ด้วยระบบ Progressive Web Apps &nbsp; <nuxt-link to="">ข้อมูลเพิ่มเติม</nuxt-link></p>
+              <p>ไม่ต้องติดตั้งแอปพลิเคชันบนมือถือ สำหรับ Android ด้วยระบบ Progressive Web Apps</p>
             </div>
             <br>
             <v-layout row wrap>
@@ -203,7 +202,8 @@ export default {
     }
   },
   mounted () {
-    console.log(JSON.stringify(this.branchs))
+    // console.log(JSON.stringify(this.branchs))
+    // console.log(notification)
   },
   components: {
     parallax,

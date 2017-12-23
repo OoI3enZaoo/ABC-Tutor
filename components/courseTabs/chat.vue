@@ -76,6 +76,7 @@ Vue.use(require('vue-moment'), {
 })
 export default {
   created () {
+    moment.lang('th-TH')
     this.roomId = this.$route.params.id
     let data = {
       course_id: this.roomId,

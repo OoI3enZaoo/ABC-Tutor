@@ -178,7 +178,7 @@ export default {
       this.data.email = this.user_name
       this.data.user_id = (new Date().getTime())
       this.data.user_ts = Vue.moment().format('YYYY-MM-DD HH:mm:ss')
-      axios.post('http://172.104.167.197:4000/api/insertnewuser', this.data)
+      axios.post('https://xn--m3cia1ci0ba7c2i8c.com:4000/api/insertnewuser', this.data)
       .then (res => {
         let result = res.data
         this.data.user_id = result.user_id
@@ -192,7 +192,7 @@ export default {
       this.data.user_img =  'data:image/jpeg;base64,' + data.base64
     },
     checkUsername (username) {
-      axios.get('http://172.104.167.197:4000/api/get_check_username/' + username)
+      axios.get('https://xn--m3cia1ci0ba7c2i8c.com:4000/api/get_check_username/' + username)
       .then (res => {
         let result = res.data[0].check_username
         if (result == 1) {
@@ -208,7 +208,7 @@ export default {
       })
     },
     checkEmail (email) {
-      axios.get('http://172.104.167.197:4000/api/get_check_email/' + email)
+      axios.get('https://xn--m3cia1ci0ba7c2i8c.com:4000/api/get_check_email/' + email)
       .then (res => {
         let result = res.data[0].check_email
         if (result == 1) {

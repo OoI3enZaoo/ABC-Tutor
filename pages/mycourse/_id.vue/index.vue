@@ -118,6 +118,9 @@ export default {
       else if (val == 'ถามตอบ') {
         this.$store.dispatch('PULL_COURSE_QA', this.$route.params.id)
       }
+      else if (val == 'วีดีโอสด') {
+        this.$store.dispatch('PULL_LIVE_SCHEDULE', this.$route.params.id)
+      }
       else if (val == 'ประกาศ') {
         this.$store.dispatch('PULL_COURSE_ANNO', this.$route.params.id)
       }
