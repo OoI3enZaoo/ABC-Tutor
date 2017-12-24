@@ -502,11 +502,15 @@ export default {
     commit('UPDATE_LIVE_SCHEDULE', payload)
   },
   PULL_LIVE_SCHEDULE ({state, commit}, course_id) {
-    axios.get(state.currentIP + '/api/get_course_live/' + course_id)
-    .then (res => {
-      let result = res.data
-      commit('ADD_LIVE_SCHEDULE', result)
-    })
+    let isCheck = false
+    state.live_schedule.find(ls => ls.course_id == course_id ? isCheck = true : '')
+    if (isCheck == false) {
+      axios.get(state.currentIP + '/api/get_course_live/' + course_id)
+      .then (res => {
+        let result = res.data
+        commit('ADD_LIVE_SCHEDULE', result)
+      })
+    }
   },
   UPDATE_LIVE_STATUS ({state, commit}, payload) {
     axios.post(state.currentIP + '/api/update_course_live_status/', payload)

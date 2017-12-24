@@ -184,17 +184,12 @@ export default {
   },
   UPDATE_LIVE_SCHEDULE: (state, data) => {
     console.log('UPDATE_LIVE_SCHEDULE')
-    let isHave = false
-    console.log(data);
-    state.live_schedule.map((ls, i) => ls.course_id == data.course_id ? state.live_schedule[i] = data : '')
+    state.live_schedule.map((ls, index) => ls.course_id == data.course_id ? state.live_schedule[index] = data : '')
+    console.log(state.live_schedule)
   },
   ADD_LIVE_SCHEDULE: (state, data) => {
     console.log('ADD_LIVE_SCHEDULE');
-    let isCheck = false
-    state.live_schedule.find(ls => ls.course_id == data.course_id ? isCheck = true : '')
-    if (isCheck == false) {
-      state.live_schedule.push(...data)
-    }
+    state.live_schedule.push(...data)
   },
   UPDATE_LIVE_STATUS: (state, data) => {
     state.course.map(c => c.course_id == data.course_id ? c.live_status = data.live_status : '')

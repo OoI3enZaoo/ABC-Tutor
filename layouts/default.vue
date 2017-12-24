@@ -281,6 +281,11 @@
       },
       this.$options.sockets.update_course = (data) => {
         this.$store.commit('updateCourse', data)
+      },
+      this.$options.sockets.course_live = (data) => {
+        if (this.$store.state.profile.user_id != data.user_id) {
+          this.$store.commit('UPDATE_LIVE_SCHEDULE', data)
+        }
       }
     },
     data () {

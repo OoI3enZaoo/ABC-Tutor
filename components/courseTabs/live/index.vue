@@ -14,8 +14,12 @@
                           </v-flex>
                           <v-flex xs12 md5 text-md-left text-xs-center mt-4>
                             <h5>คุณยังไม่ได้ทำการไลฟ์ในขณะนี้</h5>
-                            <template v-if="liveSchedule !== '' & liveSchedule.live_schedule !== null">
-                              <span >เวลาไลฟ์ครั้งต่อไปของคุณคือ {{liveSchedule.live_schedule}} (อีก {{liveSchedule.live_schedule | moment('from', 'now', true)}})</span>
+
+                            <template v-if="liveSchedule !== undefined">
+                              <template v-if="liveSchedule.live_schedule !== null">
+                                <span >เวลาไลฟ์ครั้งต่อไปของคุณคือ {{liveSchedule.live_schedule}} (อีก {{liveSchedule.live_schedule | moment('from', 'now', true)}})</span><br>
+                                <span>ในหัวข้อเรื่อง "{{liveSchedule.live_text}}" </span>
+                              </template>
                             </template>
                                 <v-layout row wrap>
                                   <v-flex xs6 md4>
@@ -104,8 +108,11 @@
                          </v-flex>
                          <v-flex xs12 md5 text-md-left text-xs-center mt-4>
                            <h5>ยังไม่มีการไลฟ์ในขณะนี้</h5>
-                           <template v-if="liveSchedule !== '' & liveSchedule.live_schedule !== null">
-                             <span >เวลาไลฟ์ครั้งต่อไปคือ {{liveSchedule.live_schedule}} (อีก {{liveSchedule.live_schedule | moment('from', 'now', true)}})</span>
+                           <template v-if="liveSchedule !== undefined">
+                             <template v-if="liveSchedule.live_schedule !== null">
+                               <span >เวลาไลฟ์ครั้งต่อไปคือ {{liveSchedule.live_schedule}} (อีก {{liveSchedule.live_schedule | moment('from', 'now', true)}})</span><br>
+                               <span>ในหัวข้อเรื่อง "{{liveSchedule.live_text}}" </span>
+                             </template>
                            </template>
                          </v-flex>
                        </v-layout>
