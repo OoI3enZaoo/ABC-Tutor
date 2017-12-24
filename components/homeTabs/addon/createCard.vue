@@ -1,6 +1,6 @@
 <template>
 
-    <v-flex xs12>
+    <v-flex xs12 md6>
       <v-card>
         <nuxt-link :to="'/mycourse/' + create.course_id" tag="span" style="cursor:pointer;">
             <v-layout>

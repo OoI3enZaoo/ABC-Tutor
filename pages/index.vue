@@ -6,9 +6,9 @@
       <v-btn v-if="!$store.state.isLogin" round primary large style="padding: 60px 70px 60x 70px;" nuxt to ="/login">สม้ครสมาชิก</v-btn>
     </parallax>
  <div>
-  <br><br>
-  <v-container
-        grid-list-lg>
+
+  <v-container grid-list-lg v-if="popularCourseIndex.length !== 0">
+    <br><br>
     <h6>คอร์สยอดนิยม</h6>
     <v-spacer></v-spacer>
     <v-layout row wrap>
@@ -31,10 +31,10 @@
           </v-flex>
       </template>
     </v-layout>
-
+    <br><br>
+    <hr>
   </v-container>
 </div>
-  <hr>
 <div class="white">
   <v-container grid-list-lg>
     <br>
@@ -171,8 +171,12 @@ import popularCourse from '../components/popularCourse.vue'
 import RatingInCard from '../components/RatingInCard.vue'
 import noDataCard from '../components/noDataCard.vue'
 export default {
-  asyncData ({store}) {
-    store.dispatch('PULL_POPULAR_COURSE_INDEX')
+  asyncData ({store, redirect}) {
+    if (store.state.isLogin == true) {
+      redirect('/home')
+    } else {
+      store.dispatch('PULL_POPULAR_COURSE_INDEX')
+    }
   },
   computed: {
     branchs () {

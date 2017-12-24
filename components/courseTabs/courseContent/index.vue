@@ -13,7 +13,7 @@
                               <img :src="contentIcon" height="150">
                           </v-flex>
                           <v-flex xs12 md5 text-md-left text-xs-center mt-4>
-                            <h5>คุณยังไม่ได้เพิ่มวีดีโอของคอร์สเลย</h5>
+                            <h5>คุณยังไม่ได้เพิ่มเอกสาร/วีดีโอของคอร์สเลย</h5>
                               <createCourseContent @contentcourse = "contentcourse"></createCourseContent>
                           </v-flex>
                         </v-layout>
@@ -52,7 +52,7 @@ Vue.use(require('vue-moment'), {
     moment
 })
 export default {
-  created() {    
+  created() {
     moment.lang('th-TH')
   },
   components: {

@@ -66,7 +66,7 @@ export default {
       console.log('params: ' + JSON.stringify(route.params))
     // }
   },
-  created () {
+  mounted () {
     this.courseAfterSearch = this.course
   },
   computed: {
@@ -93,11 +93,17 @@ export default {
   data () {
     return {
       searchModel: '',
-      courseAfterSearch: '',
+      courseAfterSearch: [],
       page: 1
     }
   },
   watch: {
+    courseAfterSearch: function (val) {
+      console.log('val.length: ' + val.length);
+      if (val.length == 0) {
+        this.courseAfterSearch = this.course
+      }
+    },
     searchModel: function (val) {
       this.getAnswer(val)
     }

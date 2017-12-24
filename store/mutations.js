@@ -7,6 +7,7 @@ export default {
     state.branchs.push(...data)
   },
   addCourses (state, data) {
+    console.log('addCourses')
     state.course.unshift(...data)
   },
   setIsLogin (state, data) {

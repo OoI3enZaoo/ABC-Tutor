@@ -59,13 +59,14 @@ export default {
     }
   },
   created () {
-    this.active = location.hash.substring(1)
-    // this.active = "%E0%B8%84%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%AA%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B9%80%E0%B8%9B%E0%B9%87%E0%B8%99%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%82%E0%B8%AD%E0%B8%87"
+    this.active = decodeURI(location.hash.substring(1))
+    console.log('this.active: ' + this.active)
   },
   watch: {
     active: function (val) {
       console.log('val: ' + val)
-      location.hash = val
+      this.$router.replace('#' + val)
+      // location.hash = val
       if (val == 'คอร์สที่ซื้อ') {
         this.$store.dispatch('FETCH_COURSE_REVIEW')
         this.$store.dispatch('FETCH_COURSE_PURCHASED')

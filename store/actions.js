@@ -16,9 +16,13 @@ export default {
       .then(res => {
         let result = res.data
         commit('addCheckPullCourse', branch_id)
+        console.log('result.length');
+        console.log(result.length)
         result.map(rs => {
           let {course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube, five, four, three, two, one, avg, length} = rs
-          commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube,live_status:false}])
+          let courseInStore = false
+          state.course.find(cf => cf.course_id == rs.course_id ? courseInStore = true : '')
+          courseInStore == false ? commit('addCourses', [{course_id,user_id,branch_id,subject,code,price,des,cover,ts,lastUpdate,fname,lname,user_img,email,facebook,twitter,youtube,live_status:false}]) : ''
           let inStore = false
           state.courseVote.find(f => f.course_id == rs.course_id  ? inStore = true : '')
           rs.avg != 0 && inStore == false ? commit('addCourseVote', [{course_id, five, four, three, two, one, avg, length}]) : ''

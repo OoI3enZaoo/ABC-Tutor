@@ -16,7 +16,7 @@
                             <h5>คุณยังไม่ได้ทำการไลฟ์ในขณะนี้</h5>
 
                             <template v-if="liveSchedule !== undefined">
-                              <template v-if="liveSchedule.live_schedule !== null">
+                              <template v-if="liveSchedule.live_schedule !== null || liveSchedule.live_schedule !== ''">
                                 <span >เวลาไลฟ์ครั้งต่อไปของคุณคือ {{liveSchedule.live_schedule}} (อีก {{liveSchedule.live_schedule | moment('from', 'now', true)}})</span><br>
                                 <span>ในหัวข้อเรื่อง "{{liveSchedule.live_text}}" </span>
                               </template>
@@ -256,8 +256,10 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
+
         <v-btn color="primary" :disabled="!isTimeLiveValid" @click.native="[setTimeLive(), dialogTimeLive = false]">ตั้งค่า</v-btn>
         <v-btn color="primary" outline @click.native="dialogTimeLive = false">ยกเลิก</v-btn>
+        <!-- <v-btn color="error" outline :disabled="!isTimeLiveValid" @click.native="[clearTimeLive(), dialogTimeLive = false]">เคลียร์</v-btn> -->
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -287,8 +289,6 @@ export default {
     this.clientPeerId = '5fp7aid0dc0xa'
   },
   mounted () {
-console.log('hello world')
-    console.log('isTutor' + this.isTutor)
     if (this.isTutor === true) {
       peer  = new Peer(this.tutorPeerId,{host: 'xn--m3cia1ci0ba7c2i8c.com', port: 9000});
       // peer  = new Peer({key: 'inma6ltgbpwopqfr'}, this.tutorPeerId);
@@ -446,6 +446,19 @@ console.log('hello world')
     }
   },
   methods: {
+    clearTimeLive () {
+      this.date = null
+      this.time = null
+      this.liveTimeText = ''
+      const data = {
+        user_id: this.$store.state.profile.user_id,
+        course_id: this.$route.params.id,
+        live_text: '',
+        live_schedule: ''
+      }
+      this.$store.dispatch('UPDATE_LIVE_SCHEDULE', data)
+      this.$socket.emit('course_live', data)
+    },
     setTimeLive () {
       const data = {
         user_id: this.$store.state.profile.user_id,
@@ -601,8 +614,8 @@ console.log('hello world')
       console.log('clear Interval')
       // console.log(this.stream.getVideoTracks()[0]);
       // this.stream.getTracks().forEach(track => track.stop());
-      this.stream.getVideoTracks()[0].stop()
-      this.stream.getAudioTracks()[0].stop()
+      // this.stream.getVideoTracks()[0].stop()
+      // this.stream.getAudioTracks()[0].stop()
       // this.stream.getTracks().forEach(track => track.stop());
       // this.stream.getVideoTracks()[0].forEach(track => track.stop());
       // this.stream.getTracks()[0].stop()
@@ -745,6 +758,17 @@ console.log('hello world')
       menuTime: false,
       time: null,
       liveTimeText: ''
+    }
+  },
+  watch: {
+    dialogTimeLive: function (val) {
+      if (val == true) {
+        if (this.liveSchedule !== undefined && this.time == null || this.date == null || this.liveTimeText == '') {
+          this.liveSchedule.live_time !== null ? this.time = this.liveSchedule.live_time : ''
+          this.liveSchedule.live_date !== null ? this.date = this.liveSchedule.live_date : ''
+          this.liveSchedule.live_text !== null ? this.liveTimeText = this.liveSchedule.live_text : ''
+        }
+      }
     }
   },
   computed: {
