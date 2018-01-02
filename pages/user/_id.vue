@@ -98,7 +98,9 @@
       <div class="text-xs-center">
         <p class="headline">คอร์สที่สอนโดย {{userData.fname}} {{userData.lname}}</p>
       </div>
-      <template v-if="userPurchase.length == 0">
+
+      <template v-if="userOwner.length == 0">
+
           <noDataCard png="https://www.wpclipart.com/people/baby/baby_faces/baby_sad.png" text="ผู้ใช้คนนี้ยังไม่ได้สอนคอร์สใด ๆ เลย"></noDataCard>
       </template>
       <template v-else>

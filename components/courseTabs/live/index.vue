@@ -285,8 +285,8 @@ export default {
   created () {
     moment.lang('th-TH');
     //do something after creating vue instance
-    this.tutorPeerId =  '2p7idslu0x00xa'
-    this.clientPeerId = '5fp7aid0dc0xa'
+    this.tutorPeerId =  '2pc7idxzu0xxxssz2'
+    this.clientPeerId = '5fspcdaiddcx0xs00a'
   },
   mounted () {
     if (this.isTutor === true) {
