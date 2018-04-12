@@ -14,7 +14,6 @@
                           </v-flex>
                           <v-flex xs12 md5 text-md-left text-xs-center mt-4>
                             <h5>คุณยังไม่ได้ทำการไลฟ์ในขณะนี้</h5>
-
                             <template v-if="liveSchedule !== undefined">
                               <template v-if="liveSchedule.live_schedule !== null || liveSchedule.live_schedule !== ''">
                                 <span >เวลาไลฟ์ครั้งต่อไปของคุณคือ {{liveSchedule.live_schedule}} (อีก {{liveSchedule.live_schedule | moment('from', 'now', true)}})</span><br>
@@ -290,17 +289,14 @@ export default {
   },
   mounted () {
     if (this.isTutor === true) {
-      peer  = new Peer(this.tutorPeerId,{host: 'xn--m3cia1ci0ba7c2i8c.com', port: 9000});
-      // peer  = new Peer({key: 'inma6ltgbpwopqfr'}, this.tutorPeerId);
-
+      peer  = new Peer(this.tutorPeerId,{host: 'localhost', port: 9000});
       peer.on('connection', function(conn) {
         conn.on('data', function(data){
           console.log('tutor: ' + data);
         })
       })
     } else {
-      peer  = new Peer(this.clientPeerId,{host: 'xn--m3cia1ci0ba7c2i8c.com', port: 9000});
-      // peer  = new Peer({key: 'inma6ltgbpwopqfr'}, this.clientPeerId);
+      peer  = new Peer(this.clientPeerId,{host: 'localhost', port: 9000});
       peer.on('connection', function(conn) {
         conn.on('data', function(data){
           console.log('client2: ' + data);
@@ -314,22 +310,14 @@ export default {
         call.answer(stream)
         call.on('stream', function(remoteStream) {
           document.getElementById('videoLive').src = window.URL.createObjectURL(remoteStream)
-
-          // this.videoLive = window.URL.createObjectURL(remoteStream)
         })
       }, function(err) {
         console.log('Failed to get local stream' ,err);
       })
     })
     this.$options.sockets.live_tutor = (data) => {
-      // this.videoLive = data.message
-      // this.source = data.message
-      // console.log(data)
-      // this.$refs.videoLivenna.src = data.message2
       this.title = data.title
       this.description = data.description
-      // console.log(data.video)
-      // this.$refs.videoTest.src = data.video
       if (this.liveStatus === false) {
         this.liveStatus = true
       }
@@ -349,8 +337,6 @@ export default {
       })
       this.stream.getVideoTracks()[0].stop()
       this.stream.getAudioTracks()[0].stop()
-      // this.stream.getTracks().forEach(track => track.stop());
-
     }
     this.$options.sockets.live_message = (data) => {
       if (data.user_id !== this.$store.state.profile.user_id) {
@@ -485,6 +471,14 @@ export default {
       this.snackbar.text = text
       this.snackbar.model = true
     },
+
+
+
+
+
+
+
+
     startStream (val) {
       this.liveStatus = true
       getScreenId( (error, sourceId, screen_constraints) => {
@@ -511,8 +505,6 @@ export default {
             screen_constraints.video.mandatory.chromeMediaSourceId = sourceId;
         }
     }
-
-    // this.requestMedia()
       if (navigator.getUserMedia) {
       navigator.getUserMedia(screen_constraints, stream => {
         navigator.getUserMedia({
@@ -525,9 +517,6 @@ export default {
       			stream2.height = 240;
       			stream2.top = stream.height - stream2.height;
       			stream2.left = stream.width - stream2.width;
-
-
-
             recorder = RecordRTC([stream, stream2], {
                 type: 'video',
                 recorderType: MediaStreamRecorder,
@@ -537,7 +526,6 @@ export default {
                   gif:   'image/gif'
                 },
                 previewStream: mystream => {
-                   // console.log(mystream)
                    let data = {
                      course_id: this.$route.params.id,
                      title: this.title,
@@ -545,16 +533,7 @@ export default {
                    }
                  this.$socket.emit('live_tutor', data)
                  this.source = window.URL.createObjectURL(mystream)
-                 // var conn = peer.connect(this.clientPeerId)
-                 // conn.on('open', function () {
-                 //   conn.send('hieeeex!');
-                 // })
                  let call = peer.call(this.clientPeerId, mystream)
-
-                  // let captureStream = this.$refs.video.captureStream()
-
-
-
                   let des
                   if (this.course.code !== '') {
                     des = 'มีการไลฟ์จากติวเตอร์ (' + this.course.code + ')'
@@ -577,7 +556,6 @@ export default {
                   this.$socket.emit('noti_content', notification)
                   let {course_id} = notification
                   this.$store.dispatch('UPDATE_LIVE_STATUS', {course_id, live_status: true})
-
                 }
             })
             recorder.startRecording()
@@ -605,28 +583,10 @@ export default {
         files: [fileName]
       }
       this.$store.dispatch('ADD_COURSE_CONTENT', videoo)
-
-
       const data = {
         course_id: this.$route.params.id
       }
       this.$socket.emit('stoplive', data)
-      console.log('clear Interval')
-      // console.log(this.stream.getVideoTracks()[0]);
-      // this.stream.getTracks().forEach(track => track.stop());
-      // this.stream.getVideoTracks()[0].stop()
-      // this.stream.getAudioTracks()[0].stop()
-      // this.stream.getTracks().forEach(track => track.stop());
-      // this.stream.getVideoTracks()[0].forEach(track => track.stop());
-      // this.stream.getTracks()[0].stop()
-
-
-// }
-
-
-      console.log(this.stream.getTracks()[0])
-      // console.log(this.stream.getVideoTracks()[0].enable);
-
       clearInterval(this.interval)
     },
     requestCamera (index) {

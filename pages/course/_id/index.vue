@@ -114,9 +114,25 @@
               <template v-if="$store.state.isLogin == true">
               <div class="text-xs-center">
                   <div class="form" v-if="!checkCoursePurchase && !checkCourseCreate">
-                      <form ref="omiseform" name="checkoutForm" method="POST" :action="'https://xn--m3cia1ci0ba7c2i8c.com:4000/checkout/' + course.course_id +'/' + course.branch_id + '/' + $store.state.profile.user_id + '/' + currentDateTime + '/' + course.price.toString()">
-                       <!-- <v-btn type="submit">submitsubmit</v-btn> -->
-                      <v-btn primary block class="checkout-button-1" type="submit" id="checkout-button-1" ref="cbutton1"><v-icon dark>shopping_cart</v-icon>&nbsp;ซื้อตอนนี้</v-btn>
+                      <form ref="omiseform"
+                        name="checkoutForm"
+                        method="POST"
+                        :action="'https://localhost:4000/checkout/' +
+                        course.course_id +
+                        '/' + course.branch_id +
+                        '/' + $store.state.profile.user_id +
+                        '/' + currentDateTime +
+                        '/' + course.price.toString()"
+                      >
+                      <v-btn
+                        primary
+                        block
+                        class="checkout-button-1"
+                        type="submit"
+                        id="checkout-button-1"
+                        ref="cbutton1"
+                        >
+                        <v-icon dark>shopping_cart</v-icon>&nbsp;ซื้อตอนนี้</v-btn>
                     </form>
                   </div>
                   <template v-if="!checkCoursePurchase && !checkCourseCreate">

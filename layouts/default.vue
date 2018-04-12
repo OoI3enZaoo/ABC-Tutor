@@ -200,7 +200,6 @@
       }
       this.$options.sockets.voting = (data) => {
         if (this.$store.state.profile.user_id != data.user_id) {
-
           this.$store.commit('updateCourseVote', data)
         }
       }
@@ -223,10 +222,8 @@
           this.$store.commit('addCourseQAComment', data)
         }
       }
-      this.$options.sockets.chat = (data) => {
-        console.log('chat')
+      this.$options.sockets.chat = (data) => {        
         if (this.$store.state.profile.user_id != data.user_id) {
-
           this.$store.commit('addCourseChat', [data])
         }
       }

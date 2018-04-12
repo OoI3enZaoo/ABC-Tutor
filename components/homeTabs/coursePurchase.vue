@@ -33,7 +33,6 @@
                                   :key="str.id"
                                   style="display:inline;"
                                  >
-
                                  <div
                                  @mouseover="mouseOver(courseIndex,starindex)"
                                  @mouseleave="mouseLeave(courseIndex,starindex)"
@@ -49,19 +48,18 @@
                                         </v-card-text>
                                       <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn class="green--text darken-1" flat="flat" @click.native="dialog[courseIndex].status = false">ยกเลิก</v-btn>
-                                        <v-btn class="green--text darken-1" flat="flat" @click.native="sendReview(data.course_id,numberPoint[courseIndex].mypoint,courseIndex)">ส่งคำวิจารณ์</v-btn>
+                                        <v-btn class="green--text darken-1" flat="flat"
+                                          @click.native="dialog[courseIndex].status = false">ยกเลิก</v-btn>
+                                        <v-btn class="green--text darken-1" flat="flat"
+                                          @click.native="sendReview(data.course_id,numberPoint[courseIndex].mypoint,courseIndex)">ส่งคำวิจารณ์</v-btn>
                                       </v-card-actions>
                                     </v-card>
                                   </v-dialog>
-
-
                                  </div>
                                </div>
                                  (<span v-text="numberPoint[courseIndex].mypoint"></span> คะแนน)
                                <br>
                               </template>
-
                          </v-card-text>
                        </v-flex>
 
@@ -75,7 +73,6 @@
                      </v-layout>
                    </v-card>
                    <br>
-
          </template>
          </v-container>
      </template>
@@ -94,7 +91,6 @@ export default {
     noDataCard
   },
   mounted () {
-    // console.log('coursePurLength ' + this.coursePur.length);
     this.getData()
   },
   data () {
@@ -119,17 +115,23 @@ export default {
       }
     }
   },
+
    methods: {
      async getData () {
        await this.$store.state.coursePurchased.map((data) => {
         this.coursePur.push(...this.$store.getters.COURSE_FROM_ID(data))
         this.dialog.push({status: false})
-        this.point.push([{id:1,icon:'start_border'},{id:2,icon:'start_border'},{id:3,icon:'start_border'},{id:4,icon:'start_border'},{id:5,icon:'start_border'}])
+        this.point.push([
+          {id:1,icon:'start_border'},
+          {id:2,icon:'start_border'},
+          {id:3,icon:'start_border'},
+          {id:4,icon:'start_border'},
+          {id:5,icon:'start_border'}])
         this.numberPoint.push({id: 1, mypoint: 0})
       })
       await this.point.map((p,i) => this.mouseOver(i, 4))
     },
-    mouseOver (index,dex) {
+    mouseOver (index, dex) {
       if (dex == 0) {
         this.point[index][dex].icon = 'star'
         this.numberPoint[index].mypoint = 1

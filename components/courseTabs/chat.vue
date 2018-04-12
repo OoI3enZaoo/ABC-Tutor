@@ -93,12 +93,6 @@ export default {
   },
   mounted () {
     this.scrollToEnd()
-    // this.$options.sockets.online = (data) => {
-    //   console.log('online: ' + JSON.stringify(data))
-    // }
-    // this.$options.sockets.offline = (data) => {
-    //   console.log('offline: ' + JSON.stringify(data))
-    // }
   },
   data () {
     return {
